@@ -14,41 +14,41 @@ export const useAdminAuth = () => {
   return context;
 };
 
+// Admin users from environment variables (moved outside component for performance)
+const getAdminUsers = () => [
+  {
+    id: 1,
+    username: process.env.NEXT_PUBLIC_ADMIN_USERNAME || 'admin',
+    password: process.env.ADMIN_PASSWORD || 'admin123',
+    email: 'admin@fiverr-clone.com',
+    role: 'super_admin',
+    permissions: ['all'],
+    avatar: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D'
+  },
+  {
+    id: 2,
+    username: process.env.NEXT_PUBLIC_MOD_USERNAME || 'moderator',
+    password: process.env.MOD_PASSWORD || 'mod123',
+    email: 'moderator@fiverr-clone.com',
+    role: 'moderator',
+    permissions: ['manage_users', 'manage_services', 'view_reports'],
+    avatar: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D'
+  },
+  {
+    id: 3,
+    username: process.env.NEXT_PUBLIC_SUPPORT_USERNAME || 'support',
+    password: process.env.SUPPORT_PASSWORD || 'support123',
+    email: 'support@fiverr-clone.com',
+    role: 'support',
+    permissions: ['manage_orders', 'view_users', 'respond_tickets'],
+    avatar: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D'
+  }
+];
+
 export const AdminAuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [adminUser, setAdminUser] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  // Mock admin users
-  const adminUsers = [
-    {
-      id: 1,
-      username: 'admin',
-      password: 'admin123',
-      email: 'admin@fiverr-clone.com',
-      role: 'super_admin',
-      permissions: ['all'],
-      avatar: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D'
-    },
-    {
-      id: 2,
-      username: 'moderator',
-      password: 'mod123',
-      email: 'moderator@fiverr-clone.com',
-      role: 'moderator',
-      permissions: ['manage_users', 'manage_services', 'view_reports'],
-      avatar: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D'
-    },
-    {
-      id: 3,
-      username: 'support',
-      password: 'support123',
-      email: 'support@fiverr-clone.com',
-      role: 'support',
-      permissions: ['manage_orders', 'view_users', 'respond_tickets'],
-      avatar: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D'
-    }
-  ];
 
   useEffect(() => {
     // Check if admin is already logged in
@@ -59,6 +59,7 @@ export const AdminAuthProvider = ({ children }) => {
         setAdminUser(adminData);
         setIsAuthenticated(true);
       } catch (error) {
+        console.error('Failed to parse admin user data:', error);
         localStorage.removeItem('adminUser');
       }
     }
@@ -69,6 +70,7 @@ export const AdminAuthProvider = ({ children }) => {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
     
+    const adminUsers = getAdminUsers();
     const admin = adminUsers.find(
       user => user.username === username && user.password === password
     );
@@ -149,9 +151,9 @@ const AdminLogin = () => {
   };
 
   const demoCredentials = [
-    { username: 'admin', password: 'admin123', role: 'Super Admin' },
-    { username: 'moderator', password: 'mod123', role: 'Moderator' },
-    { username: 'support', password: 'support123', role: 'Support' }
+    { username: process.env.NEXT_PUBLIC_ADMIN_USERNAME || 'admin', password: '***', role: 'Super Admin' },
+    { username: process.env.NEXT_PUBLIC_MOD_USERNAME || 'moderator', password: '***', role: 'Moderator' },
+    { username: process.env.NEXT_PUBLIC_SUPPORT_USERNAME || 'support', password: '***', role: 'Support' }
   ];
 
   return (
@@ -244,7 +246,7 @@ const AdminLogin = () => {
                   onClick={() => {
                     setFormData({
                       username: cred.username,
-                      password: cred.password
+                      password: ''
                     });
                   }}
                 >

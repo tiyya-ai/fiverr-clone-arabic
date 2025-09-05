@@ -14,6 +14,7 @@ export interface User {
   languages: string[]
   location: string
   totalSales: number
+  level?: string
   isVerified?: boolean
   verificationStatus?: 'pending' | 'verified' | 'rejected'
   verificationBadges?: string[]
@@ -179,6 +180,7 @@ export const mockUsers: User[] = [
     languages: ['العربية'],
     location: 'الرياض، السعودية',
     totalSales: 1250,
+    level: 'خبير معتمد',
     isVerified: true,
     verificationStatus: 'verified',
     verificationBadges: ['identity', 'skills', 'phone', 'email', 'address'],
@@ -588,9 +590,18 @@ export const getReviewsByServiceId = (serviceId: string): Review[] => {
   return mockReviews.filter(review => review.serviceId === serviceId)
 }
 
+// Input sanitization function
+const sanitizeInput = (input: string): string => {
+  if (typeof input !== 'string') return ''
+  return input.replace(/[<>"'&]/g, '').trim().substring(0, 100)
+}
+
 export const searchServices = (query: string): Service[] => {
   if (!query) return mockServices
-  const lowerQuery = query.toLowerCase()
+  const sanitizedQuery = sanitizeInput(query)
+  if (!sanitizedQuery) return []
+  
+  const lowerQuery = sanitizedQuery.toLowerCase()
   return mockServices.filter(service => 
     service.title.toLowerCase().includes(lowerQuery) ||
     service.description.toLowerCase().includes(lowerQuery) ||
@@ -679,7 +690,10 @@ export const getProjectsByStatus = (status: string): Project[] => {
 
 export const searchProjects = (query: string): Project[] => {
   if (!query) return mockProjects
-  const lowerQuery = query.toLowerCase()
+  const sanitizedQuery = sanitizeInput(query)
+  if (!sanitizedQuery) return []
+  
+  const lowerQuery = sanitizedQuery.toLowerCase()
   return mockProjects.filter(project => 
     project.title.toLowerCase().includes(lowerQuery) ||
     project.description.toLowerCase().includes(lowerQuery) ||
@@ -709,7 +723,10 @@ export const getJobsByLocation = (location: string): Job[] => {
 
 export const searchJobs = (query: string): Job[] => {
   if (!query) return mockJobs
-  const lowerQuery = query.toLowerCase()
+  const sanitizedQuery = sanitizeInput(query)
+  if (!sanitizedQuery) return []
+  
+  const lowerQuery = sanitizedQuery.toLowerCase()
   return mockJobs.filter(job => 
     job.title.toLowerCase().includes(lowerQuery) ||
     job.description.toLowerCase().includes(lowerQuery) ||

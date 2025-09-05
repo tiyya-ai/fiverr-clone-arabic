@@ -7,7 +7,7 @@ import { ArrowRight, Upload, X } from 'lucide-react'
 export default function EditCategoryPage() {
   const router = useRouter()
   const params = useParams()
-  const categoryId = params.id as string
+  const categoryId = params?.id as string
 
   const [formData, setFormData] = useState({
     name: '',
@@ -37,11 +37,17 @@ export default function EditCategoryPage() {
     }, 500)
   }, [categoryId])
 
+  // Input sanitization function
+  const sanitizeInput = (input: string): string => {
+    return input.replace(/[<>"'&]/g, '').trim()
+  }
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
+    const sanitizedValue = name === 'status' ? value : sanitizeInput(value)
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: sanitizedValue
     }))
   }
 
@@ -65,7 +71,8 @@ export default function EditCategoryPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     
-    if (!formData.name.trim()) {
+    const sanitizedName = sanitizeInput(formData.name)
+    if (!sanitizedName) {
       alert('يرجى إدخال اسم الفئة')
       return
     }
@@ -98,7 +105,7 @@ export default function EditCategoryPage() {
         </button>
         <div>
           <h1 className="text-3xl font-bold text-gray-900">تعديل الفئة</h1>
-          <p className="text-gray-600 mt-2">تعديل بيانات الفئة #{categoryId}</p>
+          <p className="text-gray-600 mt-2">تعديل بيانات الفئة #{sanitizeInput(categoryId)}</p>
         </div>
       </div>
 

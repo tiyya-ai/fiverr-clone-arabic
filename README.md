@@ -96,17 +96,40 @@ src/
 
 ## Next Steps
 
-1. **Database Setup**: Configure Prisma with your preferred database
-2. **Authentication**: Set up NextAuth.js providers
-3. **Payment Integration**: Configure Stripe for transactions
-4. **File Upload**: Set up UploadThing for service images
-5. **API Routes**: Create backend endpoints for services
-6. **User Dashboard**: Build seller and buyer dashboards
-7. **Search & Filtering**: Implement advanced search functionality
+1. **Security Setup**: Update environment variables with secure credentials
+2. **Database Setup**: Configure Prisma with your preferred database
+3. **Authentication**: Set up NextAuth.js providers
+4. **Payment Integration**: Configure Stripe for transactions
+5. **File Upload**: Set up UploadThing for service images
+6. **API Routes**: Create backend endpoints for services
+7. **User Dashboard**: Build seller and buyer dashboards
+8. **Search & Filtering**: Implement advanced search functionality
+
+## Security Best Practices
+
+- Always use HTTPS in production
+- Regularly update dependencies
+- Use strong, unique passwords
+- Enable rate limiting for API endpoints
+- Implement proper error handling
+- Use Content Security Policy (CSP) headers
+
+## Security Features
+
+- 🔒 **Input Sanitization**: All user inputs are sanitized to prevent XSS attacks
+- 🛡️ **Environment Variables**: Sensitive credentials stored securely
+- 🔐 **NoSQL Injection Protection**: Search queries are sanitized
+- ✅ **Secure Admin Authentication**: Environment-based credential management
 
 ## Environment Variables
 
-Create a `.env.local` file with:
+Copy `.env.example` to `.env.local` and update with your values:
+
+```bash
+cp .env.example .env.local
+```
+
+**Required Environment Variables:**
 
 ```env
 # Database
@@ -123,7 +146,19 @@ STRIPE_SECRET_KEY="your-stripe-secret-key"
 # UploadThing
 UPLOADTHING_SECRET="your-uploadthing-secret"
 UPLOADTHING_APP_ID="your-uploadthing-app-id"
+
+# Admin Credentials (IMPORTANT: Change these in production!)
+ADMIN_PASSWORD="your-secure-admin-password"
+MOD_PASSWORD="your-secure-mod-password"
+SUPPORT_PASSWORD="your-secure-support-password"
+
+# Admin Usernames (Public)
+NEXT_PUBLIC_ADMIN_USERNAME="admin"
+NEXT_PUBLIC_MOD_USERNAME="moderator"
+NEXT_PUBLIC_SUPPORT_USERNAME="support"
 ```
+
+⚠️ **Security Note**: Never commit `.env.local` to version control. Always use strong, unique passwords in production.
 
 ## Contributing
 

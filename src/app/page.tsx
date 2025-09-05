@@ -43,7 +43,7 @@ export default function Home() {
     { key: 'construction', url: '/services?category=البناء والمقاولات' }
   ]
 
-  const scrollCarousel = (ref, direction) => {
+  const scrollCarousel = (ref: React.RefObject<HTMLDivElement>, direction: 'left' | 'right') => {
     if (ref.current) {
       const scrollAmount = direction === 'left' ? -300 : 300;
       ref.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
@@ -190,7 +190,7 @@ export default function Home() {
               ref={categoriesCarouselRef}
               id="categories-carousel"
               className="flex gap-6 cursor-grab active:cursor-grabbing overflow-x-auto" 
-              style={{scrollbarWidth: 'none', msOverflowStyle: 'none'}}
+              style={{scrollbarWidth: 'none', msOverflowStyle: 'none'} as React.CSSProperties}
             >
               {(() => {
                 const originalServices = [
@@ -330,7 +330,7 @@ export default function Home() {
             <div 
               ref={popularServicesCarouselRef}
               id="popular-services-carousel"
-              className="flex gap-8 overflow-x-auto pb-4" style={{ scrollbarWidth: 'none', '-ms-overflow-style': 'none' }}>
+              className="flex gap-8 overflow-x-auto pb-4" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' } as React.CSSProperties}>
               {services.map((service) => {
                 const user = getUserById(service.userId);
                 return (

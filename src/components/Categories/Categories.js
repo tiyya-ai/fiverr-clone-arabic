@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import './Categories.css';
 
 const Categories = () => {
@@ -72,7 +72,7 @@ const Categories = () => {
             {categories.map((category) => (
               <Link
                 key={category.id}
-                to={`/services?category=${category.id}`}
+                href={`/services?category=${category.id}`}
                 className="category-card"
               >
                 <div className="category-image">
