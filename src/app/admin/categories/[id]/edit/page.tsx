@@ -39,7 +39,13 @@ export default function EditCategoryPage() {
 
   // Input sanitization function
   const sanitizeInput = (input: string): string => {
-    return input.replace(/[<>"'&]/g, '').trim()
+    if (!input || typeof input !== 'string') return ''
+    return input
+      .replace(/[<>"'&]/g, '')
+      .replace(/javascript:/gi, '')
+      .replace(/on\w+=/gi, '')
+      .trim()
+      .substring(0, 100) // Limit length
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -105,7 +111,7 @@ export default function EditCategoryPage() {
         </button>
         <div>
           <h1 className="text-3xl font-bold text-gray-900">تعديل الفئة</h1>
-          <p className="text-gray-600 mt-2">تعديل بيانات الفئة #{sanitizeInput(categoryId)}</p>
+          <p className="text-gray-600 mt-2">تعديل بيانات الفئة #{categoryId ? sanitizeInput(categoryId) : 'غير محدد'}</p>
         </div>
       </div>
 

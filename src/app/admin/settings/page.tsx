@@ -479,7 +479,6 @@ export default function AdminSettings() {
             </button>
           </div>
         </div>
-      </div>
     </div>
   )
 }
