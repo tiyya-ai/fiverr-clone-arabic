@@ -14,8 +14,8 @@ export const useAdminAuth = () => {
   return context;
 };
 
-// Admin users from environment variables (moved outside component for performance)
-const getAdminUsers = () => [
+// Admin users from environment variables (cached for performance)
+const ADMIN_USERS = [
   {
     id: 1,
     username: process.env.NEXT_PUBLIC_ADMIN_USERNAME || 'admin',
@@ -70,8 +70,7 @@ export const AdminAuthProvider = ({ children }) => {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
     
-    const adminUsers = getAdminUsers();
-    const admin = adminUsers.find(
+    const admin = ADMIN_USERS.find(
       user => user.username === username && user.password === password
     );
 
@@ -272,7 +271,7 @@ export const AdminProtectedRoute = ({ children }) => {
     return (
       <div className="admin-loading">
         <div className="loading-spinner large"></div>
-        <p>Loading admin panel...</p>
+        <p>جاري تحميل لوحة الإدارة...</p>
       </div>
     );
   }
