@@ -1,0 +1,273 @@
+.featured-services {
+  background: white;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  margin-bottom: 60px;
+}
+
+.service-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border: 1px solid #e4e5e7;
+}
+
+.service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.service-image-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.service-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.service-card:hover .service-image {
+  transform: scale(1.05);
+}
+
+.favorite-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #74767e;
+}
+
+.favorite-btn:hover {
+  background: white;
+  color: #ff6b6b;
+  transform: scale(1.1);
+}
+
+.service-category {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  background: rgba(29, 191, 115, 0.9);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.service-content {
+  padding: 20px;
+}
+
+.seller-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.seller-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.seller-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.seller-name {
+  font-weight: 600;
+  color: #404145;
+  font-size: 14px;
+}
+
+.seller-level {
+  font-size: 12px;
+  color: #74767e;
+}
+
+.service-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.service-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #404145;
+  margin-bottom: 12px;
+  line-height: 1.4;
+  transition: color 0.3s ease;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.service-link:hover .service-title {
+  color: #1dbf73;
+}
+
+.service-rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.stars {
+  display: flex;
+  gap: 2px;
+}
+
+.star {
+  width: 14px;
+  height: 14px;
+  color: #e4e5e7;
+}
+
+.star.filled {
+  color: #ffb33e;
+  fill: currentColor;
+}
+
+.star.half {
+  color: #ffb33e;
+  fill: currentColor;
+}
+
+.rating-text {
+  font-size: 14px;
+  color: #74767e;
+  font-weight: 600;
+}
+
+.service-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 15px;
+}
+
+.service-tag {
+  background: #f7f7f7;
+  color: #74767e;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.service-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 15px;
+  border-top: 1px solid #e4e5e7;
+}
+
+.service-delivery {
+  display: flex;
+  align-items: center;
+}
+
+.delivery-time {
+  font-size: 14px;
+  color: #74767e;
+  font-weight: 500;
+}
+
+.service-price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.price-label {
+  font-size: 12px;
+  color: #74767e;
+  margin-bottom: 2px;
+}
+
+.price {
+  font-size: 18px;
+  font-weight: 700;
+  color: #404145;
+}
+
+.featured-cta {
+  margin-top: 40px;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .services-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+
+  .service-content {
+    padding: 16px;
+  }
+
+  .service-title {
+    font-size: 15px;
+  }
+
+  .service-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .service-price {
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-header {
+    margin-bottom: 40px;
+  }
+
+  .service-tags {
+    margin-bottom: 12px;
+  }
+
+  .service-tag {
+    font-size: 11px;
+    padding: 3px 6px;
+  }
+}

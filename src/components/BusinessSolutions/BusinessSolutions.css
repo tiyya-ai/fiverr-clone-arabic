@@ -1,0 +1,153 @@
+.business-solutions {
+  background: #f7f7f7;
+  padding: 80px 0;
+}
+
+.business-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.business-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.business-text {
+  max-width: 500px;
+}
+
+.business-title {
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.fiverr-pro {
+  color: #404145;
+}
+
+.pro-text {
+  color: #ff6b35;
+  font-style: italic;
+}
+
+.business-subtitle {
+  font-size: 32px;
+  font-weight: 700;
+  color: #404145;
+  margin-bottom: 24px;
+  line-height: 1.2;
+}
+
+.business-description {
+  font-size: 18px;
+  color: #62646a;
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+.business-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 40px 0;
+}
+
+.business-feature {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  font-size: 16px;
+  color: #404145;
+  font-weight: 500;
+}
+
+.check-icon {
+  color: #1dbf73;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.btn-pro {
+  background: #ff6b35;
+  color: white;
+  border: 1px solid #ff6b35;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 4px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-pro:hover {
+  background: #e55a2b;
+  border-color: #e55a2b;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+}
+
+.business-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.business-main-image {
+  max-width: 100%;
+  height: auto;
+  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.1));
+}
+
+@media (max-width: 1024px) {
+  .business-content {
+    grid-template-columns: 1fr;
+    gap: 60px;
+    text-align: center;
+  }
+  
+  .business-title {
+    font-size: 40px;
+    justify-content: center;
+  }
+  
+  .business-subtitle {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  .business-solutions {
+    padding: 60px 0;
+  }
+  
+  .business-container {
+    padding: 0 16px;
+  }
+  
+  .business-content {
+    gap: 40px;
+  }
+  
+  .business-title {
+    font-size: 32px;
+  }
+  
+  .business-subtitle {
+    font-size: 24px;
+  }
+  
+  .business-description {
+    font-size: 16px;
+  }
+}

@@ -1,0 +1,297 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-cairo: 'Cairo', sans-serif;
+    --font-tajawal: 'Tajawal', sans-serif;
+  }
+  
+  html {
+    font-family: var(--font-cairo), var(--font-tajawal), 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+  }
+  
+  body {
+    font-family: var(--font-cairo), var(--font-tajawal), 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    font-size: 16px;
+  }
+  
+  /* Consistent heading sizes */
+  h1 {
+    font-size: 2rem; /* 32px */
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  
+  h2 {
+    font-size: 1.5rem; /* 24px */
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  
+  h3 {
+    font-size: 1.25rem; /* 20px */
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  
+  h4 {
+    font-size: 1.125rem; /* 18px */
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  
+  h5, h6 {
+    font-size: 1rem; /* 16px */
+    font-weight: 600;
+    line-height: 1.5;
+  }
+  
+  /* Large screens */
+  @media (min-width: 1024px) {
+    h1 {
+      font-size: 2.5rem; /* 40px */
+    }
+    
+    h2 {
+      font-size: 1.875rem; /* 30px */
+    }
+    
+    h3 {
+      font-size: 1.5rem; /* 24px */
+    }
+  }
+  
+  /* Consistent paragraph and text sizes */
+  p {
+    font-size: 1rem; /* 16px */
+    line-height: 1.6;
+  }
+  
+  .text-sm {
+    font-size: 0.875rem; /* 14px */
+  }
+  
+  .text-lg {
+    font-size: 1.125rem; /* 18px */
+  }
+  
+  .font-arabic {
+    font-family: var(--font-cairo), var(--font-tajawal), 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .font-bold {
+    font-weight: 700;
+  }
+  
+  .font-semibold {
+    font-weight: 600;
+  }
+  
+  .font-medium {
+    font-weight: 500;
+  }
+  
+  .font-light {
+    font-weight: 300;
+  }
+}
+
+/* Custom Arabic text styling */
+.arabic-text {
+  font-family: 'Cairo', 'Tajawal', sans-serif;
+  direction: rtl;
+  text-align: right;
+}
+
+/* Carousel Animation */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes scroll-rtl {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 30s linear infinite;
+  width: calc(200% + 2rem);
+}
+
+.animate-scroll-rtl {
+  animation: scroll-rtl 30s linear infinite;
+  width: calc(200% + 2rem);
+}
+
+.animate-scroll:hover,
+.animate-scroll-rtl:hover,
+.hover\:pause-animation:hover {
+  animation-play-state: paused;
+}
+
+/* Responsive carousel */
+@media (max-width: 768px) {
+  .animate-scroll,
+  .animate-scroll-rtl {
+    animation-duration: 20s;
+  }
+}
+
+/* Smooth scrolling for better performance */
+.animate-scroll,
+.animate-scroll-rtl {
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* Carousel controls functionality */
+.carousel-container {
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.carousel-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Enable auto-scroll animation on desktop */
+@media (min-width: 768px) {
+  .animate-scroll-rtl {
+    animation: scroll-rtl 32s linear infinite;
+    display: flex;
+    width: fit-content;
+    will-change: transform;
+  }
+  
+  .animate-scroll-rtl:hover {
+    animation-play-state: paused;
+  }
+}
+
+/* Smooth continuous scrolling */
+.carousel-container {
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.carousel-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Mobile touch scrolling for carousel */
+@media (max-width: 768px) {
+  .animate-scroll,
+  .animate-scroll-rtl {
+    animation-play-state: paused;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .animate-scroll::-webkit-scrollbar,
+  .animate-scroll-rtl::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Pause animation on reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .animate-scroll,
+  .animate-scroll-rtl {
+    animation-play-state: paused;
+  }
+}
+
+/* Floating animation for hero cards */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Override Tailwind's default sizes for consistency */
+.text-xl {
+  font-size: 1.125rem !important; /* 18px instead of 20px */
+  line-height: 1.6 !important;
+}
+
+.text-2xl {
+  font-size: 1.5rem !important; /* 24px */
+  line-height: 1.4 !important;
+}
+
+.text-3xl {
+  font-size: 1.875rem !important; /* 30px */
+  line-height: 1.3 !important;
+}
+
+.text-4xl {
+  font-size: 2.25rem !important; /* 36px */
+  line-height: 1.2 !important;
+}
+
+.text-5xl {
+  font-size: 2.5rem !important; /* 40px */
+  line-height: 1.1 !important;
+}
+
+@media (min-width: 1024px) {
+  .lg\:text-3xl {
+    font-size: 1.875rem !important; /* 30px */
+  }
+  
+  .lg\:text-4xl {
+    font-size: 2.25rem !important; /* 36px */
+  }
+  
+  .lg\:text-5xl {
+    font-size: 2.5rem !important; /* 40px */
+  }
+}
+
+/* Clean card styling */
+.card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Smooth font rendering */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
