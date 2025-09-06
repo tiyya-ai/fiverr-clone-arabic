@@ -8,7 +8,7 @@ import { CreditCard, Shield, X } from 'lucide-react'
 
 export default function CheckoutPage() {
   const router = useRouter()
-  const [orderData, setOrderData] = useState(null)
+  const [orderData, setOrderData] = useState<any>(null)
   const [processing, setProcessing] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)

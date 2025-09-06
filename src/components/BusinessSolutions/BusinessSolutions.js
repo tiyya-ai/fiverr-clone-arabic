@@ -5,10 +5,10 @@ import './BusinessSolutions.css';
 
 const BusinessSolutions = () => {
   const features = [
-    'Dedicated hiring experts',
-    'Satisfaction guarantee',
-    'Advanced project management tools',
-    'Flexible payment terms'
+    'خبراء توظيف مخصصون',
+    'ضمان الرضا',
+    'أدوات إدارة مشاريع متقدمة',
+    'شروط دفع مرنة'
   ];
 
   return (
@@ -21,10 +21,10 @@ const BusinessSolutions = () => {
               <span className="pro-text">pro</span>
             </h2>
             <h3 className="business-subtitle">
-              The premium freelance solution for businesses
+              الحل المتقدم للعمل الحر للشركات
             </h3>
             <p className="business-description">
-              Connect with hand-vetted talent, get dedicated support, and collaborate with ease.
+              تواصل مع مواهب مختارة بعناية، واحصل على دعم مخصص، وتعاون بسهولة.
             </p>
             <ul className="business-features">
               {features.map((feature, index) => (
@@ -35,14 +35,14 @@ const BusinessSolutions = () => {
               ))}
             </ul>
             <Link to="/fiverr-pro" className="btn btn-pro">
-              Try Fiverr Pro
+              جرب فايفر برو
               <FiArrowRight />
             </Link>
           </div>
           <div className="business-image">
             <img 
               src="/atlaspayx-dashboard-ready-to-upload/business-thin-885e68e.svg" 
-              alt="Fiverr Pro Business Solutions"
+              alt="حلول فايفر برو للأعمال"
               className="business-main-image"
             />
           </div>

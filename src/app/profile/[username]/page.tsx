@@ -11,8 +11,8 @@ import { getUserById, getServicesByUserId, getReviewsByServiceId } from '@/data/
 export default function PublicProfilePage() {
   const params = useParams()
   const username = params?.username as string
-  const [user, setUser] = useState(null)
-  const [userServices, setUserServices] = useState([])
+  const [user, setUser] = useState<any>(null)
+  const [userServices, setUserServices] = useState<any[]>([])
   const [activeTab, setActiveTab] = useState('services')
 
   useEffect(() => {
@@ -105,7 +105,7 @@ export default function PublicProfilePage() {
                 <div className="mb-6">
                   <h3 className="font-semibold text-gray-900 mb-2" dir="rtl">المهارات</h3>
                   <div className="flex flex-wrap gap-2">
-                    {user.skills.map((skill, index) => (
+                    {user.skills.map((skill: string, index: number) => (
                       <span key={index} className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
                         {skill}
                       </span>
@@ -163,7 +163,7 @@ export default function PublicProfilePage() {
         {/* Tab Content */}
         {activeTab === 'services' && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {userServices.map((service) => (
+            {userServices.map((service: any) => (
               <div key={service.id} className="bg-white rounded-lg border shadow-sm overflow-hidden hover:shadow-md transition-shadow">
                 <img
                   src={service.images[0]}

@@ -8,14 +8,14 @@ import { Camera, Save, Eye, Edit, MapPin, Phone, Mail, Globe, Award, Plus, X } f
 import { getUserById } from '@/data/mockData'
 
 export default function ProfileManagementPage() {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState<any>(null)
   const [isEditing, setIsEditing] = useState(false)
   const [formData, setFormData] = useState({
     fullName: '',
     bio: '',
     location: '',
-    skills: [],
-    languages: [],
+    skills: [] as string[],
+    languages: [] as string[],
     phone: '',
     email: '',
     website: ''
@@ -56,7 +56,7 @@ export default function ProfileManagementPage() {
     }
   }
 
-  const removeSkill = (skill) => {
+  const removeSkill = (skill: string) => {
     setFormData({
       ...formData,
       skills: formData.skills.filter(s => s !== skill)
@@ -73,7 +73,7 @@ export default function ProfileManagementPage() {
     }
   }
 
-  const removeLanguage = (language) => {
+  const removeLanguage = (language: string) => {
     setFormData({
       ...formData,
       languages: formData.languages.filter(l => l !== language)

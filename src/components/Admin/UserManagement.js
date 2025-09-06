@@ -190,7 +190,7 @@ const UserManagement = () => {
                   <h3>Personal Information</h3>
                   <div className="detail-item">
                     <FiUser />
-                    <span>Name:</span>
+                    <span>الاسم:</span>
                     {editMode ? (
                       <div className="edit-name">
                         <input 
@@ -210,7 +210,7 @@ const UserManagement = () => {
                   </div>
                   <div className="detail-item">
                     <FiMail />
-                    <span>Email:</span>
+                    <span>البريد الإلكتروني:</span>
                     {editMode ? (
                       <input 
                         value={editedUser.email}
@@ -222,7 +222,7 @@ const UserManagement = () => {
                   </div>
                   <div className="detail-item">
                     <FiPhone />
-                    <span>Phone:</span>
+                    <span>الهاتف:</span>
                     {editMode ? (
                       <input 
                         value={editedUser.phone}
@@ -234,7 +234,7 @@ const UserManagement = () => {
                   </div>
                   <div className="detail-item">
                     <FiMapPin />
-                    <span>Location:</span>
+                    <span>الموقع:</span>
                     {editMode ? (
                       <input 
                         value={editedUser.location}
@@ -250,7 +250,7 @@ const UserManagement = () => {
                   <h3>Account Information</h3>
                   <div className="detail-item">
                     <FiShield />
-                    <span>Role:</span>
+                    <span>الدور:</span>
                     {editMode ? (
                       <select 
                         value={editedUser.role}
@@ -266,12 +266,12 @@ const UserManagement = () => {
                   </div>
                   <div className="detail-item">
                     <FiCalendar />
-                    <span>Join Date:</span>
+                    <span>تاريخ الانضمام:</span>
                     <strong>{user.joinDate}</strong>
                   </div>
                   <div className="detail-item">
                     <FiCalendar />
-                    <span>Last Login:</span>
+                    <span>آخر تسجيل دخول:</span>
                     <strong>{user.lastLogin}</strong>
                   </div>
                 </div>
@@ -280,19 +280,19 @@ const UserManagement = () => {
                   <h3>Statistics</h3>
                   <div className="stats-grid">
                     <div className="stat-item">
-                      <span>Total Earnings</span>
+                      <span>إجمالي الأرباح</span>
                       <strong>${user.totalEarnings}</strong>
                     </div>
                     <div className="stat-item">
-                      <span>Total Spent</span>
+                      <span>إجمالي الإنفاق</span>
                       <strong>${user.totalSpent}</strong>
                     </div>
                     <div className="stat-item">
-                      <span>Completed Orders</span>
+                      <span>الطلبات المكتملة</span>
                       <strong>{user.completedOrders}</strong>
                     </div>
                     <div className="stat-item">
-                      <span>Rating</span>
+                      <span>التقييم</span>
                       <strong>⭐ {user.rating}</strong>
                     </div>
                   </div>
@@ -560,15 +560,15 @@ const UserManagement = () => {
               
               <div className="user-stats">
                 <div className="stat">
-                  <span>Earnings</span>
+                  <span>الأرباح</span>
                   <strong>${user.totalEarnings}</strong>
                 </div>
                 <div className="stat">
-                  <span>Orders</span>
+                  <span>الطلبات</span>
                   <strong>{user.completedOrders}</strong>
                 </div>
                 <div className="stat">
-                  <span>Rating</span>
+                  <span>التقييم</span>
                   <strong>⭐ {user.rating}</strong>
                 </div>
               </div>

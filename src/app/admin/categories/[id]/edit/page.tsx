@@ -1,8 +1,26 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { ArrowRight, Upload, X } from 'lucide-react'
+
+// Mock data - in real app, fetch from API
+const mockCategories: Record<string, { name: string; description: string; icon: string; status: string }> = {
+  '1': { name: 'تطوير المواقع', description: 'خدمات تطوير المواقع والتطبيقات', icon: '💻', status: 'active' },
+  '2': { name: 'التصميم الجرافيكي', description: 'خدمات التصميم والجرافيك', icon: '🎨', status: 'active' },
+  '3': { name: 'التسويق الرقمي', description: 'خدمات التسويق الإلكتروني', icon: '📱', status: 'active' }
+}
+
+// Input sanitization function - moved outside component for performance
+const sanitizeInput = (input: string): string => {
+  if (!input || typeof input !== 'string') return ''
+  return input
+    .replace(/[<>"'&]/g, '')
+    .replace(/javascript:/gi, '')
+    .replace(/on\w+=/gi, '')
+    .trim()
+    .substring(0, 100) // Limit length
+}
 
 export default function EditCategoryPage() {
   const router = useRouter()
@@ -19,51 +37,50 @@ export default function EditCategoryPage() {
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
-  // Mock data - in real app, fetch from API
-  const mockCategories = {
-    '1': { name: 'تطوير المواقع', description: 'خدمات تطوير المواقع والتطبيقات', icon: '💻', status: 'active' },
-    '2': { name: 'التصميم الجرافيكي', description: 'خدمات التصميم والجرافيك', icon: '🎨', status: 'active' },
-    '3': { name: 'التسويق الرقمي', description: 'خدمات التسويق الإلكتروني', icon: '📱', status: 'active' }
-  }
-
   useEffect(() => {
-    // Simulate API call
-    setTimeout(() => {
-      const category = mockCategories[categoryId as keyof typeof mockCategories]
-      if (category) {
-        setFormData(category)
-      }
-      setLoading(false)
-    }, 500)
+    const category = mockCategories[categoryId as keyof typeof mockCategories]
+    if (category) {
+      setFormData(category)
+    }
+    setLoading(false)
   }, [categoryId])
 
-  // Input sanitization function
-  const sanitizeInput = (input: string): string => {
-    if (!input || typeof input !== 'string') return ''
-    return input
-      .replace(/[<>"'&]/g, '')
-      .replace(/javascript:/gi, '')
-      .replace(/on\w+=/gi, '')
-      .trim()
-      .substring(0, 100) // Limit length
-  }
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     const sanitizedValue = name === 'status' ? value : sanitizeInput(value)
     setFormData(prev => ({
       ...prev,
       [name]: sanitizedValue
     }))
-  }
+  }, [])
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
+      // Validate file type
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
+      if (!allowedTypes.includes(file.type)) {
+        alert('نوع الملف غير مدعوم. يرجى اختيار صورة بصيغة JPG, PNG, GIF أو WebP')
+        return
+      }
+      
+      // Validate file size (5MB max)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('حجم الملف كبير جداً. يرجى اختيار صورة أصغر من 5 ميجابايت')
+        return
+      }
+      
       setImageFile(file)
       const reader = new FileReader()
-      reader.onload = (e) => {
-        setImagePreview(e.target?.result as string)
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        const result = e.target?.result as string
+        // Validate that result is a valid data URL
+        if (result && result.startsWith('data:image/')) {
+          setImagePreview(result)
+        }
+      }
+      reader.onerror = () => {
+        alert('حدث خطأ في قراءة الملف. يرجى المحاولة مرة أخرى')
       }
       reader.readAsDataURL(file)
     }

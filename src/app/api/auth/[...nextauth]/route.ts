@@ -49,23 +49,22 @@ const handler = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.username = user.username
-        token.userType = user.userType
+        token.username = (user as any).username
+        token.userType = (user as any).userType
       }
       return token
     },
     async session({ session, token }) {
       if (token) {
-        session.user.id = token.sub
-        session.user.username = token.username
-        session.user.userType = token.userType
+        (session.user as any).id = token.sub;
+        (session.user as any).username = token.username;
+        (session.user as any).userType = token.userType
       }
       return session
     }
   },
   pages: {
-    signIn: '/auth/signin',
-    signUp: '/auth/signup'
+    signIn: '/auth/signin'
   }
 })
 

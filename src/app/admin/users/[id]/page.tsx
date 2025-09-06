@@ -58,7 +58,7 @@ export default function AdminUserDetailsPage() {
 
   const handleToggleStatus = () => {
     const newStatus = user.status === 'نشط' ? 'معلق' : 'نشط'
-    setUser(prev => ({ ...prev, status: newStatus }))
+    setUser((prev: any) => ({ ...prev, status: newStatus }))
     alert(`تم تغيير حالة المستخدم إلى: ${newStatus}`)
   }
 
@@ -223,7 +223,7 @@ export default function AdminUserDetailsPage() {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">اللغات</label>
                 <div className="flex gap-2">
-                  {user.languages.map((lang, index) => (
+                  {user.languages.map((lang: string, index: number) => (
                     <span key={index} className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-sm">
                       {lang}
                     </span>
@@ -260,7 +260,7 @@ export default function AdminUserDetailsPage() {
             <div className="bg-white rounded-lg shadow p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">المهارات</h3>
               <div className="flex flex-wrap gap-2">
-                {user.skills.map((skill, index) => (
+                {user.skills.map((skill: string, index: number) => (
                   <span key={index} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
                     {skill}
                   </span>

@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma'
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession()
-    if (!session?.user?.id) {
+    if (!session?.user || !(session.user as any).id) {
       return NextResponse.json(
         { error: 'يجب تسجيل الدخول' },
         { status: 401 }
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
       data: {
         gigId,
         packageId,
-        buyerId: session.user.id,
+        buyerId: (session.user as any).id,
         sellerId: gig.userId,
         totalAmount: selectedPackage.price,
         requirements,
@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession()
-    if (!session?.user?.id) {
+    if (!session?.user || !(session.user as any).id) {
       return NextResponse.json(
         { error: 'يجب تسجيل الدخول' },
         { status: 401 }
@@ -81,10 +81,11 @@ export async function GET(request: NextRequest) {
 
     const { searchParams } = new URL(request.url)
     const type = searchParams.get('type') // 'buying' or 'selling'
+    const userId = (session.user as any).id
 
     const where = type === 'selling' 
-      ? { sellerId: session.user.id }
-      : { buyerId: session.user.id }
+      ? { sellerId: userId }
+      : { buyerId: userId }
 
     const orders = await prisma.order.findMany({
       where,

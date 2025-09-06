@@ -149,11 +149,11 @@ const AdminLogin = () => {
     }
   };
 
-  const demoCredentials = [
-    { username: process.env.NEXT_PUBLIC_ADMIN_USERNAME || 'admin', password: '***', role: 'Super Admin' },
-    { username: process.env.NEXT_PUBLIC_MOD_USERNAME || 'moderator', password: '***', role: 'Moderator' },
-    { username: process.env.NEXT_PUBLIC_SUPPORT_USERNAME || 'support', password: '***', role: 'Support' }
-  ];
+  const demoCredentials = ADMIN_USERS.map(user => ({
+    username: user.username,
+    password: '***',
+    role: user.role === 'super_admin' ? 'Super Admin' : user.role.charAt(0).toUpperCase() + user.role.slice(1)
+  }));
 
   return (
     <div className="admin-login">

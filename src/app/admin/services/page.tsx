@@ -63,7 +63,7 @@ export default function AdminServicesPage() {
     }
   }
 
-  const categories = [...new Set(services.map(s => s.category))]
+  const categories = Array.from(new Set(services.map(s => s.category)))
 
   // Pagination helper functions
   const paginateData = (data: any[], page: number, itemsPerPage: number) => {

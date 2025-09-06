@@ -196,7 +196,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
               <>
                 <div className="form-row">
                   <div className="form-group">
-                    <label>First Name</label>
+                    <label>الاسم الأول</label>
                     <div className="input-container">
                       <FiUser className="input-icon" />
                       <input
@@ -212,7 +212,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
                   </div>
 
                   <div className="form-group">
-                    <label>Last Name</label>
+                    <label>الاسم الأخير</label>
                     <div className="input-container">
                       <FiUser className="input-icon" />
                       <input
@@ -229,7 +229,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
                 </div>
 
                 <div className="form-group">
-                  <label>I want to</label>
+                  <label>أريد أن</label>
                   <div className="user-type-selector">
                     <label className="radio-option">
                       <input
@@ -240,7 +240,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
                         onChange={handleInputChange}
                       />
                       <span className="radio-custom"></span>
-                      Hire freelancers
+                      أوظف مستقلين
                     </label>
                     <label className="radio-option">
                       <input
@@ -251,7 +251,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
                         onChange={handleInputChange}
                       />
                       <span className="radio-custom"></span>
-                      Work as a freelancer
+                      أعمل كمستقل
                     </label>
                   </div>
                 </div>
@@ -259,7 +259,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
             )}
 
             <div className="form-group">
-              <label>Email</label>
+              <label>البريد الإلكتروني</label>
               <div className="input-container">
                 <FiMail className="input-icon" />
                 <input
@@ -275,7 +275,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
             </div>
 
             <div className="form-group">
-              <label>Password</label>
+              <label>كلمة المرور</label>
               <div className="input-container">
                 <FiLock className="input-icon" />
                 <input
@@ -299,7 +299,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
 
             {mode === 'register' && (
               <div className="form-group">
-                <label>Confirm Password</label>
+                <label>تأكيد كلمة المرور</label>
                 <div className="input-container">
                   <FiLock className="input-icon" />
                   <input
@@ -327,10 +327,10 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
                 <label className="remember-me">
                   <input type="checkbox" />
                   <span className="checkmark"></span>
-                  Remember me
+                  تذكرني
                 </label>
                 <button type="button" className="forgot-password">
-                  Forgot password?
+                  هل نسيت كلمة المرور؟
                 </button>
               </div>
             )}
@@ -343,25 +343,25 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
               {loading ? (
                 <div className="loading-spinner"></div>
               ) : (
-                mode === 'login' ? 'Sign In' : 'Create Account'
+                mode === 'login' ? 'تسجيل الدخول' : 'إنشاء حساب'
               )}
             </button>
           </form>
 
           {mode === 'register' && (
             <div className="terms-notice">
-              By joining, you agree to the Fiverr{' '}
-              <a href="/terms" target="_blank">Terms of Service</a> and{' '}
-              <a href="/privacy" target="_blank">Privacy Policy</a>.
+              بالانضمام، فإنك توافق على{' '}
+              <a href="/terms" target="_blank">شروط الخدمة</a> و{' '}
+              <a href="/privacy" target="_blank">سياسة الخصوصية</a>.
             </div>
           )}
         </div>
 
         <div className="auth-modal-footer">
           <p>
-            {mode === 'login' ? "Don't have an account?" : "Already have an account?"}{' '}
+            {mode === 'login' ? "ليس لديك حساب؟" : "لديك حساب بالفعل؟"}{' '}
             <button className="switch-mode-btn" onClick={switchMode}>
-              {mode === 'login' ? 'Join here' : 'Sign in'}
+              {mode === 'login' ? 'انضم هنا' : 'تسجيل الدخول'}
             </button>
           </p>
         </div>

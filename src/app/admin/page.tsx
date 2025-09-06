@@ -249,7 +249,7 @@ export default function AdminDashboard() {
                   </div>
                   <div className="mt-4 flex gap-2">
                     <button
-                      onClick={() => router.push(`/profile/${seller.username || seller.name}`)}
+                      onClick={() => router.push(`/profile/${seller.name}`)}
                       className="flex-1 bg-blue-600 text-white py-2 rounded text-sm hover:bg-blue-700"
                     >
                       عرض
@@ -303,7 +303,7 @@ export default function AdminDashboard() {
                       <td className="px-6 py-4 text-sm font-bold text-green-600">$1,250</td>
                       <td className="px-6 py-4">
                         <button
-                          onClick={() => router.push(`/profile/${buyer.username || buyer.name}`)}
+                          onClick={() => router.push(`/profile/${buyer.name}`)}
                           className="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50"
                           title="عرض التفاصيل"
                         >
@@ -1350,7 +1350,7 @@ export default function AdminDashboard() {
                       <td className="px-6 py-4">
                         <div className="flex gap-2">
                           <button
-                            onClick={() => router.push(`/profile/${user.username || user.name}`)}
+                            onClick={() => router.push(`/profile/${user.name}`)}
                             className="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50"
                             title="عرض التفاصيل"
                           >

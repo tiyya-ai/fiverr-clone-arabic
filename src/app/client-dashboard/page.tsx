@@ -6,8 +6,8 @@ import Footer from '@/components/Footer'
 import { ShoppingCart, Heart, MessageCircle, Star, Clock, CreditCard } from 'lucide-react'
 
 export default function ClientDashboard() {
-  const [orders, setOrders] = useState([])
-  const [favorites, setFavorites] = useState([])
+  const [orders, setOrders] = useState<any[]>([])
+  const [favorites, setFavorites] = useState<any[]>([])
 
   useEffect(() => {
     const userOrders = JSON.parse(localStorage.getItem('userOrders') || '[]')
@@ -18,8 +18,8 @@ export default function ClientDashboard() {
 
   const stats = {
     totalOrders: orders.length,
-    activeOrders: orders.filter(o => o.status === 'active').length,
-    totalSpent: orders.reduce((sum, order) => sum + (order.amount || 0), 0),
+    activeOrders: orders.filter((o: any) => o.status === 'active').length,
+    totalSpent: orders.reduce((sum: number, order: any) => sum + (order.amount || 0), 0),
     favoriteServices: favorites.length,
     unreadMessages: 2
   }

@@ -6,7 +6,7 @@ import MainHeader from '@/components/MainHeader'
 import Footer from '@/components/Footer'
 
 export default function FAQ() {
-  const [openFaq, setOpenFaq] = useState<number | null>(null)
+  const [openFaq, setOpenFaq] = useState<string | null>(null)
   const [activeCategory, setActiveCategory] = useState('general')
   const [searchTerm, setSearchTerm] = useState('')
 

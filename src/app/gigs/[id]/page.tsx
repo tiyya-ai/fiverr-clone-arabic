@@ -11,8 +11,8 @@ import { getUserById } from '@/data/mockData'
 export default function GigPage() {
   const { id } = useParams()
   const { getServiceById } = useServices()
-  const [service, setService] = useState(null)
-  const [provider, setProvider] = useState(null)
+  const [service, setService] = useState<any>(null)
+  const [provider, setProvider] = useState<any>(null)
 
   useEffect(() => {
     if (id) {
@@ -58,7 +58,7 @@ export default function GigPage() {
           <div className="lg:col-span-1">
             <div className="bg-white p-6 rounded-lg shadow-md sticky top-24">
               <h2 className="text-xl font-bold mb-4">Packages</h2>
-              {service.packages.map((pkg, index) => (
+              {service.packages.map((pkg: any, index: number) => (
                 <div key={index} className="border rounded-lg p-4 mb-4">
                   <div className="flex justify-between items-center mb-2">
                     <h3 className="font-semibold">{pkg.name}</h3>
@@ -66,7 +66,7 @@ export default function GigPage() {
                   </div>
                   <p className="text-sm text-gray-600 mb-4">{pkg.description}</p>
                   <ul className="text-sm space-y-2">
-                    {pkg.features.map((feature, i) => (
+                    {pkg.features.map((feature: string, i: number) => (
                       <li key={i} className="flex items-center">
                         <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
                         <span>{feature}</span>
