@@ -128,7 +128,8 @@ export default function AdminCartPage() {
     currentPage * itemsPerPage
   )
 
-  const categories = Array.from(new Set(cartData.map(item => item.category)))
+  const uniqueCategories = new Set(cartData.map(item => item.category))
+  const categories = Array.from(uniqueCategories)
 
   // Action handlers
   const handleViewService = (serviceId: string) => {
