@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FiArrowRight, FiCheck } from 'react-icons/fi';
 import './BusinessSolutions.css';
+import Image from 'next/image';
 
 const BusinessSolutions = () => {
   const features = [
@@ -40,9 +41,11 @@ const BusinessSolutions = () => {
             </Link>
           </div>
           <div className="business-image">
-            <img 
+            <Image 
               src="/atlaspayx-dashboard-ready-to-upload/business-thin-885e68e.svg" 
               alt="حلول فايفر برو للأعمال"
+              width={500}
+              height={500}
               className="business-main-image"
             />
           </div>

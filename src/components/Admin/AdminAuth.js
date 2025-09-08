@@ -1,9 +1,7 @@
-import React from 'react';
-const { useState, createContext, useContext, useEffect } = React;
+import React, { useState, createContext, useContext, useEffect, useMemo, useCallback } from 'react';
 import { FiLock, FiUser, FiEye, FiEyeOff, FiShield } from 'react-icons/fi';
 import './AdminAuth.css';
 
-// Admin Authentication Context
 const AdminAuthContext = createContext();
 
 export const useAdminAuth = () => {
@@ -14,97 +12,69 @@ export const useAdminAuth = () => {
   return context;
 };
 
-// Admin users from environment variables (cached for performance)
-const ADMIN_USERS = [
-  {
-    id: 1,
-    username: process.env.NEXT_PUBLIC_ADMIN_USERNAME || 'admin',
-    password: process.env.ADMIN_PASSWORD || 'admin123',
-    email: 'admin@fiverr-clone.com',
-    role: 'super_admin',
-    permissions: ['all'],
-    avatar: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D'
-  },
-  {
-    id: 2,
-    username: process.env.NEXT_PUBLIC_MOD_USERNAME || 'moderator',
-    password: process.env.MOD_PASSWORD || 'mod123',
-    email: 'moderator@fiverr-clone.com',
-    role: 'moderator',
-    permissions: ['manage_users', 'manage_services', 'view_reports'],
-    avatar: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D'
-  },
-  {
-    id: 3,
-    username: process.env.NEXT_PUBLIC_SUPPORT_USERNAME || 'support',
-    password: process.env.SUPPORT_PASSWORD || 'support123',
-    email: 'support@fiverr-clone.com',
-    role: 'support',
-    permissions: ['manage_orders', 'view_users', 'respond_tickets'],
-    avatar: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D'
-  }
-];
-
 export const AdminAuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [adminUser, setAdminUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // Check if admin is already logged in
-    const savedAdmin = localStorage.getItem('adminUser');
-    if (savedAdmin) {
-      try {
+  const checkAuth = useCallback(() => {
+    try {
+      const savedAdmin = localStorage.getItem('adminUser');
+      if (savedAdmin) {
         const adminData = JSON.parse(savedAdmin);
-        setAdminUser(adminData);
-        setIsAuthenticated(true);
-      } catch (error) {
-        console.error('Failed to parse admin user data:', error);
-        localStorage.removeItem('adminUser');
+        if (adminData?.id && adminData?.username) {
+          setAdminUser(adminData);
+          setIsAuthenticated(true);
+        } else {
+          localStorage.removeItem('adminUser');
+        }
       }
+    } catch {
+      localStorage.removeItem('adminUser');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }, []);
 
-  const login = async (username, password) => {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    const admin = ADMIN_USERS.find(
-      user => user.username === username && user.password === password
-    );
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
 
-    if (admin) {
-      const { password: _, ...adminData } = admin; // Remove password from stored data
-      setAdminUser(adminData);
-      setIsAuthenticated(true);
-      localStorage.setItem('adminUser', JSON.stringify(adminData));
-      return { success: true };
-    } else {
-      return { success: false, error: 'Invalid username or password' };
+  const login = useCallback(async (username, password) => {
+    if (!username || !password) {
+      return { success: false, error: 'Invalid credentials' };
     }
-  };
 
-  const logout = () => {
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      if (username === 'admin' && password === 'demo123') {
+        const user = { id: 1, username: 'admin', role: 'admin' };
+        setAdminUser(user);
+        setIsAuthenticated(true);
+        localStorage.setItem('adminUser', JSON.stringify(user));
+        return { success: true };
+      }
+      
+      return { success: false, error: 'Invalid credentials' };
+    } catch {
+      return { success: false, error: 'Login failed' };
+    }
+  }, []);
+
+  const logout = useCallback(() => {
     setAdminUser(null);
     setIsAuthenticated(false);
     localStorage.removeItem('adminUser');
-  };
+  }, []);
 
-  const hasPermission = (permission) => {
-    if (!adminUser) return false;
-    if (adminUser.permissions.includes('all')) return true;
-    return adminUser.permissions.includes(permission);
-  };
-
-  const value = {
+  const value = useMemo(() => ({
     isAuthenticated,
     adminUser,
     loading,
     login,
-    logout,
-    hasPermission
-  };
+    logout
+  }), [isAuthenticated, adminUser, loading, login, logout]);
 
   return (
     <AdminAuthContext.Provider value={value}>
@@ -114,26 +84,22 @@ export const AdminAuthProvider = ({ children }) => {
 };
 
 const AdminLogin = () => {
-  const [formData, setFormData] = useState({
-    username: '',
-    password: ''
-  });
+  const [formData, setFormData] = useState({ username: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useAdminAuth();
 
-  const handleChange = (e) => {
+  const handleChange = useCallback((e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value.trim() }));
     if (error) setError('');
-  };
+  }, [error]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
+    if (loading) return;
+
     setLoading(true);
     setError('');
 
@@ -142,18 +108,12 @@ const AdminLogin = () => {
       if (!result.success) {
         setError(result.error);
       }
-    } catch (err) {
-      setError('An error occurred. Please try again.');
+    } catch {
+      setError('Login failed');
     } finally {
       setLoading(false);
     }
-  };
-
-  const demoCredentials = ADMIN_USERS.map(user => ({
-    username: user.username,
-    password: '***',
-    role: user.role === 'super_admin' ? 'Super Admin' : user.role.charAt(0).toUpperCase() + user.role.slice(1)
-  }));
+  }, [formData, loading, login]);
 
   return (
     <div className="admin-login">
@@ -213,11 +173,7 @@ const AdminLogin = () => {
             </div>
           </div>
 
-          <button
-            type="submit"
-            className="login-btn"
-            disabled={loading}
-          >
+          <button type="submit" className="login-btn" disabled={loading}>
             {loading ? (
               <div className="loading-spinner"></div>
             ) : (
@@ -232,27 +188,20 @@ const AdminLogin = () => {
         <div className="demo-credentials">
           <h3>Demo Credentials</h3>
           <div className="credentials-list">
-            {demoCredentials.map((cred, index) => (
-              <div key={index} className="credential-item">
-                <div className="credential-info">
-                  <strong>{cred.role}</strong>
-                  <span>Username: {cred.username}</span>
-                  <span>Password: {cred.password}</span>
-                </div>
-                <button
-                  type="button"
-                  className="use-credential-btn"
-                  onClick={() => {
-                    setFormData({
-                      username: cred.username,
-                      password: ''
-                    });
-                  }}
-                >
-                  Use
-                </button>
+            <div className="credential-item">
+              <div className="credential-info">
+                <strong>Admin</strong>
+                <span>Username: admin</span>
+                <span>Password: demo123</span>
               </div>
-            ))}
+              <button
+                type="button"
+                className="use-credential-btn"
+                onClick={() => setFormData({ username: 'admin', password: '' })}
+              >
+                Use
+              </button>
+            </div>
           </div>
         </div>
 
@@ -271,7 +220,7 @@ export const AdminProtectedRoute = ({ children }) => {
     return (
       <div className="admin-loading">
         <div className="loading-spinner large"></div>
-        <p>جاري تحميل لوحة الإدارة...</p>
+        <p>Loading...</p>
       </div>
     );
   }

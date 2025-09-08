@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { ChevronLeft, ChevronRight, X, ZoomIn } from 'lucide-react'
+import Image from 'next/image';
 
 interface ServiceImageGalleryProps {
   images: string[]
@@ -48,9 +49,11 @@ export default function ServiceImageGallery({ images, title, className = '' }: S
       <div className={`relative ${className}`}>
         {/* Main Image */}
         <div className="relative group">
-          <img
+          <Image
             src={images[currentIndex]}
             alt={`${title} - صورة ${currentIndex + 1}`}
+            width={800}
+            height={600}
             className="w-full h-64 md:h-80 object-cover rounded-lg cursor-pointer"
             onClick={() => openLightbox(currentIndex)}
           />
@@ -99,9 +102,11 @@ export default function ServiceImageGallery({ images, title, className = '' }: S
                     : 'border-gray-200 opacity-70 hover:opacity-100'
                 }`}
               >
-                <img
+                <Image
                   src={image}
                   alt={`${title} - مصغرة ${index + 1}`}
+                  width={64}
+                  height={64}
                   className="w-full h-full object-cover"
                 />
               </button>
@@ -141,9 +146,11 @@ export default function ServiceImageGallery({ images, title, className = '' }: S
 
           {/* Main Lightbox Image */}
           <div className="max-w-4xl max-h-full flex items-center justify-center">
-            <img
+            <Image
               src={images[lightboxIndex]}
               alt={`${title} - صورة ${lightboxIndex + 1}`}
+              width={1200}
+              height={800}
               className="max-w-full max-h-full object-contain"
             />
           </div>
@@ -169,9 +176,11 @@ export default function ServiceImageGallery({ images, title, className = '' }: S
                       : 'border-gray-400 opacity-50 hover:opacity-75'
                   }`}
                 >
-                  <img
+                  <Image
                     src={image}
                     alt={`مصغرة ${index + 1}`}
+                    width={48}
+                    height={48}
                     className="w-full h-full object-cover"
                   />
                 </button>

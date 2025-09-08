@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { getCategoryIcon, getIconUrl } from '@/config/icons'
+import Image from 'next/image';
 
 interface CategoryIconProps {
   categoryKey: string
@@ -63,9 +64,11 @@ export default function CategoryIcon({
 
     return (
       <div className={`${containerClasses[variant]} ${sizeClasses[size]}`}>
-        <img
+        <Image
           src={iconUrl}
           alt={category.name}
+          width={size === 'sm' ? 32 : size === 'md' ? 48 : size === 'lg' ? 64 : size === 'xl' ? 80 : 96}
+          height={size === 'sm' ? 32 : size === 'md' ? 48 : size === 'lg' ? 64 : size === 'xl' ? 80 : 96}
           className={`w-full h-full object-contain filter brightness-90 group-hover:brightness-100 group-hover:scale-110 transition-all duration-300 ${className}`}
           onError={handleImageError}
           loading="lazy"

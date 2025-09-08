@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { ArrowRight, Star, User, Clock, Package, DollarSign, CheckCircle, XCircle, Edit, Trash2, Eye } from 'lucide-react'
 import { useServices } from '@/context/ServicesContext'
 import { getUserById } from '@/data/mockData'
+import Image from 'next/image';
 
 export default function AdminServiceDetailPage() {
   const params = useParams()
@@ -126,10 +127,12 @@ export default function AdminServiceDetailPage() {
             <h3 className="text-lg font-semibold mb-4">صور الخدمة</h3>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {service.images?.map((image: string, index: number) => (
-                <img
+                <Image
                   key={index}
                   src={image}
                   alt={`صورة ${index + 1}`}
+                  width={128}
+                  height={128}
                   className="w-full h-32 object-cover rounded-lg"
                 />
               ))}
@@ -215,9 +218,11 @@ export default function AdminServiceDetailPage() {
           <div className="bg-white rounded-lg shadow p-6">
             <h3 className="text-lg font-semibold mb-4">معلومات البائع</h3>
             <div className="flex items-center gap-3 mb-4">
-              <img
+              <Image
                 src={seller?.avatar}
                 alt={seller?.fullName}
+                width={48}
+                height={48}
                 className="w-12 h-12 rounded-full object-cover"
               />
               <div>

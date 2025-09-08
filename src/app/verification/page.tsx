@@ -8,7 +8,7 @@ import { Shield, CheckCircle, Upload, Phone, Mail, MapPin, Award, User, Camera, 
 
 export default function VerificationPage() {
   const [activeStep, setActiveStep] = useState(0)
-  const [completedSteps, setCompletedSteps] = useState([])
+  const [completedSteps, setCompletedSteps] = useState<string[]>([])
 
   const verificationSteps = [
     {
@@ -53,7 +53,7 @@ export default function VerificationPage() {
     }
   ]
 
-  const handleStepComplete = (stepId) => {
+  const handleStepComplete = (stepId: string) => {
     if (!completedSteps.includes(stepId)) {
       setCompletedSteps([...completedSteps, stepId])
     }
@@ -194,7 +194,7 @@ export default function VerificationPage() {
 }
 
 // Individual verification components
-function IdentityVerification({ onComplete }) {
+function IdentityVerification({ onComplete }: { onComplete: () => void }) {
   const [uploaded, setUploaded] = useState(false)
 
   return (
@@ -225,7 +225,7 @@ function IdentityVerification({ onComplete }) {
   )
 }
 
-function PhoneVerification({ onComplete }) {
+function PhoneVerification({ onComplete }: { onComplete: () => void }) {
   const [phone, setPhone] = useState('')
   const [code, setCode] = useState('')
   const [codeSent, setCodeSent] = useState(false)
@@ -276,7 +276,7 @@ function PhoneVerification({ onComplete }) {
   )
 }
 
-function EmailVerification({ onComplete }) {
+function EmailVerification({ onComplete }: { onComplete: () => void }) {
   return (
     <div className="text-center py-8">
       <Mail className="w-16 h-16 text-blue-600 mx-auto mb-4" />
@@ -294,7 +294,7 @@ function EmailVerification({ onComplete }) {
   )
 }
 
-function AddressVerification({ onComplete }) {
+function AddressVerification({ onComplete }: { onComplete: () => void }) {
   return (
     <div className="space-y-4">
       <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
@@ -314,7 +314,7 @@ function AddressVerification({ onComplete }) {
   )
 }
 
-function SkillsVerification({ onComplete }) {
+function SkillsVerification({ onComplete }: { onComplete: () => void }) {
   return (
     <div className="space-y-4">
       <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">

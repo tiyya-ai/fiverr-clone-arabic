@@ -7,6 +7,7 @@ import MainHeader from '@/components/MainHeader'
 import Footer from '@/components/Footer'
 import { useServices } from '@/context/ServicesContext'
 import { getUserById } from '@/data/mockData'
+import Image from 'next/image';
 
 export default function GigPage() {
   const { id } = useParams()
@@ -38,7 +39,7 @@ export default function GigPage() {
             <div className="bg-white p-6 rounded-lg shadow-md">
               <h1 className="text-2xl font-bold text-gray-900 mb-4">{service.title}</h1>
               <div className="flex items-center mb-4">
-                <img src={provider?.avatar} alt={provider?.fullName} className="w-10 h-10 rounded-full mr-3" />
+                <Image src={provider?.avatar} alt={provider?.fullName} width={40} height={40} className="w-10 h-10 rounded-full mr-3" />
                 <div>
                   <p className="font-semibold text-gray-800">{provider?.fullName}</p>
                   <p className="text-sm text-gray-500">{provider?.level}</p>
@@ -49,7 +50,7 @@ export default function GigPage() {
                   <span className="text-xs text-gray-400">({service.totalReviews} reviews)</span>
                 </div>
               </div>
-              <img src={service.images[0]} alt={service.title} className="w-full h-auto rounded-lg mb-4" />
+              <Image src={service.images[0]} alt={service.title} width={800} height={600} className="w-full h-auto rounded-lg mb-4" />
               <div className="prose max-w-none">
                 <p>{service.description}</p>
               </div>

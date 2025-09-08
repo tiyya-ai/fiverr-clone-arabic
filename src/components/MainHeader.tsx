@@ -5,6 +5,7 @@ import { Menu, X, Bell, User, MessageCircle, Heart, Plus, LogIn, UserPlus, Shopp
 import MainNavigation from './Navigation/MainNavigation'
 import MobileNavigation from './Navigation/MobileNavigation'
 import NotificationSystem from './Notifications/NotificationSystem'
+import Image from 'next/image';
 
 export default function MainHeader() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -123,7 +124,7 @@ export default function MainHeader() {
       (window as any).addToCart = addToCart
       console.log('addToCart function attached to window')
     }
-  }, [cartItems, isLoggedIn, showLoginPrompt])
+  }, [cartItems, isLoggedIn, showLoginPrompt, addToCart])
 
   return (
     <>
@@ -163,7 +164,7 @@ export default function MainHeader() {
           <div className="flex justify-between items-center h-16">
             {/* Logo - Left */}
             <a href="/" className="flex items-center">
-              <img src="https://wbl3.com/wp-content/uploads/2022/09/1042165_6877-Converted-1-768x308-1.webp" alt="WBL3" className="h-12" />
+              <Image src="https://wbl3.com/wp-content/uploads/2022/09/1042165_6877-Converted-1-768x308-1.webp" alt="WBL3" width={100} height={48} className="h-12" />
             </a>
 
             {/* Navigation - Center */}
@@ -369,7 +370,7 @@ export default function MainHeader() {
               </div>
               <h2 className="text-2xl font-bold mb-2">تم إضافة الخدمة!</h2>
               <p className="text-gray-600 mb-4">
-                تم إضافة "{pendingItem?.title}" إلى سلة التسوق
+                تم إضافة &quot;{pendingItem?.title}&quot; إلى سلة التسوق
               </p>
               <p className="text-sm text-gray-500">
                 يجب تسجيل الدخول لإتمام عملية الطلب

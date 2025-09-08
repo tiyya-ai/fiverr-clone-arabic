@@ -2,6 +2,7 @@
 
 import { FaCog, FaUsers, FaChartBar, FaMobileAlt } from "react-icons/fa";
 import { Star, Shield, Clock } from "lucide-react";
+import Image from 'next/image';
 
 export default function ServiceCard() {
   return (
@@ -9,9 +10,11 @@ export default function ServiceCard() {
       {/* Right Section - Profile Image */}
       <div className="w-1/3 flex justify-center">
         <div className="rounded-full overflow-hidden border-4 border-white shadow-lg w-36 h-36">
-          <img
+          <Image
             src="https://ui-avatars.com/api/?name=أحمد+محمد&background=random&color=fff&size=144"
             alt="صورة المقدم"
+            width={144}
+            height={144}
             className="w-full h-full object-cover"
           />
         </div>

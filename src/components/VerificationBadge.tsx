@@ -64,7 +64,7 @@ const sizeConfig = {
 }
 
 export default function VerificationBadge({ type, size = 'sm', showLabel = true }: VerificationBadgeProps) {
-  const config = badgeConfig[type]
+  const config = badgeConfig[type as keyof typeof badgeConfig]
   const sizeStyles = sizeConfig[size]
   
   if (!config) return null

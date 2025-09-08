@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import MainHeader from '@/components/MainHeader'
 import Footer from '@/components/Footer'
-import { Star, Shield, Heart, Share2, ChevronDown, CheckCircle, Clock, MessageCircle, ThumbsUp, ThumbsDown, Award, Users, Zap, Camera, Building, Home, Warehouse } from 'lucide-react'
+import { Star, Shield, Heart, Share2, ChevronDown, CheckCircle, Clock, MessageCircle, ThumbsUp, ThumbsDown, Award, Users, Zap, Camera, Building, Home, Warehouse } from 'lucide-react';
+import Image from 'next/image';
 
 export default function ArchitecturalRenderingService() {
   const [selectedPackage, setSelectedPackage] = useState('STANDARD')
@@ -118,7 +119,7 @@ export default function ArchitecturalRenderingService() {
                   I will design 3D architectural rendering exterior of house, warehouse, commercial
                 </h1>
                 <div className="flex items-center gap-4">
-                  <img src="/api/placeholder/48/48" alt="AY Architect" className="w-12 h-12 rounded-full" />
+                  <Image src="/api/placeholder/48/48" alt="AY Architect" width={48} height={48} className="w-12 h-12 rounded-full" />
                   <p className="font-semibold text-lg text-gray-700">AY Architect</p>
                   <div className="flex items-center border-l border-gray-300 pl-4 ml-4">
                     <Star className="w-5 h-5 text-yellow-400 fill-current mr-1" />
@@ -135,9 +136,11 @@ export default function ArchitecturalRenderingService() {
               {/* Image Gallery */}
               <div className="space-y-4">
                 <div className="rounded-lg overflow-hidden border border-gray-200">
-                  <img 
+                  <Image 
                     src={portfolioImages[selectedImage]} 
                     alt="3D Architectural Rendering" 
+                    width={800} 
+                    height={600} 
                     className="w-full h-96 object-cover" 
                   />
                 </div>
@@ -150,7 +153,7 @@ export default function ArchitecturalRenderingService() {
                         selectedImage === index ? 'border-green-500' : 'border-gray-200'
                       }`}
                     >
-                      <img src={img} alt={`Portfolio ${index + 1}`} className="w-full h-16 object-cover" />
+                      <Image src={img} alt={`Portfolio ${index + 1}`} width={800} height={600} className="w-full h-16 object-cover" />
                     </button>
                   ))}
                 </div>
@@ -189,7 +192,7 @@ export default function ArchitecturalRenderingService() {
                     </div>
                   </div>
 
-                  <h3 className="text-xl font-bold text-gray-800 mt-6 mb-3">What You'll Get:</h3>
+                  <h3 className="text-xl font-bold text-gray-800 mt-6 mb-3">What You&apos;ll Get:</h3>
                   <ul className="list-disc list-inside space-y-2 text-gray-600">
                     <li>Photorealistic 3D exterior renderings</li>
                     <li>Professional lighting and material setup</li>
@@ -214,7 +217,7 @@ export default function ArchitecturalRenderingService() {
               <div>
                 <h2 className="text-2xl font-bold text-gray-800 mb-6">About The Seller</h2>
                 <div className="flex items-start gap-6 p-6 border border-gray-200 rounded-lg">
-                  <img src="/api/placeholder/96/96" alt="AY Architect" className="w-24 h-24 rounded-full" />
+                  <Image src="/api/placeholder/96/96" alt="AY Architect" width={96} height={96} className="w-24 h-24 rounded-full" />
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
                       <p className="font-bold text-xl text-gray-800">AY Architect</p>
@@ -263,7 +266,7 @@ export default function ArchitecturalRenderingService() {
                   {reviews.map(review => (
                     <div key={review.id} className="border-b border-gray-200 pb-6">
                       <div className="flex items-center gap-4 mb-3">
-                        <img src={review.userAvatar} alt={review.userName} className="w-10 h-10 rounded-full" />
+                        <Image src={review.userAvatar} alt={review.userName} width={40} height={40} className="w-10 h-10 rounded-full" />
                         <div>
                           <p className="font-bold text-gray-800">{review.userName}</p>
                           <div className="flex items-center gap-2">
@@ -339,7 +342,7 @@ export default function ArchitecturalRenderingService() {
                   <button className="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg mt-4 hover:bg-green-700 transition-colors text-lg">
                     Continue (${currentPackage.price})
                   </button>
-                  <p className="text-center text-sm text-gray-500 mt-2">You won't be charged yet</p>
+                  <p className="text-center text-sm text-gray-500 mt-2">You won&apos;t be charged yet</p>
                   
                   <div className="border-t pt-4">
                     <button className="w-full border border-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors">

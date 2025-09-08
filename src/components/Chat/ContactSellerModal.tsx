@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { X, Send, MessageCircle, Clock, Star } from 'lucide-react'
+import Image from 'next/image';
 
 interface ContactSellerModalProps {
   isOpen: boolean
@@ -103,9 +104,11 @@ export default function ContactSellerModal({ isOpen, onClose, seller, service }:
             {/* Seller Info */}
             <div className="bg-gray-50 rounded-lg p-4 mb-6">
               <div className="flex items-center gap-4">
-                <img
+                <Image
                   src={seller.avatar}
                   alt={seller.fullName}
+                  width={64}
+                  height={64}
                   className="w-16 h-16 rounded-full object-cover"
                 />
                 <div className="flex-1">
@@ -134,9 +137,11 @@ export default function ContactSellerModal({ isOpen, onClose, seller, service }:
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
               <h4 className="font-semibold text-blue-900 mb-2" dir="rtl">بخصوص الخدمة:</h4>
               <div className="flex gap-3">
-                <img
+                <Image
                   src={service.images[0]}
                   alt={service.title}
+                  width={48}
+                  height={48}
                   className="w-12 h-12 rounded object-cover"
                 />
                 <div>

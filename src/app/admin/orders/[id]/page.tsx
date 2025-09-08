@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { ArrowRight, User, Package, DollarSign, Clock, CheckCircle, XCircle, AlertTriangle, MessageSquare, Eye, Calendar, Star } from 'lucide-react'
 import { useServices } from '@/context/ServicesContext'
 import { getUserById } from '@/data/mockData'
+import Image from 'next/image';
 
 export default function AdminOrderDetailPage() {
   const params = useParams()
@@ -199,9 +200,11 @@ export default function AdminOrderDetailPage() {
             <h3 className="text-lg font-semibold mb-4">تفاصيل الخدمة</h3>
             {service && (
               <div className="flex gap-4">
-                <img
+                <Image
                   src={service.images?.[0]}
                   alt={service.title}
+                  width={80}
+                  height={80}
                   className="w-20 h-20 object-cover rounded-lg"
                 />
                 <div className="flex-1">
@@ -274,9 +277,11 @@ export default function AdminOrderDetailPage() {
           <div className="bg-white rounded-lg shadow p-6">
             <h3 className="text-lg font-semibold mb-4">معلومات المشتري</h3>
             <div className="flex items-center gap-3 mb-4">
-              <img
+              <Image
                 src={buyer?.avatar}
                 alt={buyer?.fullName}
+                width={48}
+                height={48}
                 className="w-12 h-12 rounded-full object-cover"
               />
               <div>
@@ -306,9 +311,11 @@ export default function AdminOrderDetailPage() {
           <div className="bg-white rounded-lg shadow p-6">
             <h3 className="text-lg font-semibold mb-4">معلومات البائع</h3>
             <div className="flex items-center gap-3 mb-4">
-              <img
+              <Image
                 src={seller?.avatar}
                 alt={seller?.fullName}
+                width={48}
+                height={48}
                 className="w-12 h-12 rounded-full object-cover"
               />
               <div>

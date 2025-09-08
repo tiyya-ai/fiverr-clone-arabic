@@ -9,6 +9,7 @@ import Footer from '@/components/Footer'
 import UnifiedButton from '@/components/UnifiedButton'
 import { useServices } from '@/context/ServicesContext'
 import { getUserById } from '@/data/mockData'
+import Image from 'next/image';
 
 export default function ServiceDetail() {
   const params = useParams()
@@ -91,9 +92,11 @@ export default function ServiceDetail() {
               
               {/* Seller Info */}
               <div className="flex items-center gap-4 mb-4">
-                <img 
+                <Image 
                   src={seller?.avatar || '/img/noavatar.jpg'} 
                   alt={seller?.fullName}
+                  width={48}
+                  height={48}
                   className="w-12 h-12 rounded-full object-cover"
                 />
                 <div className="text-right">
@@ -130,9 +133,11 @@ export default function ServiceDetail() {
             {/* Image Gallery */}
             <div className="mb-8">
               <div className="relative bg-gray-100 rounded-xl overflow-hidden mb-4">
-                <img 
+                <Image 
                   src={service.images[currentImageIndex]} 
                   alt={service.title}
+                  width={800}
+                  height={600}
                   className="w-full h-96 object-cover"
                 />
                 
@@ -173,7 +178,7 @@ export default function ServiceDetail() {
                         currentImageIndex === index ? 'border-[#1ab7ea]' : 'border-gray-200'
                       }`}
                     >
-                      <img src={image} alt="" className="w-full h-full object-cover" />
+                      <Image src={image} alt="" width={80} height={80} className="w-full h-full object-cover" />
                     </button>
                   ))}
                 </div>
@@ -195,9 +200,11 @@ export default function ServiceDetail() {
               <h2 className="text-xl font-bold text-gray-900 mb-6 text-right">حول مقدم الخدمة</h2>
               <div className="bg-gray-50 rounded-xl p-6">
                 <div className="flex items-start gap-4 mb-6">
-                  <img 
+                  <Image 
                     src={seller?.avatar || '/img/noavatar.jpg'} 
                     alt={seller?.fullName}
+                    width={80}
+                    height={80}
                     className="w-20 h-20 rounded-full object-cover"
                   />
                   <div className="flex-1 text-right">
@@ -283,9 +290,11 @@ export default function ServiceDetail() {
                 {[1,2,3].map((review) => (
                   <div key={review} className="border-b border-gray-200 pb-6">
                     <div className="flex items-start gap-4">
-                      <img 
+                      <Image 
                         src="/img/noavatar.jpg" 
                         alt="مراجع"
+                        width={40}
+                        height={40}
                         className="w-10 h-10 rounded-full object-cover"
                       />
                       <div className="flex-1 text-right">

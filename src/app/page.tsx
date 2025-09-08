@@ -8,6 +8,7 @@ import CategoryIcon from '@/components/Icons/CategoryIcon'
 import { getUserById } from '@/data/mockData'
 import { useServices } from '@/context/ServicesContext'
 import { getCategoryIcon } from '@/config/icons'
+import Image from 'next/image';
 
 export default function Home() {
   const [showLoginModal, setShowLoginModal] = useState(false)
@@ -58,9 +59,11 @@ export default function Home() {
       <section className="relative overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
-          <img 
+          <Image 
             src="/saudi-arabia-bg.jpg" 
             alt="Saudi Arabia Background" 
+            layout="fill"
+            objectFit="cover"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/60"></div>
@@ -120,9 +123,11 @@ export default function Home() {
               <div className="relative w-full max-w-lg">
                 {/* Main Hero Image */}
                 <div className="relative">
-                  <img
+                  <Image
                     src="/hero-services.png"
                     alt="خدمات الصيانة المنزلية - كهرباء، سباكة، تكييف، نجارة"
+                    width={500}
+                    height={500}
                     className="w-full h-auto rounded-2xl shadow-2xl"
                   />
                 </div>
@@ -140,11 +145,11 @@ export default function Home() {
           <div className="flex items-center justify-center gap-8 flex-wrap">
             <span className="text-gray-500 font-semibold">موثوق من قبل:</span>
             <div className="flex items-center gap-8 opacity-70">
-              <img src="https://fiverr-res.cloudinary.com/npm-assets/@fiverr/logged_out_homepage_perseus/meta.12b5e5c.png" alt="Meta" className="h-8" />
-              <img src="https://fiverr-res.cloudinary.com/npm-assets/@fiverr/logged_out_homepage_perseus/google.61e78c8.png" alt="Google" className="h-8" />
-              <img src="https://fiverr-res.cloudinary.com/npm-assets/@fiverr/logged_out_homepage_perseus/netflix.96c5e3f.png" alt="Netflix" className="h-8" />
-              <img src="https://fiverr-res.cloudinary.com/npm-assets/@fiverr/logged_out_homepage_perseus/pandg.0f4cfc2.png" alt="P&G" className="h-8" />
-              <img src="https://fiverr-res.cloudinary.com/npm-assets/@fiverr/logged_out_homepage_perseus/paypal.305e264.png" alt="PayPal" className="h-8" />
+              <Image src="https://fiverr-res.cloudinary.com/npm-assets/@fiverr/logged_out_homepage_perseus/meta.12b5e5c.png" alt="Meta" width={80} height={32} className="h-8" />
+              <Image src="https://fiverr-res.cloudinary.com/npm-assets/@fiverr/logged_out_homepage_perseus/google.61e78c8.png" alt="Google" width={80} height={32} className="h-8" />
+              <Image src="https://fiverr-res.cloudinary.com/npm-assets/@fiverr/logged_out_homepage_perseus/netflix.96c5e3f.png" alt="Netflix" width={80} height={32} className="h-8" />
+              <Image src="https://fiverr-res.cloudinary.com/npm-assets/@fiverr/logged_out_homepage_perseus/pandg.0f4cfc2.png" alt="P&G" width={80} height={32} className="h-8" />
+              <Image src="https://fiverr-res.cloudinary.com/npm-assets/@fiverr/logged_out_homepage_perseus/paypal.305e264.png" alt="PayPal" width={80} height={32} className="h-8" />
             </div>
           </div>
         </div>
@@ -336,19 +341,23 @@ export default function Home() {
                 return (
                   <div key={service.id} className="flex-shrink-0 w-[300px] bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden group flex flex-col">
                     <div className="relative">
-                      <img
+                      <Image
                         src={service.images[0]}
                         alt={service.title}
+                        width={300}
+                        height={170}
                         className="w-full h-[170px] object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                     </div>
                     <div className="p-4 flex flex-col flex-grow">
                       <div className="flex items-center mb-3">
-                        <img
-                          src={user?.avatar}
-                          alt={user?.fullName}
-                          className="w-8 h-8 rounded-full object-cover"
-                        />
+                        <Image
+                            src={user?.avatar || '/img/noavatar.jpg'}
+                            alt={user?.fullName as string || ''}
+                            width={32}
+                            height={32}
+                            className="w-8 h-8 rounded-full object-cover"
+                          />
                         <div className="mr-3 text-right">
                           <h3 className="font-semibold text-sm text-gray-800">{user?.fullName}</h3>
                           <p className="text-xs text-gray-500">{user?.level}</p>
@@ -395,9 +404,11 @@ export default function Home() {
             <div className="text-center group p-6 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors duration-300">
               <div className="mb-8">
                 <div className="flex items-center justify-center mx-auto mb-6 transition-all duration-300 transform group-hover:-translate-y-1">
-                  <img 
+                  <Image 
                     src="/icons/نشر وظيفة.webp" 
                     alt="نشر وظيفة" 
+                    width={96}
+                    height={96}
                     className="w-24 h-24 object-contain group-hover:scale-110 transition-transform duration-300"
                   />
                 </div>
@@ -409,9 +420,11 @@ export default function Home() {
             <div className="text-center group p-6 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors duration-300">
               <div className="mb-8">
                 <div className="flex items-center justify-center mx-auto mb-6 transition-all duration-300 transform group-hover:-translate-y-1">
-                  <img 
+                  <Image 
                     src="/icons/اختر المستقلين.webp" 
                     alt="اختر المستقلين" 
+                    width={96}
+                    height={96}
                     className="w-24 h-24 object-contain group-hover:scale-110 transition-transform duration-300"
                   />
                 </div>
@@ -423,9 +436,11 @@ export default function Home() {
             <div className="text-center group p-6 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors duration-300">
               <div className="mb-8">
                 <div className="flex items-center justify-center mx-auto mb-6 transition-all duration-300 transform group-hover:-translate-y-1">
-                  <img 
+                  <Image 
                     src="/icons/ادفع بأمان.webp" 
                     alt="ادفع بأمان" 
+                    width={96}
+                    height={96}
                     className="w-24 h-24 object-contain group-hover:scale-110 transition-transform duration-300"
                   />
                 </div>
@@ -437,9 +452,11 @@ export default function Home() {
             <div className="text-center group p-6 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors duration-300">
               <div className="mb-8">
                 <div className="flex items-center justify-center mx-auto mb-6 transition-all duration-300 transform group-hover:-translate-y-1">
-                  <img 
+                  <Image 
                     src="/icons/نحن هنا للمساعدة.webp" 
                     alt="نحن هنا للمساعدة" 
+                    width={96}
+                    height={96}
                     className="w-24 h-24 object-contain group-hover:scale-110 transition-transform duration-300"
                   />
                 </div>

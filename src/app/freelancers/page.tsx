@@ -5,6 +5,7 @@ import { Star, MapPin, Clock, Search, Filter, User, MessageCircle, Heart, CheckC
 import MainHeader from '@/components/MainHeader'
 import Footer from '@/components/Footer'
 import { mockUsers } from '@/data/mockData'
+import Image from 'next/image';
 
 interface Freelancer {
   id: string
@@ -153,14 +154,14 @@ export default function FreelancersPage() {
     }
   ]
 
-  useEffect(() => {
+    useEffect(() => {
     // Simulate loading
     setTimeout(() => {
       setFreelancers(mockFreelancers)
       setFilteredFreelancers(mockFreelancers)
       setLoading(false)
     }, 1000)
-  }, [])
+  }, [mockFreelancers])
 
   useEffect(() => {
     let filtered = freelancers
@@ -295,9 +296,11 @@ export default function FreelancersPage() {
                   <div className="p-6 border-b border-gray-100">
                     <div className="flex items-start gap-4">
                       <div className="relative">
-                        <img
+                        <Image
                           src={freelancer.avatar}
                           alt={freelancer.fullName}
+                          width={64}
+                          height={64}
                           className="w-16 h-16 rounded-full object-cover"
                         />
                         {freelancer.isOnline && (

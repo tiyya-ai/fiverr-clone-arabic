@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Clock, DollarSign, Users, Search, Filter, FolderOpen, Calendar, Star, MapPin } from 'lucide-react'
 import MainHeader from '@/components/MainHeader'
 import Footer from '@/components/Footer'
+import Image from 'next/image';
 
 interface Project {
   id: string
@@ -216,7 +217,7 @@ export default function ProjectsPage() {
       setFilteredProjects(mockProjects)
       setLoading(false)
     }, 1000)
-  }, [])
+  }, [mockProjects])
 
   useEffect(() => {
     let filtered = projects
@@ -399,9 +400,11 @@ export default function ProjectsPage() {
                 <div key={project.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-6">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-start gap-4 flex-1">
-                      <img
+                      <Image
                         src={project.clientAvatar}
                         alt={project.client}
+                        width={48}
+                        height={48}
                         className="w-12 h-12 rounded-full object-cover"
                       />
                       

@@ -24,7 +24,7 @@ export default function CheckoutPage() {
     }
     
     setIsLoggedIn(!!loggedIn)
-  }, [])
+  }, [router])
 
   const handleLogin = (userType: string) => {
     localStorage.setItem('userType', userType)

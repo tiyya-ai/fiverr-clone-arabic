@@ -10,7 +10,7 @@ import { getUserById } from '@/data/mockData'
 
 export default function Services() {
   const { services } = useServices()
-  const [filteredServices, setFilteredServices] = useState([])
+  const [filteredServices, setFilteredServices] = useState<any[]>([])
   const [userLocation, setUserLocation] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
@@ -41,7 +41,7 @@ export default function Services() {
     if (searchQuery) {
       filtered = filtered.filter(service => 
         service.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-        service.provider.toLowerCase().includes(searchQuery.toLowerCase()) ||
+
         service.category.toLowerCase().includes(searchQuery.toLowerCase())
       )
     }
@@ -55,7 +55,7 @@ export default function Services() {
   const currentServices = filteredServices.slice(indexOfFirstService, indexOfLastService);
   const totalPages = Math.ceil(filteredServices.length / servicesPerPage);
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   const categories = ['الكهرباء', 'السباكة', 'التكييف والتبريد', 'النجارة', 'تركيب كاميرات المراقبة']
   const priceRanges = [
@@ -185,7 +185,7 @@ export default function Services() {
           }) : (
             // Fallback sample services when no data is loaded
             Array.from({ length: 8 }, (_, index) => {
-              const sampleServices = [
+              const sampleServices: any[] = [
                 { id: `sample-${index}`, title: 'خدمة صيانة الكهرباء المنزلية', category: 'الكهرباء', rating: '4.9', totalReviews: 123, price: 150 },
                 { id: `sample-${index}`, title: 'إصلاح وصيانة السباكة', category: 'السباكة', rating: '4.8', totalReviews: 89, price: 120 },
                 { id: `sample-${index}`, title: 'تركيب وصيانة التكييف', category: 'التكييف والتبريد', rating: '4.7', totalReviews: 156, price: 200 },

@@ -7,9 +7,10 @@ import Footer from '@/components/Footer'
 import ServicePackages from '@/components/ServicePackages'
 import WorkAreas from '@/components/WorkAreas'
 import PricingCalculator from '@/components/PricingCalculator'
+import Image from 'next/image';
 
 export default function ServicePage({ params }: { params: { id: string } }) {
-  const [selectedPackage, setSelectedPackage] = useState<string>('')
+  const [selectedPackage, setSelectedPackage] = useState<number>(0)
   const [selectedArea, setSelectedArea] = useState<string>('')
 
   const service = {
@@ -29,35 +30,33 @@ export default function ServicePage({ params }: { params: { id: string } }) {
 
   const packages = [
     {
-      id: 'basic',
-      name: 'الباقة الأساسية',
+      type: 'BASIC' as const,
+      title: 'الباقة الأساسية',
       price: 150,
       features: [
         'فحص المشكلة وتشخيصها',
         'إصلاح بسيط للأعطال',
         'ضمان 30 يوم على العمل'
       ],
-      deliveryTime: '2-4 ساعات',
+      deliveryTime: 2,
       revisions: 1
     },
     {
-      id: 'standard',
-      name: 'الباقة المتقدمة',
+      type: 'STANDARD' as const,
+      title: 'الباقة المتقدمة',
       price: 280,
-      originalPrice: 320,
       features: [
         'فحص شامل للنظام الكهربائي',
         'إصلاح متوسط التعقيد',
         'تركيب مفاتيح ومقابس جديدة',
         'ضمان 60 يوم على العمل'
       ],
-      deliveryTime: '4-6 ساعات',
-      revisions: 2,
-      isPopular: true
+      deliveryTime: 4,
+      revisions: 2
     },
     {
-      id: 'premium',
-      name: 'الباقة الشاملة',
+      type: 'PREMIUM' as const,
+      title: 'الباقة الشاملة',
       price: 450,
       features: [
         'فحص وصيانة شاملة',
@@ -66,7 +65,7 @@ export default function ServicePage({ params }: { params: { id: string } }) {
         'خدمة طوارئ 24/7',
         'ضمان 90 يوم على العمل'
       ],
-      deliveryTime: '6-8 ساعات',
+      deliveryTime: 6,
       revisions: -1
     }
   ]
@@ -123,9 +122,11 @@ export default function ServicePage({ params }: { params: { id: string } }) {
           <div className="lg:col-span-2 space-y-8">
             <div className="bg-white rounded-xl shadow-lg p-6" dir="rtl">
               <div className="flex items-start gap-4 mb-6">
-                <img
+                <Image
                   src={service.provider.avatar}
                   alt={service.provider.name}
+                  width={64}
+                  height={64}
                   className="w-16 h-16 rounded-full object-cover"
                 />
                 <div className="flex-1 text-right">
@@ -149,10 +150,12 @@ export default function ServicePage({ params }: { params: { id: string } }) {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 {service.images.map((image, index) => (
-                  <img
+                  <Image
                     key={index}
                     src={image}
                     alt={`صورة الخدمة ${index + 1}`}
+                    width={300}
+                    height={200}
                     className="w-full h-48 object-cover rounded-lg"
                   />
                 ))}
@@ -163,7 +166,9 @@ export default function ServicePage({ params }: { params: { id: string } }) {
 
             <ServicePackages
               packages={packages}
+              selectedPackage={selectedPackage}
               onSelectPackage={setSelectedPackage}
+              onOrder={() => console.log('Order placed')}
             />
 
             <WorkAreas
@@ -175,7 +180,7 @@ export default function ServicePage({ params }: { params: { id: string } }) {
 
           <div className="space-y-6">
             <PricingCalculator
-              basePrice={packages.find(p => p.id === selectedPackage)?.price || service.basePrice}
+              basePrice={packages[selectedPackage]?.price || service.basePrice}
               workArea={selectedArea}
               additionalFees={{
                 travel: selectedAreaData?.additionalFee,

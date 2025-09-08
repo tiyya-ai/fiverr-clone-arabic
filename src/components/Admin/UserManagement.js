@@ -18,6 +18,7 @@ import {
   FiUpload
 } from 'react-icons/fi';
 import './UserManagement.css';
+import Image from 'next/image';
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -177,7 +178,7 @@ const UserManagement = () => {
           <div className="modal-body">
             <div className="user-profile">
               <div className="user-avatar-section">
-                <img src={user.avatar} alt={`${user.firstName} ${user.lastName}`} />
+                <Image src={user.avatar} alt={`${user.firstName} ${user.lastName}`} width={100} height={100} />
                 <div className="user-status-badges">
                   {user.verified && <span className="badge verified">Verified</span>}
                   {user.twoFactorEnabled && <span className="badge secure">2FA</span>}
@@ -543,7 +544,7 @@ const UserManagement = () => {
         {filteredUsers.map(user => (
           <div key={user.id} className="user-card">
             <div className="user-card-header">
-              <img src={user.avatar} alt={`${user.firstName} ${user.lastName}`} />
+              <Image src={user.avatar} alt={`${user.firstName} ${user.lastName}`} width={80} height={80} />
               <div className="user-badges">
                 {user.verified && <span className="badge verified">✓</span>}
                 {user.twoFactorEnabled && <span className="badge secure">2FA</span>}

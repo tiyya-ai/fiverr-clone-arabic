@@ -5,7 +5,8 @@ import MainHeader from '@/components/MainHeader'
 import Footer from '@/components/Footer'
 import VerificationBadge, { VerificationBadges, VerificationScore } from '@/components/VerificationBadge'
 import { Camera, Save, Eye, Edit, MapPin, Phone, Mail, Globe, Award, Plus, X } from 'lucide-react'
-import { getUserById } from '@/data/mockData'
+import { getUserById, User as UserType } from '@/data/mockData'
+import Image from 'next/image';
 
 export default function ProfileManagementPage() {
   const [user, setUser] = useState<any>(null)
@@ -136,9 +137,11 @@ export default function ProfileManagementPage() {
             <div className="bg-white rounded-lg shadow-sm border p-6">
               <div className="text-center mb-6">
                 <div className="relative inline-block">
-                  <img 
+                  <Image 
                     src={user.avatar} 
                     alt={user.fullName}
+                    width={128}
+                    height={128}
                     className="w-32 h-32 rounded-full border-4 border-gray-200 mx-auto"
                   />
                   {isEditing && (

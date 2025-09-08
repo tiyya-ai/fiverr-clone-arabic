@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Clock, MapPin, DollarSign, Users, Search, Filter, Briefcase, Calendar, Star } from 'lucide-react'
 import MainHeader from '@/components/MainHeader'
 import Footer from '@/components/Footer'
+import Image from 'next/image';
 
 interface Job {
   id: string
@@ -204,7 +205,7 @@ export default function JobsPage() {
       setFilteredJobs(mockJobs)
       setLoading(false)
     }, 1000)
-  }, [])
+  }, [mockJobs])
 
   useEffect(() => {
     let filtered = jobs
@@ -366,9 +367,11 @@ export default function JobsPage() {
                 <div key={job.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-6">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-start gap-4 flex-1">
-                      <img
+                      <Image
                         src={job.companyLogo}
                         alt={job.company}
+                        width={64}
+                        height={64}
                         className="w-16 h-16 rounded-lg object-cover"
                       />
                       

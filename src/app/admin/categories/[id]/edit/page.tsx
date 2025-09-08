@@ -1,25 +1,14 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { ArrowRight, Upload, X } from 'lucide-react'
 
-// Mock data - in real app, fetch from API
+// Mock data
 const mockCategories: Record<string, { name: string; description: string; icon: string; status: string }> = {
   '1': { name: 'تطوير المواقع', description: 'خدمات تطوير المواقع والتطبيقات', icon: '💻', status: 'active' },
   '2': { name: 'التصميم الجرافيكي', description: 'خدمات التصميم والجرافيك', icon: '🎨', status: 'active' },
   '3': { name: 'التسويق الرقمي', description: 'خدمات التسويق الإلكتروني', icon: '📱', status: 'active' }
-}
-
-// Input sanitization function - moved outside component for performance
-const sanitizeInput = (input: string): string => {
-  if (!input || typeof input !== 'string') return ''
-  return input
-    .replace(/[<>"'&]/g, '')
-    .replace(/javascript:/gi, '')
-    .replace(/on\w+=/gi, '')
-    .trim()
-    .substring(0, 100) // Limit length
 }
 
 export default function EditCategoryPage() {
@@ -45,26 +34,34 @@ export default function EditCategoryPage() {
     setLoading(false)
   }, [categoryId])
 
-  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const sanitizeInput = (input: string): string => {
+    if (!input || typeof input !== 'string') return ''
+    return input
+      .replace(/[<>"'&]/g, '')
+      .replace(/javascript:/gi, '')
+      .replace(/on\w+=/gi, '')
+      .trim()
+      .substring(0, 100)
+  }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     const sanitizedValue = name === 'status' ? value : sanitizeInput(value)
     setFormData(prev => ({
       ...prev,
       [name]: sanitizedValue
     }))
-  }, [])
+  }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-      // Validate file type
       const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
       if (!allowedTypes.includes(file.type)) {
         alert('نوع الملف غير مدعوم. يرجى اختيار صورة بصيغة JPG, PNG, GIF أو WebP')
         return
       }
       
-      // Validate file size (5MB max)
       if (file.size > 5 * 1024 * 1024) {
         alert('حجم الملف كبير جداً. يرجى اختيار صورة أصغر من 5 ميجابايت')
         return
@@ -74,7 +71,6 @@ export default function EditCategoryPage() {
       const reader = new FileReader()
       reader.onload = (e: ProgressEvent<FileReader>) => {
         const result = e.target?.result as string
-        // Validate that result is a valid data URL
         if (result && result.startsWith('data:image/')) {
           setImagePreview(result)
         }
@@ -100,7 +96,6 @@ export default function EditCategoryPage() {
       return
     }
 
-    // Here you would typically send the data to your API
     alert('تم تحديث الفئة بنجاح!')
     router.push('/admin/categories')
   }
@@ -118,7 +113,6 @@ export default function EditCategoryPage() {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-      {/* Header */}
       <div className="flex items-center gap-4">
         <button
           onClick={() => router.back()}
@@ -132,9 +126,7 @@ export default function EditCategoryPage() {
         </div>
       </div>
 
-      {/* Form */}
       <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-6 space-y-6">
-        {/* Category Name */}
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
             اسم الفئة *
@@ -151,7 +143,6 @@ export default function EditCategoryPage() {
           />
         </div>
 
-        {/* Description */}
         <div>
           <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
             الوصف
@@ -167,7 +158,6 @@ export default function EditCategoryPage() {
           />
         </div>
 
-        {/* Icon */}
         <div>
           <label htmlFor="icon" className="block text-sm font-medium text-gray-700 mb-2">
             الأيقونة (إيموجي)
@@ -187,7 +177,6 @@ export default function EditCategoryPage() {
           </p>
         </div>
 
-        {/* Image Upload */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             صورة الفئة
@@ -230,7 +219,6 @@ export default function EditCategoryPage() {
           </div>
         </div>
 
-        {/* Status */}
         <div>
           <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-2">
             الحالة
@@ -247,7 +235,6 @@ export default function EditCategoryPage() {
           </select>
         </div>
 
-        {/* Submit Buttons */}
         <div className="flex gap-4 pt-6">
           <button
             type="submit"

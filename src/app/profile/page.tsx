@@ -4,15 +4,18 @@ import { useState, useEffect } from 'react'
 import MainHeader from '@/components/MainHeader'
 import Footer from '@/components/Footer'
 import { User, Star, MapPin, Calendar, Edit } from 'lucide-react'
-import { getUserById } from '@/data/mockData'
+import { getUserById, User as UserType } from '@/data/mockData'
+import Image from 'next/image';
 
 export default function ProfilePage() {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState<UserType | null>(null)
 
   useEffect(() => {
     const userId = localStorage.getItem('currentUserId') || '1'
     const userData = getUserById(userId)
-    setUser(userData)
+    if (userData) {
+      setUser(userData)
+    }
   }, [])
 
   if (!user) return null
@@ -24,9 +27,11 @@ export default function ProfilePage() {
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="bg-white rounded-lg shadow p-8">
           <div className="flex items-start gap-6 mb-8">
-            <img 
+            <Image 
               src={user.avatar} 
               alt={user.fullName}
+              width={128}
+              height={128}
               className="w-32 h-32 rounded-full border-4 border-gray-200"
             />
             

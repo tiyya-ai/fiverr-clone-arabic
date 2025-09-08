@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowRight, Upload, X } from 'lucide-react'
+import { ArrowRight, Upload, X } from 'lucide-react';
+import Image from 'next/image';
 
 export default function CreateCategoryPage() {
   const router = useRouter()
@@ -132,9 +133,11 @@ export default function CreateCategoryPage() {
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-6">
             {imagePreview ? (
               <div className="relative">
-                <img
+                <Image
                   src={imagePreview}
                   alt="معاينة الصورة"
+                  width={200}
+                  height={200}
                   className="w-full h-48 object-cover rounded-lg"
                 />
                 <button

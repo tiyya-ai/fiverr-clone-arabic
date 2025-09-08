@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FiStar, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import './Testimonials.css';
+import Image from 'next/image';
 
 const Testimonials = () => {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
@@ -91,9 +92,11 @@ const Testimonials = () => {
           <div className="testimonial-content">
             <div className="testimonial-card">
               <div className="testimonial-header">
-                <img
+                <Image
                   src={testimonials[currentTestimonial].avatar}
                   alt={testimonials[currentTestimonial].name}
+                  width={64}
+                  height={64}
                   className="testimonial-avatar"
                 />
                 <div className="testimonial-info">
@@ -114,7 +117,7 @@ const Testimonials = () => {
               </div>
 
               <blockquote className="testimonial-text">
-                "{testimonials[currentTestimonial].text}"
+                &quot;{testimonials[currentTestimonial].text}&quot;
               </blockquote>
 
               <div className="testimonial-project">

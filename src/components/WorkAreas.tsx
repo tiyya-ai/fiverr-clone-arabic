@@ -2,8 +2,17 @@
 
 import { MapPin, Clock, Car } from 'lucide-react'
 
+interface Area {
+  id: string
+  name: string
+  districts: string[]
+  travelTime: string
+  additionalFee?: number
+  isAvailable: boolean
+}
+
 interface WorkAreasProps {
-  areas: string[]
+  areas: Area[]
   selectedArea?: string
   onSelectArea?: (area: string) => void
 }
@@ -20,29 +29,44 @@ export default function WorkAreas({ areas, selectedArea, onSelectArea }: WorkAre
         <h3 className="text-xl font-bold text-gray-900">مناطق العمل المتاحة</h3>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-        {areas.map((area, index) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {areas.map((area) => (
           <div
-            key={index}
+            key={area.id}
             className={`border rounded-lg p-4 cursor-pointer transition-all ${
-              selectedArea === area
-                ? 'border-gray-900 bg-gray-50'
-                : 'border-gray-200 hover:border-gray-300'
+              selectedArea === area.id
+                ? 'border-blue-500 bg-blue-50'
+                : area.isAvailable 
+                  ? 'border-gray-200 hover:border-gray-300'
+                  : 'border-gray-100 bg-gray-50 opacity-60 cursor-not-allowed'
             }`}
-            onClick={() => onSelectArea && onSelectArea(area)}
+            onClick={() => area.isAvailable && onSelectArea && onSelectArea(area.id)}
           >
-            <div className="flex items-center justify-between">
-              <div className="text-right">
-                <h4 className="font-bold text-gray-900 mb-1">{area}</h4>
-                <div className="flex items-center gap-1 text-gray-600 text-sm">
-                  <Clock className="h-4 w-4" />
-                  <span>متاح للخدمة</span>
-                </div>
+            <div className="text-right">
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="font-bold text-gray-900">{area.name}</h4>
+                {area.additionalFee && (
+                  <span className="text-sm text-orange-600 font-medium">+{area.additionalFee} ر.س</span>
+                )}
               </div>
               
-              <div className="flex items-center gap-1">
-                <Car className="h-4 w-4 text-gray-500" />
-                <span className="text-gray-600 text-xs">خدمة توصيل</span>
+              <div className="text-sm text-gray-600 mb-2">
+                {area.districts.join(' • ')}
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1 text-gray-600 text-sm">
+                  <Clock className="h-4 w-4" />
+                  <span>{area.travelTime}</span>
+                </div>
+                
+                <div className={`text-xs px-2 py-1 rounded-full ${
+                  area.isAvailable 
+                    ? 'bg-green-100 text-green-700'
+                    : 'bg-red-100 text-red-700'
+                }`}>
+                  {area.isAvailable ? 'متاح' : 'غير متاح'}
+                </div>
               </div>
             </div>
           </div>

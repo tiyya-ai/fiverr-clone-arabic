@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { X, CreditCard, Shield, Clock, Check } from 'lucide-react'
+import Image from 'next/image';
 
 interface OrderModalProps {
   isOpen: boolean
@@ -57,9 +58,11 @@ export default function OrderModal({ isOpen, onClose, service, selectedPackage, 
             {/* Service Summary */}
             <div className="bg-gray-50 rounded-lg p-4 mb-6">
               <div className="flex gap-4">
-                <img
+                <Image
                   src={service.images[0]}
                   alt={service.title}
+                  width={80}
+                  height={80}
                   className="w-20 h-20 rounded-lg object-cover"
                 />
                 <div className="flex-1">
@@ -67,9 +70,11 @@ export default function OrderModal({ isOpen, onClose, service, selectedPackage, 
                     {service.title}
                   </h3>
                   <div className="flex items-center gap-2 mb-2">
-                    <img
+                    <Image
                       src={seller.avatar}
                       alt={seller.fullName}
+                      width={24}
+                      height={24}
                       className="w-6 h-6 rounded-full"
                     />
                     <span className="text-sm text-gray-600">{seller.fullName}</span>

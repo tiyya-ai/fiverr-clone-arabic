@@ -62,7 +62,7 @@ const Testimonials = () => {
             What our customers say
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Don't just take our word for it. Here's what real customers have to say about their experience.
+            Don&apos;t just take our word for it. Here&apos;s what real customers have to say about their experience.
           </p>
         </div>
 
@@ -84,7 +84,7 @@ const Testimonials = () => {
 
               {/* Testimonial Content */}
               <p className="text-gray-700 mb-6 leading-relaxed">
-                "{testimonial.content}"
+                &quot;{testimonial.content}&quot;
               </p>
 
               {/* Customer Info */}

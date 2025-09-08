@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { Star, Heart } from 'lucide-react'
+import Image from 'next/image';
 
 interface UnifiedCardProps {
   type?: 'service' | 'category' | 'project'
@@ -24,9 +25,11 @@ const UnifiedCard = ({
         return (
           <div className="service-card">
             <div className="card-image relative overflow-hidden">
-              <img 
+              <Image 
                 src={data.cover || data.images?.[0] || data.img} 
                 alt={data.title} 
+                width={300}
+                height={200}
                 className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
               />
               <button className="absolute top-3 right-3 p-2 bg-white/80 rounded-full hover:bg-white transition-colors">
@@ -35,9 +38,11 @@ const UnifiedCard = ({
             </div>
             <div className="card-content p-4">
               <div className="seller-info flex items-center gap-2 mb-3" dir="rtl">
-                <img 
+                <Image 
                   src={data.sellerImg || data.avatar || "/img/noavatar.jpg"} 
                   alt="Seller" 
+                  width={24}
+                  height={24}
                   className="w-6 h-6 rounded-full object-cover"
                 />
                 <span className="text-sm text-gray-600 font-medium">
@@ -72,7 +77,7 @@ const UnifiedCard = ({
             <div className="category-icon mb-4 flex justify-center">
               <div className="w-16 h-16 flex items-center justify-center">
                 {data.icon ? (
-                  <img src={data.icon} alt={data.title} className="w-12 h-12 object-contain" />
+                  <Image src={data.icon} alt={data.title} width={48} height={48} className="w-12 h-12 object-contain" />
                 ) : (
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">
                     {data.title?.charAt(0)}
@@ -89,17 +94,21 @@ const UnifiedCard = ({
         return (
           <div className="project-card">
             <div className="card-image relative overflow-hidden">
-              <img 
+              <Image 
                 src={data.img} 
                 alt={data.cat} 
+                width={300}
+                height={200}
                 className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
               />
             </div>
             <div className="card-content p-4">
               <div className="project-info flex items-center gap-3" dir="rtl">
-                <img 
+                <Image 
                   src={data.pp} 
                   alt="Creator" 
+                  width={32}
+                  height={32}
                   className="w-8 h-8 rounded-full object-cover"
                 />
                 <div className="project-details text-right">

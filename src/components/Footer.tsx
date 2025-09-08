@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { Facebook, Twitter, Instagram, Linkedin, Youtube, Globe } from 'lucide-react'
+import Image from 'next/image';
 
 const Footer = () => {
   const footerSections = [
@@ -90,9 +91,11 @@ const Footer = () => {
             {/* Logo and Copyright */}
             <div className="flex items-center space-x-6">
               <Link href="/" className="flex items-center">
-                <img 
+                <Image 
                   src="https://wbl3.com/wp-content/uploads/2022/09/1042165_6877-Converted-1-768x308-1.webp" 
                   alt="WBL3" 
+                  width={100}
+                  height={40}
                   className="h-10 brightness-0 invert" 
                 />
               </Link>

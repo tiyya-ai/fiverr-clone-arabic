@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Save, Settings, Globe, DollarSign, Shield, Bell, Mail, Database, Palette, Users } from 'lucide-react'
+import Image from 'next/image';
 
 interface SiteSettings {
   siteName: string
@@ -372,7 +373,7 @@ export default function AdminSettings() {
               />
               {settings.logoUrl && (
                 <div className="mt-3">
-                  <img src={settings.logoUrl} alt="Logo Preview" className="h-12 object-contain" />
+                  <Image src={settings.logoUrl} alt="Logo Preview" width={100} height={48} className="h-12 object-contain" />
                 </div>
               )}
             </div>

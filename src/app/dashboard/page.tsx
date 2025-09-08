@@ -20,6 +20,7 @@ import MainHeader from '@/components/MainHeader'
 import Footer from '@/components/Footer'
 import { getUserById } from '@/data/mockData'
 import { useServices } from '@/context/ServicesContext'
+import Image from 'next/image';
 
 export default function DashboardPage() {
   const [userType, setUserType] = useState('')
@@ -260,9 +261,11 @@ export default function DashboardPage() {
                 {userServices.slice(0, 3).map((service, index) => (
                   <div key={service.id} className="flex items-center gap-4">
                     <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
-                      <img
+                      <Image
                         src={service.images[0]}
                         alt={service.title}
+                        width={48}
+                        height={48}
                         className="w-full h-full object-cover"
                       />
                     </div>

@@ -6,9 +6,16 @@ import MainHeader from '@/components/MainHeader'
 import Footer from '@/components/Footer'
 import { CheckCircle, MessageCircle, Star, Clock, Shield, ArrowRight } from 'lucide-react'
 
+interface OrderData {
+  packageTitle: string;
+  serviceTitle: string;
+  sellerName: string;
+  price: number;
+}
+
 export default function ThankYouPage() {
   const router = useRouter()
-  const [orderData, setOrderData] = useState(null)
+  const [orderData, setOrderData] = useState<OrderData | null>(null)
   const [countdown, setCountdown] = useState(5)
 
   useEffect(() => {
@@ -60,16 +67,16 @@ export default function ThankYouPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div dir="rtl">
                 <h3 className="font-medium text-gray-700 mb-2">الخدمة المطلوبة</h3>
-                <p className="text-gray-900">{orderData.packageTitle}</p>
-                <p className="text-sm text-gray-600">{orderData.serviceTitle}</p>
+                <p className="text-gray-900">{orderData?.packageTitle || 'خدمة عامة'}</p>
+                <p className="text-sm text-gray-600">{orderData?.serviceTitle || 'خدمة منزلية'}</p>
               </div>
               <div dir="rtl">
                 <h3 className="font-medium text-gray-700 mb-2">مقدم الخدمة</h3>
-                <p className="text-gray-900">{orderData.sellerName}</p>
+                <p className="text-gray-900">{orderData?.sellerName || 'مقدم الخدمة'}</p>
               </div>
               <div dir="rtl">
                 <h3 className="font-medium text-gray-700 mb-2">المبلغ المدفوع</h3>
-                <p className="text-2xl font-bold text-green-600">{orderData.price} ر.س</p>
+                <p className="text-2xl font-bold text-green-600">{orderData?.price || 100} ر.س</p>
               </div>
               <div dir="rtl">
                 <h3 className="font-medium text-gray-700 mb-2">رقم الطلب</h3>

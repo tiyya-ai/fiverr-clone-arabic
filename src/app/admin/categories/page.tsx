@@ -1,7 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Plus, Edit, Trash2, Save, X, Search, Eye } from 'lucide-react'
+import { useState, useEffect, useMemo } from 'react'
+import { Plus, Edit, Trash2, Save, X, Search, Eye } from 'lucide-react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation'
 
 interface Category {
@@ -28,7 +29,7 @@ export default function CategoriesManagement() {
   const [itemsPerPage] = useState(10)
 
   // Initial categories data - All categories from your website
-  const initialCategories: Category[] = [
+  const initialCategories: Category[] = useMemo(() => [
     {
       id: '1',
       name: 'صيانة الكهرباء',
@@ -161,7 +162,7 @@ export default function CategoriesManagement() {
       createdAt: '2024-02-05',
       updatedAt: '2024-02-18'
     }
-  ]
+  ], [])
 
   const [newCategory, setNewCategory] = useState<Omit<Category, 'id' | 'serviceCount' | 'createdAt' | 'updatedAt'>>({
     name: '',
@@ -172,7 +173,7 @@ export default function CategoriesManagement() {
     isActive: true
   })
 
-  useEffect(() => {
+    useEffect(() => {
     // Check admin access
     const userType = localStorage.getItem('userType')
     if (userType !== 'admin') {
@@ -189,7 +190,7 @@ export default function CategoriesManagement() {
       localStorage.setItem('adminCategories', JSON.stringify(initialCategories))
     }
     setLoading(false)
-  }, [router])
+  }, [router, initialCategories])
 
   const saveCategories = (updatedCategories: Category[]) => {
     setCategories(updatedCategories)
@@ -411,9 +412,11 @@ export default function CategoriesManagement() {
                       <div className="flex items-center">
                         <div className="w-12 h-12 rounded-lg overflow-hidden ml-3 flex-shrink-0">
                           {category.image ? (
-                            <img 
+                            <Image 
                               src={category.image} 
                               alt={category.name}
+                              width={48}
+                              height={48}
                               className="w-full h-full object-cover"
                             />
                           ) : (
@@ -546,9 +549,11 @@ export default function CategoriesManagement() {
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 rounded-lg overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center">
                     {newCategory.image ? (
-                      <img 
+                      <Image 
                         src={newCategory.image} 
                         alt="Preview"
+                        width={64}
+                        height={64}
                         className="w-full h-full object-cover"
                       />
                     ) : (
@@ -676,9 +681,11 @@ export default function CategoriesManagement() {
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 rounded-lg overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center">
                     {editingCategory.image ? (
-                      <img 
+                      <Image 
                         src={editingCategory.image} 
                         alt="Preview"
+                        width={64}
+                        height={64}
                         className="w-full h-full object-cover"
                       />
                     ) : (

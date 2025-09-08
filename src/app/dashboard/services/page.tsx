@@ -7,6 +7,7 @@ import MainHeader from '@/components/MainHeader'
 import Footer from '@/components/Footer'
 import { getUserById } from '@/data/mockData'
 import { useServices } from '@/context/ServicesContext'
+import Image from 'next/image';
 
 export default function MyServicesPage() {
   const { services, deleteService, getServicesByUserId } = useServices()
@@ -122,10 +123,13 @@ export default function MyServicesPage() {
                 <div key={service.id} className="p-6 hover:bg-gray-50 transition-colors">
                   <div className="flex items-start gap-4">
                     {/* Service Image */}
+                    {/* Service Image */}
                     <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
-                      <img
+                      <Image
                         src={service.images[0]}
                         alt={service.title}
+                        width={80}
+                        height={80}
                         className="w-full h-full object-cover"
                       />
                     </div>

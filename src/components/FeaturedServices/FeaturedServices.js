@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FiStar, FiHeart } from 'react-icons/fi';
 import './FeaturedServices.css';
+import Image from 'next/image';
 
 const FeaturedServices = () => {
   const featuredServices = [
@@ -144,9 +145,11 @@ const FeaturedServices = () => {
           {featuredServices.map((service) => (
             <div key={service.id} className="service-card">
               <div className="service-image-container">
-                <img
+                <Image
                   src={service.image}
                   alt={service.title}
+                  width={300}
+                  height={200}
                   className="service-image"
                 />
                 <button className="favorite-btn">
@@ -157,9 +160,11 @@ const FeaturedServices = () => {
 
               <div className="service-content">
                 <div className="seller-info">
-                  <img
+                  <Image
                     src={service.seller.avatar}
                     alt={service.seller.name}
+                    width={40}
+                    height={40}
                     className="seller-avatar"
                   />
                   <div className="seller-details">

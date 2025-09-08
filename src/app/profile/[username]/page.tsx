@@ -7,6 +7,7 @@ import Footer from '@/components/Footer'
 import VerificationBadge, { VerificationBadges, VerificationScore } from '@/components/VerificationBadge'
 import { Star, MapPin, Calendar, MessageCircle, Heart, Share2, Award, Clock, Shield, Eye } from 'lucide-react'
 import { getUserById, getServicesByUserId, getReviewsByServiceId } from '@/data/mockData'
+import Image from 'next/image';
 
 export default function PublicProfilePage() {
   const params = useParams()
@@ -51,9 +52,11 @@ export default function PublicProfilePage() {
           <div className="flex flex-col md:flex-row gap-8">
             {/* Profile Info */}
             <div className="flex items-start gap-6">
-              <img 
+              <Image 
                 src={user.avatar} 
                 alt={user.fullName}
+                width={128}
+                height={128}
                 className="w-32 h-32 rounded-full border-4 border-gray-200"
               />
               
@@ -165,9 +168,11 @@ export default function PublicProfilePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {userServices.map((service: any) => (
               <div key={service.id} className="bg-white rounded-lg border shadow-sm overflow-hidden hover:shadow-md transition-shadow">
-                <img
+                <Image
                   src={service.images[0]}
                   alt={service.title}
+                  width={300}
+                  height={200}
                   className="w-full h-48 object-cover"
                 />
                 <div className="p-4">
@@ -209,9 +214,11 @@ export default function PublicProfilePage() {
                 return (
                   <div key={review.id} className="bg-white rounded-lg border p-6">
                     <div className="flex items-start gap-4">
-                      <img 
-                        src={reviewUser?.avatar} 
-                        alt={reviewUser?.fullName}
+                      <Image 
+                        src={reviewUser?.avatar || '/img/noavatar.jpg'} 
+                        alt={reviewUser?.fullName || ''}
+                        width={48}
+                        height={48}
                         className="w-12 h-12 rounded-full"
                       />
                       <div className="flex-1">

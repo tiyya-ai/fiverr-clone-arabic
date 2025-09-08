@@ -33,20 +33,20 @@ export default function CreateServicePage() {
     'صيانة عامة'
   ]
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     // Save service logic here
     alert('تم إنشاء الخدمة بنجاح!')
     router.push('/dashboard/services')
   }
 
-  const addFeature = (packageIndex) => {
+  const addFeature = (packageIndex: number) => {
     const newPackages = [...formData.packages]
     newPackages[packageIndex].features.push('')
     setFormData({ ...formData, packages: newPackages })
   }
 
-  const updateFeature = (packageIndex, featureIndex, value) => {
+  const updateFeature = (packageIndex: number, featureIndex: number, value: string) => {
     const newPackages = [...formData.packages]
     newPackages[packageIndex].features[featureIndex] = value
     setFormData({ ...formData, packages: newPackages })

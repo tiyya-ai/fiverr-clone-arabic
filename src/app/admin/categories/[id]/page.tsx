@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { ArrowLeft, Edit, Trash2, Package, Eye, TrendingUp, Users } from 'lucide-react'
+import Image from 'next/image';
 
 interface Category {
   id: string
@@ -170,9 +171,11 @@ export default function AdminCategoryDetailsPage() {
             <div className="text-center mb-6">
               <div className="w-24 h-24 rounded-lg overflow-hidden mx-auto mb-4">
                 {category.image ? (
-                  <img 
+                  <Image 
                     src={category.image} 
                     alt={category.name}
+                    width={96}
+                    height={96}
                     className="w-full h-full object-cover"
                   />
                 ) : (

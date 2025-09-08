@@ -20,6 +20,7 @@ import {
 import AuthModal from '../Auth/AuthModal';
 import { useAuth } from '../../contexts/AuthContext';
 import './Header.css';
+import Image from 'next/image';
 
 const Header = () => {
   const { user, logout, isAuthenticated } = useAuth();
@@ -123,7 +124,7 @@ const Header = () => {
                 <div className="user-menu">
                   <button className="user-avatar" onClick={toggleUserMenu}>
                     {user?.profileImage ? (
-                      <img src={user.profileImage} alt={user.name} />
+                      <Image src={user.profileImage} alt={user.name} width={32} height={32} />
                     ) : (
                       <FiUser />
                     )}
@@ -136,7 +137,7 @@ const Header = () => {
                         <div className="user-info">
                           <div className="user-avatar">
                             {user?.profileImage ? (
-                              <img src={user.profileImage} alt={user.name} />
+                              <Image src={user.profileImage} alt={user.name} width={40} height={40} />
                             ) : (
                               <FiUser />
                             )}
