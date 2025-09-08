@@ -120,12 +120,21 @@ export async function seedDatabase() {
   ]
 
   // Insert categories
-  for (const category of categories) {
-    await prisma.category.upsert({
-      where: { name: category.name },
-      update: {},
-      create: category
+  for (const categoryData of categories) {
+    const existingCategory = await prisma.category.findUnique({
+      where: { name: categoryData.name }
     })
+
+    if (existingCategory) {
+      await prisma.category.update({
+        where: { id: existingCategory.id },
+        data: categoryData
+      })
+    } else {
+      await prisma.category.create({
+        data: categoryData
+      })
+    }
   }
 
   // Create sample service providers

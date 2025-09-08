@@ -141,23 +141,35 @@ export const servicesApi = {
   },
 
   async create(data: Omit<Service, 'id' | 'createdAt' | 'updatedAt'>): Promise<Service> {
+    const { packages, ...serviceData } = data as any
     return await prisma.service.create({
       data: {
-        ...data,
+        ...serviceData,
         createdAt: new Date(),
         updatedAt: new Date()
+      },
+      include: {
+        packages: true,
+        user: true,
+        category: true
       }
-    })
+    }) as Service
   },
 
   async update(id: string, data: Partial<Service>): Promise<Service> {
+    const { packages, ...serviceData } = data as any
     return await prisma.service.update({
       where: { id },
       data: {
-        ...data,
+        ...serviceData,
         updatedAt: new Date()
+      },
+      include: {
+        packages: true,
+        user: true,
+        category: true
       }
-    })
+    }) as Service
   }
 }
 
@@ -166,33 +178,33 @@ export const usersApi = {
   async getById(id: string): Promise<User | null> {
     return await prisma.user.findUnique({
       where: { id }
-    })
+    }) as unknown as User | null
   },
 
   async getByUsername(username: string): Promise<User | null> {
     return await prisma.user.findUnique({
       where: { username }
-    })
+    }) as unknown as User | null
   },
 
   async create(data: Omit<User, 'id' | 'createdAt' | 'updatedAt'>): Promise<User> {
     return await prisma.user.create({
       data: {
-        ...data,
+        ...data as any,
         createdAt: new Date(),
         updatedAt: new Date()
       }
-    })
+    }) as unknown as User
   },
 
   async update(id: string, data: Partial<User>): Promise<User> {
     return await prisma.user.update({
       where: { id },
       data: {
-        ...data,
+        ...data as any,
         updatedAt: new Date()
       }
-    })
+    }) as unknown as User
   }
 }
 
@@ -255,7 +267,7 @@ export const ordersApi = {
       data: {
         status,
         updatedAt: new Date(),
-        ...(status === 'completed' && { completedAt: new Date() })
+        ...(status === 'COMPLETED' && { completedAt: new Date() })
       }
     })
   }

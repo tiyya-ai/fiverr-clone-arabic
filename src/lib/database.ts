@@ -43,7 +43,7 @@ export interface Category {
   description: string
   descriptionEn: string
   icon: string
-  image?: string
+  image: string | null
   color: string
   isActive: boolean
   serviceCount: number
@@ -92,11 +92,11 @@ export interface Order {
   packageId: string
   buyerId: string
   sellerId: string
-  status: 'pending' | 'active' | 'delivered' | 'completed' | 'cancelled' | 'disputed'
+  status: 'PENDING' | 'ACTIVE' | 'DELIVERED' | 'COMPLETED' | 'CANCELLED' | 'DISPUTED'
   totalAmount: number
-  requirements?: string
+  requirements?: string | null
   deliveryDate: Date
-  completedAt?: Date
+  completedAt?: Date | null
   createdAt: Date
   updatedAt: Date
 }

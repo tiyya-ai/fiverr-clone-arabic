@@ -12,10 +12,10 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { gigId, packageId, requirements } = await request.json()
+    const { serviceId, packageId, requirements } = await request.json()
 
-    const gig = await prisma.gig.findUnique({
-      where: { id: gigId },
+    const service = await prisma.service.findUnique({
+      where: { id: serviceId },
       include: {
         packages: {
           where: { id: packageId }
@@ -24,29 +24,29 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    if (!gig || gig.packages.length === 0) {
+    if (!service || service.packages.length === 0) {
       return NextResponse.json(
         { error: 'الخدمة أو الباقة غير موجودة' },
         { status: 404 }
       )
     }
 
-    const selectedPackage = gig.packages[0]
-    const dueDate = new Date()
-    dueDate.setDate(dueDate.getDate() + selectedPackage.deliveryTime)
+    const selectedPackage = service.packages[0]
+    const deliveryDate = new Date()
+    deliveryDate.setDate(deliveryDate.getDate() + selectedPackage.deliveryTime)
 
     const order = await prisma.order.create({
       data: {
-        gigId,
+        serviceId,
         packageId,
         buyerId: (session.user as any).id,
-        sellerId: gig.userId,
+        sellerId: service.userId,
         totalAmount: selectedPackage.price,
         requirements,
-        dueDate
+        deliveryDate
       },
       include: {
-        gig: {
+        service: {
           include: {
             user: {
               select: {
@@ -90,7 +90,7 @@ export async function GET(request: NextRequest) {
     const orders = await prisma.order.findMany({
       where,
       include: {
-        gig: {
+        service: {
           select: {
             title: true,
             images: true
@@ -98,7 +98,7 @@ export async function GET(request: NextRequest) {
         },
         package: {
           select: {
-            title: true,
+            name: true,
             type: true
           }
         },

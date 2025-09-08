@@ -30,13 +30,11 @@ export async function POST(request: NextRequest) {
         username,
         password: hashedPassword,
         fullName,
+        location: 'السعودية',
+        memberSince: new Date().getFullYear().toString(),
+        skills: [],
+        languages: ['العربية'],
         userType: userType || 'BUYER'
-      }
-    })
-
-    await prisma.wallet.create({
-      data: {
-        userId: user.id
       }
     })
 

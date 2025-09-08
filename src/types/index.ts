@@ -15,7 +15,7 @@ export interface User {
 }
 
 export interface Package {
-  type: 'BASIC' | 'STANDARD' | 'PREMIUM';
+  type: 'basic' | 'standard' | 'premium';
   title: string;
   price: number;
   deliveryTime: number;
