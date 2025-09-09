@@ -19,6 +19,7 @@ export default function ServiceDetail() {
   const [selectedPackage, setSelectedPackage] = useState(0)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [showVideoModal, setShowVideoModal] = useState(false)
+  const [isFavorite, setIsFavorite] = useState(false)
 
   useEffect(() => {
     const serviceId = params.id
@@ -67,6 +68,32 @@ export default function ServiceDetail() {
     }
   }
 
+  const handleFavorite = () => {
+    setIsFavorite(!isFavorite)
+    const message = !isFavorite ? 'تم إضافة الخدمة للمفضلة' : 'تم إزالة الخدمة من المفضلة'
+    alert(message)
+  }
+
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: service.title,
+        text: service.description,
+        url: window.location.href
+      })
+    } else {
+      navigator.clipboard.writeText(window.location.href)
+      alert('تم نسخ رابط الخدمة')
+    }
+  }
+
+  const handleReport = () => {
+    const reason = prompt('يرجى ذكر سبب الإبلاغ:')
+    if (reason) {
+      alert('تم إرسال البلاغ بنجاح. سيتم مراجعته من قبل فريقنا.')
+    }
+  }
+
   return (
     <div className="min-h-screen bg-white">
       <MainHeader />
@@ -91,39 +118,32 @@ export default function ServiceDetail() {
               </h1>
               
               {/* Seller Info */}
-              <div className="flex items-center gap-4 mb-4">
-                <Image 
-                  src={seller?.avatar || '/img/noavatar.jpg'} 
-                  alt={seller?.fullName}
-                  width={48}
-                  height={48}
-                  className="w-12 h-12 rounded-full object-cover"
-                />
-                <div className="text-right">
-                  <h3 className="font-semibold text-gray-900">{seller?.fullName}</h3>
-                  <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-1">
-                      <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                      <span className="font-bold text-sm">{service.rating}</span>
-                      <span className="text-gray-500 text-sm">({service.totalReviews})</span>
-                    </div>
-                    <span className="text-gray-300">|</span>
-                    <span className="text-sm text-gray-600">{service.totalOrders} طلب مكتمل</span>
-                  </div>
-                </div>
+              <div className="mb-4 text-right">
+                <h3 className="text-lg font-bold text-gray-900">أحمد محمد الحرفي</h3>
               </div>
 
               {/* Action Buttons */}
               <div className="flex items-center gap-3">
-                <button className="flex items-center gap-2 text-gray-600 hover:text-red-500 transition-colors">
-                  <Heart className="h-5 w-5" />
+                <button 
+                  onClick={handleFavorite}
+                  className={`flex items-center gap-2 transition-colors ${
+                    isFavorite ? 'text-red-500' : 'text-gray-600 hover:text-red-500'
+                  }`}
+                >
+                  <Heart className={`h-5 w-5 ${isFavorite ? 'fill-current' : ''}`} />
                   <span className="text-sm">إضافة للمفضلة</span>
                 </button>
-                <button className="flex items-center gap-2 text-gray-600 hover:text-[#1ab7ea] transition-colors">
+                <button 
+                  onClick={handleShare}
+                  className="flex items-center gap-2 text-gray-600 hover:text-[#1ab7ea] transition-colors"
+                >
                   <Share2 className="h-5 w-5" />
                   <span className="text-sm">مشاركة</span>
                 </button>
-                <button className="flex items-center gap-2 text-gray-600 hover:text-red-500 transition-colors">
+                <button 
+                  onClick={handleReport}
+                  className="flex items-center gap-2 text-gray-600 hover:text-red-500 transition-colors"
+                >
                   <Flag className="h-5 w-5" />
                   <span className="text-sm">إبلاغ</span>
                 </button>
@@ -396,8 +416,10 @@ export default function ServiceDetail() {
                           </UnifiedButton>
                           
                           <UnifiedButton variant="outline" className="w-full">
-                            <MessageCircle className="h-4 w-4 ml-2" />
-                            تواصل مع البائع
+                            <div className="inline-flex items-center gap-2" dir="rtl">
+                              <span>تواصل مع البائع</span>
+                              <MessageCircle className="h-4 w-4" />
+                            </div>
                           </UnifiedButton>
                         </div>
 

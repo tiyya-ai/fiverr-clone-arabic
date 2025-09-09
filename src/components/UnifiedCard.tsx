@@ -37,16 +37,9 @@ const UnifiedCard = ({
               </button>
             </div>
             <div className="card-content p-4">
-              <div className="seller-info flex items-center gap-2 mb-3" dir="rtl">
-                <Image 
-                  src={data.sellerImg || data.avatar || "/img/noavatar.jpg"} 
-                  alt="Seller" 
-                  width={24}
-                  height={24}
-                  className="w-6 h-6 rounded-full object-cover"
-                />
-                <span className="text-sm text-gray-600 font-medium">
-                  {data.sellerName || data.fullName || "مقدم الخدمة"}
+              <div className="seller-info mb-3 text-right" dir="rtl">
+                <span className="text-sm font-bold text-gray-800">
+                  {data.sellerName || data.fullName || "أحمد محمد الحرفي"}
                 </span>
               </div>
               <h4 className="card-title text-right font-semibold text-gray-800 line-clamp-2 mb-3" dir="rtl">

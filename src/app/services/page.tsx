@@ -7,6 +7,7 @@ import Footer from '@/components/Footer'
 import UnifiedCard from '@/components/UnifiedCard'
 import { useServices } from '@/context/ServicesContext'
 import { getUserById } from '@/data/mockData'
+import Image from 'next/image'
 
 export default function Services() {
   const { services } = useServices()
@@ -113,101 +114,174 @@ export default function Services() {
         </div>
 
         {/* Filter Bar */}
-        <div className="flex items-center justify-between mb-6 bg-white p-4 rounded-lg border border-gray-200">
-          <div className="flex items-center gap-4" dir="rtl">
-            <button 
-              onClick={() => setShowFilters(!showFilters)}
-              className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-            >
-              <Filter className="h-4 w-4" />
-              <span className="text-sm font-medium">تصفية</span>
-            </button>
+        <div className="bg-white p-4 rounded-lg border border-gray-200 mb-6">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4" dir="rtl">
+              <button 
+                onClick={() => setShowFilters(!showFilters)}
+                className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 w-full sm:w-auto justify-center"
+              >
+                <Filter className="h-4 w-4" />
+                <span className="text-sm font-medium">تصفية</span>
+              </button>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full sm:w-auto">
+                <select
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  className="px-4 py-2 border border-gray-300 rounded-lg text-sm bg-white w-full"
+                  dir="rtl"
+                >
+                  <option value="">جميع الفئات</option>
+                  {categories.map((category) => (
+                    <option key={category} value={category}>{category}</option>
+                  ))}
+                </select>
+                
+                <select
+                  value={priceRange}
+                  onChange={(e) => setPriceRange(e.target.value)}
+                  className="px-4 py-2 border border-gray-300 rounded-lg text-sm bg-white w-full"
+                  dir="rtl"
+                >
+                  <option value="">جميع الأسعار</option>
+                  {priceRanges.map((range) => (
+                    <option key={range.value} value={range.value}>{range.label}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
             
-            <select
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg text-sm bg-white"
-              dir="rtl"
-            >
-              <option value="">جميع الفئات</option>
-              {categories.map((category) => (
-                <option key={category} value={category}>{category}</option>
-              ))}
-            </select>
-            
-            <select
-              value={priceRange}
-              onChange={(e) => setPriceRange(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg text-sm bg-white"
-              dir="rtl"
-            >
-              <option value="">جميع الأسعار</option>
-              {priceRanges.map((range) => (
-                <option key={range.value} value={range.value}>{range.label}</option>
-              ))}
-            </select>
-          </div>
-          
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-600">{filteredServices.length} خدمة</span>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg text-sm bg-white"
-              dir="rtl"
-            >
-              <option value="recommended">الموصى به</option>
-              <option value="rating">الأعلى تقييماً</option>
-              <option value="price-low">السعر: من الأقل للأعلى</option>
-              <option value="price-high">السعر: من الأعلى للأقل</option>
-            </select>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <span className="text-sm text-gray-600">{filteredServices.length} خدمة</span>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="px-4 py-2 border border-gray-300 rounded-lg text-sm bg-white w-full sm:w-auto"
+                dir="rtl"
+              >
+                <option value="recommended">الموصى به</option>
+                <option value="rating">الأعلى تقييماً</option>
+                <option value="price-low">السعر: من الأقل للأعلى</option>
+                <option value="price-high">السعر: من الأعلى للأقل</option>
+              </select>
+            </div>
           </div>
         </div>
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {/* Services Grid - Home Page Style */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
           {currentServices.length > 0 ? currentServices.map((service) => {
             const user = getUserById(service.userId)
             return (
-              <UnifiedCard
-                key={service.id}
-                type="service"
-                data={{
-                  ...service,
-                  cover: service.images?.[0],
-                  sellerName: user?.fullName,
-                  sellerImg: user?.avatar,
-                  price: service.packages?.[0]?.price
-                }}
-                linkTo={`/services/${service.id}`}
-              />
+              <a key={service.id} href={`/services/${service.id}`} className="flex-shrink-0 w-full bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden group flex flex-col hover:shadow-lg transition-all duration-300 hover:border-[#1ab7ea]">
+                <div className="relative">
+                  <Image
+                    src={service.images?.[0] || `https://images.pexels.com/photos/${580151 + parseInt(service.id)}/pexels-photo-${580151 + parseInt(service.id)}.jpeg?auto=compress&cs=tinysrgb&w=400`}
+                    alt={service.title}
+                    width={300}
+                    height={170}
+                    className="w-full h-[170px] object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
+                <div className="p-4 flex flex-col flex-grow">
+                  <div className="flex items-center mb-3">
+                    <Image
+                      src={user?.avatar || '/img/noavatar.jpg'}
+                      alt={user?.fullName || 'أحمد محمد الحرفي'}
+                      width={32}
+                      height={32}
+                      className="w-8 h-8 rounded-full object-cover"
+                    />
+                    <div className="mr-3 text-right">
+                      <h3 className="font-semibold text-sm text-gray-800">{user?.fullName || 'أحمد محمد الحرفي'}</h3>
+                      <p className="text-xs text-gray-500">{user?.level || 'محترف معتمد'}</p>
+                    </div>
+                  </div>
+                  <a href={`/services/${service.id}`} className="text-gray-800 hover:text-green-500 transition-colors duration-200 text-right font-semibold leading-snug flex-grow">
+                    {service.title}
+                  </a>
+                  <div className="flex items-center mt-3">
+                    <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                    <span className="text-sm text-gray-600 mr-1 font-bold">
+                      {service.rating}
+                    </span>
+                    <span className="text-xs text-gray-400">({service.totalReviews})</span>
+                  </div>
+                  <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
+                    <button className="text-gray-400 hover:text-red-500">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                      </svg>
+                    </button>
+                    <div className="text-left">
+                      <span className="text-xs text-gray-500 block">ابتداءً من</span>
+                      <div className="font-bold text-gray-800 text-lg">{service.packages?.[0]?.price || 50} ريال</div>
+                    </div>
+                  </div>
+                </div>
+              </a>
             )
           }) : (
             // Fallback sample services when no data is loaded
             Array.from({ length: 8 }, (_, index) => {
-              const sampleServices: any[] = [
-                { id: `sample-${index}`, title: 'خدمة صيانة الكهرباء المنزلية', category: 'الكهرباء', rating: '4.9', totalReviews: 123, price: 150 },
-                { id: `sample-${index}`, title: 'إصلاح وصيانة السباكة', category: 'السباكة', rating: '4.8', totalReviews: 89, price: 120 },
-                { id: `sample-${index}`, title: 'تركيب وصيانة التكييف', category: 'التكييف والتبريد', rating: '4.7', totalReviews: 156, price: 200 },
-                { id: `sample-${index}`, title: 'أعمال النجارة والأثاث', category: 'النجارة', rating: '4.9', totalReviews: 234, price: 180 },
-                { id: `sample-${index}`, title: 'تركيب كاميرات المراقبة', category: 'تركيب كاميرات المراقبة', rating: '4.6', totalReviews: 67, price: 300 },
-                { id: `sample-${index}`, title: 'أعمال البناء والمقاولات', category: 'البناء والمقاولات', rating: '4.8', totalReviews: 145, price: 500 },
-                { id: `sample-${index}`, title: 'تنسيق وصيانة الحدائق', category: 'تنسيق الحدائق', rating: '4.7', totalReviews: 98, price: 250 },
-                { id: `sample-${index}`, title: 'صيانة المصاعد والسلالم', category: 'صيانة المصاعد', rating: '4.5', totalReviews: 45, price: 400 }
+              const sampleServices = [
+                { id: `sample-${index}`, title: 'خدمة صيانة الكهرباء المنزلية', rating: '4.9', totalReviews: 123, price: 150 },
+                { id: `sample-${index}`, title: 'إصلاح وصيانة السباكة', rating: '4.8', totalReviews: 89, price: 120 },
+                { id: `sample-${index}`, title: 'تركيب وصيانة التكييف', rating: '4.7', totalReviews: 156, price: 200 },
+                { id: `sample-${index}`, title: 'أعمال النجارة والأثاث', rating: '4.9', totalReviews: 234, price: 180 },
+                { id: `sample-${index}`, title: 'تركيب كاميرات المراقبة', rating: '4.6', totalReviews: 67, price: 300 },
+                { id: `sample-${index}`, title: 'أعمال البناء والمقاولات', rating: '4.8', totalReviews: 145, price: 500 },
+                { id: `sample-${index}`, title: 'تنسيق وصيانة الحدائق', rating: '4.7', totalReviews: 98, price: 250 },
+                { id: `sample-${index}`, title: 'صيانة المصاعد والسلالم', rating: '4.5', totalReviews: 45, price: 400 }
               ]
               const service = sampleServices[index % sampleServices.length]
               return (
-                <UnifiedCard
-                  key={service.id}
-                  type="service"
-                  data={{
-                    ...service,
-                    cover: `https://images.pexels.com/photos/${580151 + index}/pexels-photo-${580151 + index}.jpeg?auto=compress&cs=tinysrgb&w=400`,
-                    sellerName: `مقدم الخدمة ${index + 1}`,
-                    sellerImg: '/img/noavatar.jpg'
-                  }}
-                  linkTo={`/services/${service.id}`}
-                />
+                <a key={service.id} href={`/services/${service.id}`} className="flex-shrink-0 w-full bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden group flex flex-col hover:shadow-lg transition-all duration-300 hover:border-[#1ab7ea]">
+                  <div className="relative">
+                    <Image
+                      src={`https://images.pexels.com/photos/${580151 + index}/pexels-photo-${580151 + index}.jpeg?auto=compress&cs=tinysrgb&w=400`}
+                      alt={service.title}
+                      width={300}
+                      height={170}
+                      className="w-full h-[170px] object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="p-4 flex flex-col flex-grow">
+                    <div className="flex items-center mb-3">
+                      <Image
+                        src="/img/noavatar.jpg"
+                        alt="أحمد محمد الحرفي"
+                        width={32}
+                        height={32}
+                        className="w-8 h-8 rounded-full object-cover"
+                      />
+                      <div className="mr-3 text-right">
+                        <h3 className="font-semibold text-sm text-gray-800">أحمد محمد الحرفي</h3>
+                        <p className="text-xs text-gray-500">محترف معتمد</p>
+                      </div>
+                    </div>
+                    <a href={`/services/${service.id}`} className="text-gray-800 hover:text-green-500 transition-colors duration-200 text-right font-semibold leading-snug flex-grow">
+                      {service.title}
+                    </a>
+                    <div className="flex items-center mt-3">
+                      <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                      <span className="text-sm text-gray-600 mr-1 font-bold">{service.rating}</span>
+                      <span className="text-xs text-gray-400">({service.totalReviews})</span>
+                    </div>
+                    <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
+                      <button className="text-gray-400 hover:text-red-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                        </svg>
+                      </button>
+                      <div className="text-left">
+                        <span className="text-xs text-gray-500 block">ابتداءً من</span>
+                        <div className="font-bold text-gray-800 text-lg">{service.price} ريال</div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
               )
             })
           )}

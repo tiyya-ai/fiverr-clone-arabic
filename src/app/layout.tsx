@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Cairo, Tajawal, Noto_Kufi_Arabic } from 'next/font/google'
 import './globals.css'
-import { ServicesProvider } from '@/context/ServicesContext'
+import Providers from '@/components/Providers'
 
 const cairo = Cairo({ 
   subsets: ['arabic', 'latin'],
@@ -37,9 +37,9 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl">
       <body className={`${cairo.variable} ${tajawal.variable} ${notoKufiArabic.variable} font-sans antialiased`}>
-        <ServicesProvider>
+        <Providers>
           {children}
-        </ServicesProvider>
+        </Providers>
       </body>
     </html>
   )

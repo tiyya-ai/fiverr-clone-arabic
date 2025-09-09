@@ -1,7 +1,7 @@
 {
   "version": 2,
   "env": {
-    "NEXTAUTH_URL": "https://wbl3-platform.vercel.app",
+    "NEXTAUTH_URL": "https://fiverr-clone-doutyfune-elmohajirs-projects.vercel.app",
     "NEXTAUTH_SECRET": "wbl3-secure-secret-key-2024"
   }
 }
