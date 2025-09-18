@@ -3,12 +3,14 @@
 import { useEffect, useState } from 'react'
 import { Users, Package, DollarSign, TrendingUp, CheckCircle, Eye, Edit, Trash2, Search, Download, MessageSquare, Star, Clock, Plus, ChevronLeft, ChevronRight, ShoppingCart } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import { useServices } from '@/context/ServicesContext'
 import { mockUsers } from '@/data/mockData'
 import { LineChart, BarChart, PieChart, DonutChart } from '@/components/Admin/Charts'
 
 export default function AdminDashboard() {
   const router = useRouter()
+  const { data: session, status } = useSession()
   const [activeTab, setActiveTab] = useState('overview')
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage] = useState(10)
@@ -68,11 +70,13 @@ export default function AdminDashboard() {
   ]
 
   useEffect(() => {
-    const userType = localStorage.getItem('userType')
-    if (userType !== 'admin') {
-      window.location.href = '/'
+    if (status === 'loading') return // Still loading
+    
+    if (!session || session.user.userType !== 'ADMIN') {
+      router.push('/')
+      return
     }
-  }, [])
+  }, [session, status, router])
 
 
 

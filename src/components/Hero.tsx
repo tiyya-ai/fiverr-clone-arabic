@@ -35,7 +35,7 @@ const Hero = () => {
   ]
 
   return (
-    <section className="bg-gradient-to-r from-primary-500 to-primary-700 text-white overflow-hidden">
+    <section className="bg-blue-600 text-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[600px] py-20">
           {/* Left Content */}

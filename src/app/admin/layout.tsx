@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import { Users, Package, DollarSign, TrendingUp, AlertTriangle, CheckCircle, Bell, BarChart3, PieChart, Star, Clock, Menu, Home, FileText, CreditCard, LogOut, ChevronDown, ChevronRight, UserCheck, ShoppingCart, Settings } from 'lucide-react'
 import NotificationSystem from '@/components/Admin/NotificationSystem'
 
@@ -12,15 +13,18 @@ export default function AdminLayout({
 }) {
   const router = useRouter()
   const pathname = usePathname()
+  const { data: session, status } = useSession()
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [expandedMenus, setExpandedMenus] = useState<string[]>(['dashboard', 'users', 'services', 'orders', 'financial'])
 
   useEffect(() => {
-    const userType = localStorage.getItem('userType')
-    if (userType !== 'admin') {
+    if (status === 'loading') return // Still loading
+    
+    if (!session || session.user.userType !== 'ADMIN') {
       router.push('/')
+      return
     }
-  }, [router])
+  }, [session, status, router])
 
   const toggleMenu = (menuId: string) => {
     setExpandedMenus(prev =>
