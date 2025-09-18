@@ -174,10 +174,10 @@ export default function Services() {
           {currentServices.length > 0 ? currentServices.map((service) => {
             const user = getUserById(service.userId)
             return (
-              <a key={service.id} href={`/services/${service.id}`} className="flex-shrink-0 w-full bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden group flex flex-col hover:shadow-lg transition-all duration-300 hover:border-[#1ab7ea]">
+              <div key={service.id} className="flex-shrink-0 w-full bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden group flex flex-col hover:shadow-lg transition-all duration-300 hover:border-[#1ab7ea] cursor-pointer" onClick={() => window.location.href = `/services/${service.id}`}>
                 <div className="relative">
                   <Image
-                    src={service.images?.[0] || `https://images.pexels.com/photos/${580151 + parseInt(service.id)}/pexels-photo-${580151 + parseInt(service.id)}.jpeg?auto=compress&cs=tinysrgb&w=400`}
+                    src={service.image || `https://images.pexels.com/photos/580151/pexels-photo-580151.jpeg?auto=compress&cs=tinysrgb&w=400`}
                     alt={service.title}
                     width={300}
                     height={170}
@@ -188,19 +188,19 @@ export default function Services() {
                   <div className="flex items-center mb-3">
                     <Image
                       src={user?.avatar || '/img/noavatar.jpg'}
-                      alt={user?.fullName || 'أحمد محمد الحرفي'}
+                      alt={user?.name || 'مقدم الخدمة'}
                       width={32}
                       height={32}
                       className="w-8 h-8 rounded-full object-cover"
                     />
                     <div className="mr-3 text-right">
-                      <h3 className="font-semibold text-sm text-gray-800">{user?.fullName || 'أحمد محمد الحرفي'}</h3>
-                      <p className="text-xs text-gray-500">{user?.level || 'محترف معتمد'}</p>
+                      <h3 className="font-semibold text-sm text-gray-800">{user?.name || 'مقدم الخدمة'}</h3>
+                      <p className="text-xs text-gray-500">محترف معتمد</p>
                     </div>
                   </div>
-                  <a href={`/services/${service.id}`} className="text-gray-800 hover:text-green-500 transition-colors duration-200 text-right font-semibold leading-snug flex-grow">
+                  <div className="text-gray-800 hover:text-green-500 transition-colors duration-200 text-right font-semibold leading-snug flex-grow">
                     {service.title}
-                  </a>
+                  </div>
                   <div className="flex items-center mt-3">
                     <Star className="h-4 w-4 text-yellow-400 fill-current" />
                     <span className="text-sm text-gray-600 mr-1 font-bold">
@@ -220,7 +220,7 @@ export default function Services() {
                     </div>
                   </div>
                 </div>
-              </a>
+              </div>
             )
           }) : (
             // Fallback sample services when no data is loaded
@@ -237,7 +237,7 @@ export default function Services() {
               ]
               const service = sampleServices[index % sampleServices.length]
               return (
-                <a key={service.id} href={`/services/${service.id}`} className="flex-shrink-0 w-full bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden group flex flex-col hover:shadow-lg transition-all duration-300 hover:border-[#1ab7ea]">
+                <div key={service.id} className="flex-shrink-0 w-full bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden group flex flex-col hover:shadow-lg transition-all duration-300 hover:border-[#1ab7ea] cursor-pointer" onClick={() => window.location.href = `/services/${service.id}`}>
                   <div className="relative">
                     <Image
                       src={`https://images.pexels.com/photos/${580151 + index}/pexels-photo-${580151 + index}.jpeg?auto=compress&cs=tinysrgb&w=400`}
@@ -261,9 +261,9 @@ export default function Services() {
                         <p className="text-xs text-gray-500">محترف معتمد</p>
                       </div>
                     </div>
-                    <a href={`/services/${service.id}`} className="text-gray-800 hover:text-green-500 transition-colors duration-200 text-right font-semibold leading-snug flex-grow">
+                    <div className="text-gray-800 hover:text-green-500 transition-colors duration-200 text-right font-semibold leading-snug flex-grow">
                       {service.title}
-                    </a>
+                    </div>
                     <div className="flex items-center mt-3">
                       <Star className="h-4 w-4 text-yellow-400 fill-current" />
                       <span className="text-sm text-gray-600 mr-1 font-bold">{service.rating}</span>
@@ -281,7 +281,7 @@ export default function Services() {
                       </div>
                     </div>
                   </div>
-                </a>
+                </div>
               )
             })
           )}

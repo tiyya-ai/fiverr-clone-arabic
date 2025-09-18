@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql" // or "mysql" or "sqlite"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -18,17 +18,26 @@ model User {
   phone               String?
   location            String
   bio                 String?
-  skills              String[]
-  languages           String[]
+  skills              String   @default("[]")
+  languages           String   @default("[]")
   rating              Float    @default(0)
   totalReviews        Int      @default(0)
   totalSales          Int      @default(0)
   responseTime        String   @default("1 hour")
   memberSince         String
   isVerified          Boolean  @default(false)
-  userType            UserType @default(BUYER)
-  verificationBadges  String[]
+  isOnline            Boolean  @default(false)
+  lastSeen            DateTime?
+  userType            String   @default("BUYER")
+  verificationBadges  String   @default("[]")
   verificationScore   Int?
+  emailVerified       Boolean  @default(false)
+  phoneVerified       Boolean  @default(false)
+  level               String   @default("مبتدئ")
+  completedTasks      Int      @default(0)
+  stripeCustomerId    String?
+  stripeAccountId     String?
+  stripeOnboardingComplete Boolean @default(false)
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 
@@ -37,6 +46,11 @@ model User {
   buyerOrders         Order[]   @relation("BuyerOrders")
   sellerOrders        Order[]   @relation("SellerOrders")
   reviews             Review[]
+  sentMessages        Message[] @relation("SentMessages")
+  receivedMessages    Message[] @relation("ReceivedMessages")
+  portfolioItems      PortfolioItem[]
+  certifications      Certification[]
+  workHistory         WorkHistoryItem[]
   
   @@map("users")
 }
@@ -70,8 +84,8 @@ model Service {
   descriptionEn String
   categoryId   String
   userId       String
-  images       String[]
-  tags         String[]
+  images       String   @default("[]")
+  tags         String   @default("[]")
   rating       Float     @default(0)
   totalReviews Int       @default(0)
   totalSales   Int       @default(0)
@@ -86,6 +100,7 @@ model Service {
   packages     ServicePackage[]
   orders       Order[]
   reviews      Review[]
+  faqs         ServiceFAQ[]
   
   @@map("services")
 }
@@ -100,8 +115,8 @@ model ServicePackage {
   price         Float
   deliveryTime  Int         // in days
   revisions     Int
-  features      String[]
-  type          PackageType
+  features      String   @default("[]")
+  type          String   @default("basic")
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 
@@ -113,24 +128,29 @@ model ServicePackage {
 }
 
 model Order {
-  id           String      @id @default(cuid())
-  serviceId    String
-  packageId    String
-  buyerId      String
-  sellerId     String
-  status       OrderStatus @default(PENDING)
-  totalAmount  Float
-  requirements String?
-  deliveryDate DateTime
-  completedAt  DateTime?
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
+  id              String      @id @default(cuid())
+  serviceId       String
+  packageId       String
+  buyerId         String
+  sellerId        String
+  status          String      @default("PENDING")
+  totalAmount     Float
+  paymentIntentId String?
+  requirements    String?
+  notes           String?
+  urgentDelivery  Boolean  @default(false)
+  deliveryDate    DateTime
+  completedAt     DateTime?
+  paidAt          DateTime?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
 
   // Relations
   service      Service        @relation(fields: [serviceId], references: [id])
   package      ServicePackage @relation(fields: [packageId], references: [id])
   buyer        User           @relation("BuyerOrders", fields: [buyerId], references: [id])
   seller       User           @relation("SellerOrders", fields: [sellerId], references: [id])
+  messages     Message[]
   
   @@map("orders")
 }
@@ -152,24 +172,86 @@ model Review {
   @@map("reviews")
 }
 
-// Enums
-enum UserType {
-  BUYER
-  SELLER
-  ADMIN
+// Note: SQLite doesn't support enums, using String fields instead
+// UserType: BUYER, SELLER, ADMIN
+// PackageType: basic, standard, premium  
+// OrderStatus: PENDING, ACTIVE, DELIVERED, COMPLETED, CANCELLED, DISPUTED
+
+model Message {
+  id        String   @id @default(cuid())
+  content   String
+  isRead    Boolean  @default(false)
+  orderId   String?
+  createdAt DateTime @default(now())
+
+  // Relations
+  fromUserId String
+  fromUser   User   @relation("SentMessages", fields: [fromUserId], references: [id], onDelete: Cascade)
+  toUserId   String
+  toUser     User   @relation("ReceivedMessages", fields: [toUserId], references: [id], onDelete: Cascade)
+  order      Order? @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("messages")
 }
 
-enum PackageType {
-  basic
-  standard
-  premium
+model PortfolioItem {
+  id           String   @id @default(cuid())
+  title        String
+  description  String
+  images       String   @default("[]")
+  technologies String   @default("[]")
+  projectUrl   String?
+  completedAt  DateTime
+  createdAt    DateTime @default(now())
+
+  // Relations
+  userId       String
+  user         User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("portfolio_items")
 }
 
-enum OrderStatus {
-  PENDING
-  ACTIVE
-  DELIVERED
-  COMPLETED
-  CANCELLED
-  DISPUTED
+model Certification {
+  id            String    @id @default(cuid())
+  name          String
+  issuer        String
+  issueDate     DateTime
+  expiryDate    DateTime?
+  credentialUrl String?
+  createdAt     DateTime  @default(now())
+
+  // Relations
+  userId        String
+  user          User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("certifications")
+}
+
+model WorkHistoryItem {
+  id           String   @id @default(cuid())
+  title        String
+  company      String
+  duration     String
+  description  String
+  technologies String   @default("[]")
+  createdAt    DateTime @default(now())
+
+  // Relations
+  userId       String
+  user         User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("work_history")
+}
+
+model ServiceFAQ {
+  id        String @id @default(cuid())
+  question  String
+  answer    String
+  order     Int    @default(0)
+
+  // Relations
+  serviceId String
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@map("service_faqs")
 }

@@ -1,89 +1,93 @@
-import React, { memo } from 'react';
-import PropTypes from 'prop-types';
-import { categories } from '@/data/categories';
-import CategoryIcon from '@/components/Icons/CategoryIcon';
+import React from 'react';
+import Link from 'next/link';
 import './Categories.css';
 
-// Single category card component
-const CategoryCard = memo(({ category, className = '' }) => (
-  <a
-    href={category.url}
-    className={`group flex flex-col items-center text-center p-4 border border-slate-200 rounded-xl bg-white hover:border-[#1ab7ea] hover:shadow-lg transition-all duration-300 ${className}`}
-  >
-    <div className="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center mb-3">
-      <CategoryIcon 
-        categoryKey={category.icon}
-        size={className.includes('mobile') ? 'sm' : 'md'}
-        useExternal={true}
-        showFallback={true}
-        variant="minimal"
-      />
-    </div>
-    <h4 
-      className="font-bold text-slate-800 group-hover:text-[#1ab7ea] text-xs md:text-sm leading-tight text-center transition-colors duration-300" 
-      dir="rtl"
-    >
-      {category.name}
-    </h4>
-  </a>
-));
-
-CategoryCard.displayName = 'CategoryCard';
-
-CategoryCard.propTypes = {
-  category: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    icon: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired
-  }).isRequired,
-  className: PropTypes.string
-};
-
-// Main Categories component
 const Categories = () => {
+  const categories = [
+    {
+      id: 'graphics',
+      name: 'Graphics & Design',
+      image: '/atlaspayx-dashboard-ready-to-upload/graphics-design-thin-ff38893.svg',
+      smallImage: '/atlaspayx-dashboard-ready-to-upload/logo-design.png'
+    },
+    {
+      id: 'digital-marketing',
+      name: 'Digital Marketing',
+      image: '/atlaspayx-dashboard-ready-to-upload/digital-marketing-thin-68edb44.svg',
+      smallImage: '/atlaspayx-dashboard-ready-to-upload/social-media-marketing.png'
+    },
+    {
+      id: 'writing',
+      name: 'Writing & Translation',
+      image: '/atlaspayx-dashboard-ready-to-upload/writing-translation-thin-fd3699b.svg',
+      smallImage: '/atlaspayx-dashboard-ready-to-upload/Book Design.png'
+    },
+    {
+      id: 'video',
+      name: 'Video & Animation',
+      image: '/atlaspayx-dashboard-ready-to-upload/video-animation-thin-9d3f24d.svg',
+      smallImage: '/atlaspayx-dashboard-ready-to-upload/video-editing.png'
+    },
+    {
+      id: 'music',
+      name: 'Music & Audio',
+      image: '/atlaspayx-dashboard-ready-to-upload/music-audio-thin-43a9801.svg',
+      smallImage: '/atlaspayx-dashboard-ready-to-upload/voice-over.png'
+    },
+    {
+      id: 'programming',
+      name: 'Programming & Tech',
+      image: '/atlaspayx-dashboard-ready-to-upload/programming-tech-thin-56382a2.svg',
+      smallImage: '/atlaspayx-dashboard-ready-to-upload/website-development.png'
+    },
+    {
+      id: 'business',
+      name: 'Business',
+      image: '/atlaspayx-dashboard-ready-to-upload/business-thin-885e68e.svg',
+      smallImage: '/atlaspayx-dashboard-ready-to-upload/consulting-thin-d5547ff.svg'
+    },
+    {
+      id: 'ai-services',
+      name: 'AI Services',
+      image: '/atlaspayx-dashboard-ready-to-upload/ai-services-thin-104f389.svg',
+      smallImage: '/atlaspayx-dashboard-ready-to-upload/AI Development.png'
+    },
+    {
+      id: 'seo',
+      name: 'SEO',
+      image: '/atlaspayx-dashboard-ready-to-upload/digital-marketing-thin-68edb44.svg',
+      smallImage: '/atlaspayx-dashboard-ready-to-upload/seo.png'
+    }
+  ];
+
   return (
-    <section className="py-16 bg-white">
-      <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">الأصناف</h2>
-        
-        {/* Desktop Grid */}
-        <div className="hidden md:grid md:grid-cols-4 lg:grid-cols-6 gap-6">
-          {categories.map(category => (
-            <CategoryCard 
-              key={category.id}
-              category={category}
-              className="desktop"
-            />
-          ))}
+    <section className="categories">
+      <div className="categories-container">
+        <div className="section-header">
+          <h2 className="section-title">Popular services</h2>
         </div>
 
-        {/* Mobile Grid */}
-        <div className="md:hidden grid grid-cols-2 gap-4">
-          {categories.slice(0, 12).map(category => (
-            <CategoryCard
-              key={category.id}
-              category={category}
-              className="mobile"
-            />
-          ))}
-        </div>
-        
-        {/* View More Button - Mobile Only */}
-        <div className="text-center mt-6 md:hidden">
-          <a
-            href="/services"
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-[#1ab7ea] to-[#0ea5d9] hover:from-[#0ea5d9] hover:to-[#0288c7] text-white px-8 py-3 rounded-xl font-bold transition-all duration-300 text-sm shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-          >
-            <span>عرض جميع الخدمات</span>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </a>
+        <div className="categories-slider">
+          <div className="categories-grid">
+            {categories.map((category) => (
+              <Link
+                key={category.id}
+                href={`/services?category=${category.id}`}
+                className="category-card"
+              >
+                <div className="category-image">
+                  <img src={category.smallImage} alt={category.name} />
+                </div>
+                <div className="category-content">
+                  <h3 className="category-name">{category.name}</h3>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </section>
   );
 };
 
-export default memo(Categories);
+export default Categories;

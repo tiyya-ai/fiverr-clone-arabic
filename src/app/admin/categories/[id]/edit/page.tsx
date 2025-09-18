@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { ArrowRight, Upload, X } from 'lucide-react'
+import Image from 'next/image'
 
 // Mock data
 const mockCategories: Record<string, { name: string; description: string; icon: string; status: string }> = {
@@ -184,9 +185,11 @@ export default function EditCategoryPage() {
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-6">
             {imagePreview ? (
               <div className="relative">
-                <img
+                <Image
                   src={imagePreview}
                   alt="معاينة الصورة"
+                  width={400}
+                  height={192}
                   className="w-full h-48 object-cover rounded-lg"
                 />
                 <button

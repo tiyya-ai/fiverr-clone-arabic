@@ -13,7 +13,7 @@ const AuthNavigation = () => {
       <Link href="/gigs/create" className="text-gray-600 hover:text-green-500 font-medium">
         Become a Seller
       </Link>
-      <Link href="/auth/signin" className="text-gray-600 hover:text-green-500 font-medium">
+      <Link href="/api/auth/signin" className="text-gray-600 hover:text-green-500 font-medium">
         Sign In
       </Link>
       <Link href="/auth/signup" className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded font-medium">
@@ -26,7 +26,7 @@ const AuthNavigation = () => {
 const MobileAuthNavigation = () => {
   return (
     <>
-      <Link href="/auth/signin" className="block text-gray-600 hover:text-green-500 font-medium">
+      <Link href="/api/auth/signin" className="block text-gray-600 hover:text-green-500 font-medium">
         Sign In
       </Link>
       <Link href="/auth/signup" className="block w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded font-medium">
@@ -61,7 +61,7 @@ const Header = () => {
               <span className="hover:text-primary-400 cursor-pointer">Become a Seller</span>
             </div>
             <div className="flex items-center space-x-4">
-              <Link href="/auth/signin" className="hover:text-green-400">Sign in</Link>
+              <Link href="/api/auth/signin" className="hover:text-green-400">Sign in</Link>
               <Link href="/auth/signup" className="bg-green-600 hover:bg-green-700 px-4 py-1 rounded text-white font-medium">
                 Join
               </Link>

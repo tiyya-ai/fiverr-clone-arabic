@@ -1,15 +1,16 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Menu, X, Bell, User, MessageCircle, Heart, Plus, LogIn, UserPlus, ShoppingCart } from 'lucide-react'
+import { useSession, signOut } from 'next-auth/react'
 import MainNavigation from './Navigation/MainNavigation'
 import MobileNavigation from './Navigation/MobileNavigation'
 import NotificationSystem from './Notifications/NotificationSystem'
+import LoginModal from './LoginModal'
 import Image from 'next/image';
 
 export default function MainHeader() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [userType, setUserType] = useState('')
+  const { data: session, status } = useSession()
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [showCartModal, setShowCartModal] = useState(false)
   const [showLoginPrompt, setShowLoginPrompt] = useState(false)
@@ -17,14 +18,13 @@ export default function MainHeader() {
   const [cartCount, setCartCount] = useState(0)
   const [pendingItem, setPendingItem] = useState<any>(null)
 
+  // Get user info from session instead of localStorage
+  const isLoggedIn = !!session
+  const userType = session?.user?.userType || ''
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const loggedIn = localStorage.getItem('isLoggedIn')
-      const type = localStorage.getItem('userType')
       const cart = JSON.parse(localStorage.getItem('cart') || '[]')
-      
-      setIsLoggedIn(!!loggedIn)
-      setUserType(type || '')
       setCartItems(cart)
       setCartCount(cart.length)
     }
@@ -47,45 +47,15 @@ export default function MainHeader() {
     }
   }, [])
 
-  const handleLogin = (type: string) => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('userType', type)
-      localStorage.setItem('isLoggedIn', 'true')
-      
-      let userId = '1'
-      if (type === 'admin') {
-        userId = 'admin_001'
-      } else if (type === 'seller') {
-        userId = 'seller_001'
-      } else {
-        userId = 'user_001'
-      }
-      localStorage.setItem('currentUserId', userId)
-      
-      setIsLoggedIn(true)
-      setUserType(type)
-      setShowLoginModal(false)
-      
-      if (type === 'admin') {
-        window.location.href = '/admin'
-      } else if (type === 'seller') {
-        window.location.href = '/dashboard'
-      } else {
-        window.location.href = '/client-dashboard'
-      }
-    }
-  }
-
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await signOut({ redirect: false })
     if (typeof window !== 'undefined') {
       localStorage.clear()
-      setIsLoggedIn(false)
-      setUserType('')
       window.location.href = '/'
     }
   }
 
-  const addToCart = (item: any) => {
+  const addToCart = useCallback((item: any) => {
     console.log('addToCart called with:', item)
     console.log('isLoggedIn:', isLoggedIn)
     
@@ -102,18 +72,19 @@ export default function MainHeader() {
       setCartCount(newItems.length)
       setShowCartModal(true)
     }
-  }
+  }, [cartItems, isLoggedIn])
 
-  const handleLoginFromPrompt = (type: string) => {
+  const handleLoginFromPrompt = () => {
     // Add the pending item to cart after login
     if (pendingItem) {
       const newItems = [...cartItems, pendingItem]
       setCartItems(newItems)
       setCartCount(newItems.length)
+      localStorage.setItem('cart', JSON.stringify(newItems))
     }
     
-    // Proceed with normal login
-    handleLogin(type)
+    // Show login modal
+    setShowLoginModal(true)
     setShowLoginPrompt(false)
     setPendingItem(null)
   }
@@ -255,42 +226,11 @@ export default function MainHeader() {
         </div>
       </header>
 
-      {/* Login Modal */}
-      {showLoginModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60]">
-          <div className="bg-white rounded-lg p-6 sm:p-8 max-w-md w-full mx-4">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold">تسجيل الدخول التجريبي</h2>
-              <button onClick={() => setShowLoginModal(false)} className="text-gray-500 hover:text-gray-700">
-                <X className="h-6 w-6" />
-              </button>
-            </div>
-            
-            <div className="space-y-3 sm:space-y-4">
-              <button
-                onClick={() => handleLogin('user')}
-                className="w-full bg-[#1ab7ea] text-white py-3 sm:py-4 rounded-lg hover:bg-[#0ea5d9] font-medium text-sm sm:text-base"
-              >
-                دخول كعميل
-              </button>
-              
-              <button
-                onClick={() => handleLogin('seller')}
-                className="w-full bg-green-600 text-white py-3 sm:py-4 rounded-lg hover:bg-green-700 font-medium text-sm sm:text-base"
-              >
-                دخول كمقدم خدمة
-              </button>
-              
-              <button
-                onClick={() => handleLogin('admin')}
-                className="w-full bg-gray-600 text-white py-3 sm:py-4 rounded-lg hover:bg-gray-700 font-medium text-sm sm:text-base"
-              >
-                دخول كمدير
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Real Login Modal */}
+      <LoginModal 
+        isOpen={showLoginModal} 
+        onClose={() => setShowLoginModal(false)}
+      />
 
       {/* Cart Modal */}
       {showCartModal && (
@@ -379,7 +319,7 @@ export default function MainHeader() {
             
             <div className="space-y-3">
               <button
-                onClick={() => handleLoginFromPrompt('user')}
+                onClick={handleLoginFromPrompt}
                 className="w-full bg-[#1ab7ea] text-white py-3 rounded-lg hover:bg-[#0ea5d9] font-bold"
               >
                 تسجيل الدخول والمتابعة

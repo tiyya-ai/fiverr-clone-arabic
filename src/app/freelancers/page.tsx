@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Star, MapPin, Clock, Search, Filter, User, MessageCircle, Heart, CheckCircle } from 'lucide-react'
 import MainHeader from '@/components/MainHeader'
 import Footer from '@/components/Footer'
@@ -37,7 +37,7 @@ export default function FreelancersPage() {
   const [sortBy, setSortBy] = useState('rating')
 
   // Mock freelancers data
-  const mockFreelancers: Freelancer[] = [
+  const mockFreelancers: Freelancer[] = useMemo(() => [
     {
       id: '1',
       fullName: 'أحمد محمد',
@@ -152,9 +152,9 @@ export default function FreelancersPage() {
       joinedDate: '2020-09-18',
       successRate: 97
     }
-  ]
+  ], [])
 
-    useEffect(() => {
+  useEffect(() => {
     // Simulate loading
     setTimeout(() => {
       setFreelancers(mockFreelancers)

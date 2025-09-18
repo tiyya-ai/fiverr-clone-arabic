@@ -1,0 +1,102 @@
+{
+  "name": "WBL3.org - منصة الخدمات المصغرة",
+  "short_name": "WBL3",
+  "description": "منصة عربية رائدة للخدمات المصغرة. اكتشف آلاف الخدمات المتخصصة من مطورين ومصممين وكتاب محترفين.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3B82F6",
+  "orientation": "portrait-primary",
+  "lang": "ar",
+  "dir": "rtl",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    }
+  ],
+  "categories": [
+    "business",
+    "productivity",
+    "social",
+    "utilities"
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "الصفحة الرئيسية لمنصة WBL3"
+    },
+    {
+      "src": "/screenshot-narrow.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "تطبيق WBL3 على الهاتف المحمول"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "تصفح الخدمات",
+      "short_name": "الخدمات",
+      "description": "تصفح جميع الخدمات المتاحة",
+      "url": "/services",
+      "icons": [
+        {
+          "src": "/shortcut-services.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "الفئات",
+      "short_name": "الفئات",
+      "description": "تصفح الخدمات حسب الفئة",
+      "url": "/categories",
+      "icons": [
+        {
+          "src": "/shortcut-categories.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "حسابي",
+      "short_name": "الحساب",
+      "description": "إدارة حسابك الشخصي",
+      "url": "/dashboard",
+      "icons": [
+        {
+          "src": "/shortcut-profile.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}

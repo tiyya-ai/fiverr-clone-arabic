@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Clock, DollarSign, Users, Search, Filter, FolderOpen, Calendar, Star, MapPin } from 'lucide-react'
 import MainHeader from '@/components/MainHeader'
 import Footer from '@/components/Footer'
@@ -44,7 +44,7 @@ export default function ProjectsPage() {
   const [sortBy, setSortBy] = useState('recent')
 
   // Mock projects data
-  const mockProjects: Project[] = [
+  const mockProjects: Project[] = useMemo(() => [
     {
       id: '1',
       title: 'تطوير متجر إلكتروني متكامل',
@@ -109,7 +109,7 @@ export default function ProjectsPage() {
       experienceLevel: 'intermediate',
       projectType: 'short-term'
     }
-  ]
+  ], [])
 
   const categories = ['تطوير الويب', 'التصميم الجرافيكي', 'التسويق الرقمي', 'الكتابة والمحتوى', 'تطوير التطبيقات']
   const budgetRanges = ['أقل من 1000', '1000-5000', '5000-10000', '10000-20000', 'أكثر من 20000']
@@ -120,7 +120,7 @@ export default function ProjectsPage() {
       setFilteredProjects(mockProjects)
       setLoading(false)
     }, 1000)
-  }, [])
+  }, [mockProjects])
 
   useEffect(() => {
     let filtered = projects

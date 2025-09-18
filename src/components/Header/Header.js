@@ -1,5 +1,8 @@
+'use client'
+
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import Link from 'next/link';
+import { useRouter, usePathname } from 'next/navigation';
 import { 
   FiSearch, 
   FiUser, 
@@ -16,8 +19,8 @@ import {
   FiBriefcase, 
   FiStar 
 } from 'react-icons/fi';
-// import { FaFiverr } from 'react-icons/fa';
 import AuthModal from '../Auth/AuthModal';
+import LoginModal from '../LoginModal';
 import { useAuth } from '../../contexts/AuthContext';
 import './Header.css';
 import Image from 'next/image';
@@ -27,11 +30,12 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const [authMode, setAuthMode] = useState('login');
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
+  const router = useRouter();
+  const pathname = usePathname();
 
   // Add scroll effect
   useEffect(() => {
@@ -50,12 +54,12 @@ const Header = () => {
   // Close mobile menu on route change
   useEffect(() => {
     setIsMenuOpen(false);
-  }, [location]);
+  }, [pathname]);
 
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/services?search=${encodeURIComponent(searchQuery)}`);
+      router.push(`/services?search=${encodeURIComponent(searchQuery)}`);
       setSearchQuery('');
     }
   };
@@ -70,14 +74,23 @@ const Header = () => {
     setIsMenuOpen(false);
   };
 
+  const openLoginModal = () => {
+    setShowLoginModal(true);
+    setIsMenuOpen(false);
+  };
+
   const closeAuthModal = () => {
     setShowAuthModal(false);
+  };
+
+  const closeLoginModal = () => {
+    setShowLoginModal(false);
   };
 
   const handleLogout = () => {
     logout();
     setShowUserMenu(false);
-    navigate('/');
+    router.push('/');
   };
 
   const toggleUserMenu = () => {
@@ -117,7 +130,7 @@ const Header = () => {
               </div>
               {!isAuthenticated ? (
                 <div className="auth-links">
-                  <button onClick={() => openAuthModal('login')}>Sign In</button>
+                  <button onClick={openLoginModal}>Sign In</button>
                   <button className="join-btn" onClick={() => openAuthModal('register')}>Join</button>
                 </div>
               ) : (
@@ -343,6 +356,11 @@ const Header = () => {
         isOpen={showAuthModal}
         onClose={closeAuthModal}
         initialMode={authMode}
+      />
+
+      <LoginModal 
+        isOpen={showLoginModal}
+        onClose={closeLoginModal}
       />
 
       {showUserMenu && (

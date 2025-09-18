@@ -1,23 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    serverComponentsExternalPackages: ['@prisma/client', 'bcryptjs']
+  },
   images: {
-    domains: ['localhost', 'yourdomain.com'],
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**',
-      },
-    ],
-  },
-  env: {
-    NEXTAUTH_URL: process.env.NEXTAUTH_URL || 'http://localhost:3000',
-  },
-  // Production optimizations
-  swcMinify: true,
-  compress: true,
-  poweredByHeader: false,
-  
-  // Security headers
+        domains: ['localhost', 'uploadthing.com', 'utfs.io', 'wbl3.com', 'fiverr-res.cloudinary.com', 'cdn-icons-png.flaticon.com', 'images.unsplash.com', 'images.pexels.com'],
+    },
   async headers() {
     return [
       {
@@ -34,7 +22,7 @@ const nextConfig = {
           {
             key: 'Referrer-Policy',
             value: 'origin-when-cross-origin',
-          },
+          }
         ],
       },
     ]

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Clock, MapPin, DollarSign, Users, Search, Filter, Briefcase, Calendar, Star } from 'lucide-react'
 import MainHeader from '@/components/MainHeader'
 import Footer from '@/components/Footer'
@@ -42,7 +42,7 @@ export default function JobsPage() {
   const [sortBy, setSortBy] = useState('recent')
 
   // Mock jobs data
-  const mockJobs: Job[] = [
+  const mockJobs: Job[] = useMemo(() => [
     {
       id: '1',
       title: 'مطور React.js متقدم',
@@ -193,7 +193,7 @@ export default function JobsPage() {
       isUrgent: false,
       companyRating: 4.8
     }
-  ]
+  ], [])
 
   const categories = ['تطوير البرمجيات', 'التصميم', 'التسويق الرقمي', 'الكتابة والمحتوى', 'تطوير التطبيقات']
   const jobTypes = ['full-time', 'part-time', 'contract', 'freelance']
