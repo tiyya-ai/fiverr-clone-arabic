@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
-import { UserType } from '@prisma/client'
 
 const registerSchema = z.object({
   email: z.string().email('البريد الإلكتروني غير صحيح'),
@@ -62,7 +61,7 @@ export async function POST(request: NextRequest) {
         password: hashedPassword,
         fullName: validatedData.fullName,
         username: validatedData.username,
-        userType: validatedData.userType as UserType,
+        userType: validatedData.userType,
         phone: validatedData.phone,
         location: 'السعودية',
         memberSince: new Date().getFullYear().toString(),

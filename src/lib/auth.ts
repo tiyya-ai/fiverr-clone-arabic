@@ -5,7 +5,6 @@ import FacebookProvider from 'next-auth/providers/facebook'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import bcrypt from 'bcryptjs'
 import { prisma } from './prisma'
-import { UserType } from '@prisma/client'
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -76,7 +75,7 @@ export const authOptions: NextAuthOptions = {
       if (token) {
         session.user.id = token.id as string
         session.user.username = token.username as string
-        session.user.userType = token.userType as UserType
+        session.user.userType = token.userType as string
       }
       return session
     },
@@ -98,7 +97,7 @@ export const authOptions: NextAuthOptions = {
                 location: 'السعودية',
                 avatar: user.image,
                 emailVerified: true,
-                userType: UserType.BUYER,
+                userType: 'BUYER',
                 isOnline: true,
                 lastSeen: new Date(),
                 memberSince: new Date().getFullYear().toString(),

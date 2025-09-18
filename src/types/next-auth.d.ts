@@ -1,4 +1,3 @@
-import { UserType } from '@prisma/client'
 import NextAuth from 'next-auth'
 
 declare module 'next-auth' {
@@ -9,14 +8,14 @@ declare module 'next-auth' {
       email?: string | null
       image?: string | null
       username?: string
-      userType?: UserType
+      userType?: string
     }
   }
 
   interface User {
     id: string
     username?: string
-    userType?: UserType
+    userType?: string
   }
 }
 
@@ -24,6 +23,6 @@ declare module 'next-auth/jwt' {
   interface JWT {
     id: string
     username?: string
-    userType?: UserType
+    userType?: string
   }
 }

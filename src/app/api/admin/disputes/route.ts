@@ -5,7 +5,6 @@ import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
 import { sendOrderStatusUpdateEmail } from '@/lib/email'
 import { stripe } from '@/lib/stripe'
-import { OrderStatus } from '@prisma/client'
 
 const disputeResolutionSchema = z.object({
   resolution: z.enum(['REFUND_BUYER', 'FAVOR_SELLER', 'PARTIAL_REFUND']),
@@ -229,13 +228,13 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    let newStatus: OrderStatus = OrderStatus.COMPLETED
+    let newStatus: string = 'COMPLETED'
     let refundAmount = 0
 
     // Process resolution based on type
     switch (validatedData.resolution) {
       case 'REFUND_BUYER':
-        newStatus = OrderStatus.CANCELLED
+        newStatus = 'CANCELLED'
         refundAmount = order.totalAmount || 0
         
         // Process full refund through Stripe
@@ -257,12 +256,12 @@ export async function POST(request: NextRequest) {
         break
 
       case 'FAVOR_SELLER':
-        newStatus = OrderStatus.COMPLETED
+        newStatus = 'COMPLETED'
         refundAmount = 0
         break
 
       case 'PARTIAL_REFUND':
-        newStatus = OrderStatus.COMPLETED
+        newStatus = 'COMPLETED'
         refundAmount = validatedData.refundAmount || 0
         
         if (refundAmount > (order.totalAmount || 0)) {
