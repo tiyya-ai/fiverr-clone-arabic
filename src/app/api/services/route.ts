@@ -54,8 +54,8 @@ export async function POST(request: NextRequest) {
         description: validatedData.description,
         descriptionEn: validatedData.description, // Add English description
         categoryId: validatedData.category,
-        tags: validatedData.tags,
-        images: validatedData.images,
+        tags: JSON.stringify(validatedData.tags),
+        images: JSON.stringify(validatedData.images),
         userId: session.user.id,
         packages: {
           create: validatedData.packages.map(pkg => ({
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
             price: pkg.price,
             deliveryTime: pkg.deliveryTime,
             revisions: pkg.revisions,
-            features: pkg.features
+            features: JSON.stringify(pkg.features)
           }))
         }
       },

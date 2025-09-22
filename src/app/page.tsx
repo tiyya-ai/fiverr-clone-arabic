@@ -59,28 +59,28 @@ export default function Home() {
 
       {/* Hero - Clean Professional Style */}
       <section className="relative overflow-hidden">
-        {/* Gradient Background */}
+        {/* Professional Blue Gradient Background */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#1e40af] to-[#7c3aed]"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-[#1e40af] to-[#3b82f6]"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent"></div>
         </div>
 
         <div className="max-w-7xl mx-auto px-4 py-20 relative z-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center min-h-[500px]">
             {/* Left Content */}
             <div className="text-white" dir="rtl">
-              <div className="inline-flex items-center gap-2 bg-[#1e40af]/20 text-[#3b82f6] px-4 py-2 rounded-full text-sm font-semibold mb-6">
-                <div className="w-2 h-2 bg-[#3b82f6] rounded-full animate-pulse"></div>
+              <div className="inline-flex items-center gap-2 bg-white/20 text-white px-4 py-2 rounded-full text-sm font-semibold mb-6">
+                <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
                 منصة الخدمات المنزلية الأولى
               </div>
               
               <h1 className="text-3xl lg:text-5xl font-bold leading-tight mb-6 text-right">
                 اعثر على أفضل <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3b82f6] to-[#a855f7]">الحرفيين المحترفين</span><br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffbe5b] to-[#ff7640]">الحرفيين المحترفين</span><br />
                 لمنزلك
               </h1>
 
-              <p className="text-lg text-[#cbd5e1] mb-8 text-right leading-relaxed max-w-lg">
+              <p className="text-lg text-white/90 mb-8 text-right leading-relaxed max-w-lg">
                 خدمات صيانة منزلية عالية الجودة من محترفين معتمدين. كهرباء، سباكة، تكييف، نجارة وأكثر.
               </p>
 
@@ -92,7 +92,7 @@ export default function Home() {
                     className="flex-1 px-4 py-4 text-[#0f172a] text-base outline-none text-right placeholder-[#64748b] bg-transparent font-medium"
                     dir="rtl"
                   />
-                  <button className="bg-[#1e40af] hover:bg-[#1d4ed8] backdrop-blur-md px-6 py-4 transition-all duration-200 border-r border-[#1e40af]/20 hover:shadow-lg">
+                  <button className="bg-[#1dbf73] hover:bg-[#19a463] backdrop-blur-md px-6 py-4 transition-all duration-200 border-r border-[#1dbf73]/20 hover:shadow-lg">
                     <Search className="h-5 w-5 text-white" />
                   </button>
                 </div>
@@ -100,12 +100,12 @@ export default function Home() {
 
               <div className="text-right" dir="rtl">
                 <div className="flex flex-wrap gap-2 justify-start items-center">
-                  <span className="text-[#cbd5e1] text-sm mr-3 font-medium">الأكثر طلباً:</span>
+                  <span className="text-white/80 text-sm mr-3 font-medium">الأكثر طلباً:</span>
                   {['الكهرباء', 'السباكة', 'التكييف', 'النجارة'].map((tag) => (
                     <a
                       key={tag}
                       href="/service/1"
-                      className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-xl text-sm text-white transition-all duration-200 font-medium hover:shadow-lg backdrop-blur-sm border border-white/10"
+                      className="px-4 py-2 bg-white/15 hover:bg-white/25 rounded-xl text-sm text-white transition-all duration-200 font-medium hover:shadow-lg backdrop-blur-sm border border-white/20"
                     >
                       {tag}
                     </a>
@@ -465,7 +465,7 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 bg-gradient-to-br from-[#1e40af] to-[#1d4ed8] text-white text-center relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-br from-[#1dbf73] to-[#19a463] text-white text-center relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
@@ -473,10 +473,10 @@ export default function Home() {
         </div>
         <div className="max-w-4xl mx-auto px-4 relative z-10">
           <h3 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">ابدأ مشروعك اليوم</h3>
-          <p className="text-xl md:text-2xl mb-10 text-blue-100 max-w-2xl mx-auto leading-relaxed">انضم إلى آلاف العملاء الراضين واحصل على خدمتك المثالية</p>
+          <p className="text-xl md:text-2xl mb-10 text-green-100 max-w-2xl mx-auto leading-relaxed">انضم إلى آلاف العملاء الراضين واحصل على خدمتك المثالية</p>
           <button 
             onClick={() => setShowLoginModal(true)} 
-            className="bg-white text-[#1e40af] hover:bg-[#f8fafc] px-12 py-4 rounded-2xl font-semibold text-lg transform hover:-translate-y-1 transition-all duration-300 shadow-xl hover:shadow-2xl border-2 border-white/20 hover:border-white/40"
+            className="bg-white text-[#1dbf73] hover:bg-[#f8fafc] px-12 py-4 rounded-2xl font-semibold text-lg transform hover:-translate-y-1 transition-all duration-300 shadow-xl hover:shadow-2xl border-2 border-white/20 hover:border-white/40"
           >
             ابدأ الآن مجاناً
           </button>

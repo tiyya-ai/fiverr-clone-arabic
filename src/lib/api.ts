@@ -75,7 +75,7 @@ export const servicesApi = {
     }
     if (filters?.rating) where.rating = { gte: filters.rating }
 
-    return await prisma.service.findMany({
+    const services = await prisma.service.findMany({
       where,
       include: {
         user: {
@@ -103,10 +103,22 @@ export const servicesApi = {
         { totalSales: 'desc' }
       ]
     })
+
+    // Transform images, tags, and package features from JSON string to array
+    return services.map(service => ({
+      ...service,
+      images: typeof service.images === 'string' ? JSON.parse(service.images) : service.images,
+      tags: typeof service.tags === 'string' ? JSON.parse(service.tags) : service.tags,
+      packages: service.packages.map(pkg => ({
+        ...pkg,
+        type: pkg.type as 'basic' | 'standard' | 'premium',
+        features: typeof pkg.features === 'string' ? JSON.parse(pkg.features) : pkg.features
+      }))
+    })) as any
   },
 
   async getById(id: string): Promise<Service | null> {
-    return await prisma.service.findUnique({
+    const service = await prisma.service.findUnique({
       where: { id },
       include: {
         user: true,
@@ -127,10 +139,24 @@ export const servicesApi = {
         }
       }
     })
+
+    if (!service) return null
+
+    // Transform images, tags, and package features from JSON string to array
+    return {
+      ...service,
+      images: typeof service.images === 'string' ? JSON.parse(service.images) : service.images,
+      tags: typeof service.tags === 'string' ? JSON.parse(service.tags) : service.tags,
+      packages: service.packages.map(pkg => ({
+        ...pkg,
+        type: pkg.type as 'basic' | 'standard' | 'premium',
+        features: typeof pkg.features === 'string' ? JSON.parse(pkg.features) : pkg.features
+      }))
+    } as any
   },
 
   async getByUserId(userId: string): Promise<Service[]> {
-    return await prisma.service.findMany({
+    const services = await prisma.service.findMany({
       where: { userId },
       include: {
         category: true,
@@ -138,11 +164,23 @@ export const servicesApi = {
       },
       orderBy: { createdAt: 'desc' }
     })
+
+    // Transform images, tags, and package features from JSON string to array
+    return services.map(service => ({
+      ...service,
+      images: typeof service.images === 'string' ? JSON.parse(service.images) : service.images,
+      tags: typeof service.tags === 'string' ? JSON.parse(service.tags) : service.tags,
+      packages: service.packages.map(pkg => ({
+        ...pkg,
+        type: pkg.type as 'basic' | 'standard' | 'premium',
+        features: typeof pkg.features === 'string' ? JSON.parse(pkg.features) : pkg.features
+      }))
+    })) as any
   },
 
   async create(data: Omit<Service, 'id' | 'createdAt' | 'updatedAt'>): Promise<Service> {
     const { packages, ...serviceData } = data as any
-    return await prisma.service.create({
+    const service = await prisma.service.create({
       data: {
         ...serviceData,
         createdAt: new Date(),
@@ -153,12 +191,24 @@ export const servicesApi = {
         user: true,
         category: true
       }
-    }) as Service
+    })
+
+    // Transform images, tags, and package features from JSON string to array
+    return {
+      ...service,
+      images: typeof service.images === 'string' ? JSON.parse(service.images) : service.images,
+      tags: typeof service.tags === 'string' ? JSON.parse(service.tags) : service.tags,
+      packages: service.packages.map(pkg => ({
+        ...pkg,
+        type: pkg.type as 'basic' | 'standard' | 'premium',
+        features: typeof pkg.features === 'string' ? JSON.parse(pkg.features) : pkg.features
+      }))
+    } as any
   },
 
   async update(id: string, data: Partial<Service>): Promise<Service> {
     const { packages, ...serviceData } = data as any
-    return await prisma.service.update({
+    const service = await prisma.service.update({
       where: { id },
       data: {
         ...serviceData,
@@ -169,7 +219,19 @@ export const servicesApi = {
         user: true,
         category: true
       }
-    }) as Service
+    })
+
+    // Transform images, tags, and package features from JSON string to array
+    return {
+      ...service,
+      images: typeof service.images === 'string' ? JSON.parse(service.images) : service.images,
+      tags: typeof service.tags === 'string' ? JSON.parse(service.tags) : service.tags,
+      packages: service.packages.map(pkg => ({
+        ...pkg,
+        type: pkg.type as 'basic' | 'standard' | 'premium',
+        features: typeof pkg.features === 'string' ? JSON.parse(pkg.features) : pkg.features
+      }))
+    } as any
   }
 }
 
@@ -213,7 +275,7 @@ export const ordersApi = {
   async getByUserId(userId: string, type: 'buying' | 'selling'): Promise<Order[]> {
     const where = type === 'buying' ? { buyerId: userId } : { sellerId: userId }
     
-    return await prisma.order.findMany({
+    const orders = await prisma.order.findMany({
       where,
       include: {
         service: {
@@ -249,20 +311,36 @@ export const ordersApi = {
       },
       orderBy: { createdAt: 'desc' }
     })
+
+    // Transform status and package type to match Order type
+    return orders.map(order => ({
+      ...order,
+      status: order.status as 'COMPLETED' | 'PENDING' | 'DELIVERED' | 'CANCELLED' | 'DISPUTED' | 'ACTIVE',
+      package: {
+        ...order.package,
+        type: order.package.type as 'basic' | 'standard' | 'premium'
+      }
+    })) as any
   },
 
   async create(data: Omit<Order, 'id' | 'createdAt' | 'updatedAt'>): Promise<Order> {
-    return await prisma.order.create({
+    const order = await prisma.order.create({
       data: {
         ...data,
         createdAt: new Date(),
         updatedAt: new Date()
       }
     })
+
+    // Transform status to match Order type
+    return {
+      ...order,
+      status: order.status as 'COMPLETED' | 'PENDING' | 'DELIVERED' | 'CANCELLED' | 'DISPUTED' | 'ACTIVE'
+    } as any
   },
 
   async updateStatus(id: string, status: Order['status']): Promise<Order> {
-    return await prisma.order.update({
+    const order = await prisma.order.update({
       where: { id },
       data: {
         status,
@@ -270,5 +348,11 @@ export const ordersApi = {
         ...(status === 'COMPLETED' && { completedAt: new Date() })
       }
     })
+
+    // Transform status to match Order type
+    return {
+      ...order,
+      status: order.status as 'COMPLETED' | 'PENDING' | 'DELIVERED' | 'CANCELLED' | 'DISPUTED' | 'ACTIVE'
+    } as any
   }
 }

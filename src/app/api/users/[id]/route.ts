@@ -164,9 +164,18 @@ export async function PATCH(
     const body = await request.json()
     const validatedData = updateProfileSchema.parse(body)
 
+    // Convert arrays to JSON strings for Prisma
+    const updateData: any = { ...validatedData }
+    if (updateData.skills) {
+      updateData.skills = JSON.stringify(updateData.skills)
+    }
+    if (updateData.languages) {
+      updateData.languages = JSON.stringify(updateData.languages)
+    }
+
     const updatedUser = await prisma.user.update({
       where: { id: params.id },
-      data: validatedData,
+      data: updateData,
       select: {
         id: true,
         username: true,
@@ -234,8 +243,8 @@ export async function POST(
         data: {
           title: validatedData.title,
           description: validatedData.description,
-          images: validatedData.images,
-          technologies: validatedData.technologies || [],
+          images: JSON.stringify(validatedData.images),
+          technologies: JSON.stringify(validatedData.technologies || []),
           projectUrl: validatedData.projectUrl,
           completedAt: validatedData.completedAt ? new Date(validatedData.completedAt) : new Date(),
           userId: params.id
@@ -269,11 +278,16 @@ export async function POST(
     if (type === 'workHistory') {
       const validatedData = addWorkHistorySchema.parse(data)
       
+      const workHistoryData: any = {
+        ...validatedData,
+        userId: params.id
+      }
+      if (workHistoryData.technologies) {
+        workHistoryData.technologies = JSON.stringify(workHistoryData.technologies)
+      }
+      
       const workHistory = await prisma.workHistoryItem.create({
-        data: {
-          ...validatedData,
-          userId: params.id
-        }
+        data: workHistoryData
       })
 
       return NextResponse.json({

@@ -254,9 +254,9 @@ export default function MainHeader() {
                 {cartItems.map((item, index) => (
                   <div key={index} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
                     <div className="flex-1 text-right">
-                      <h3 className="font-medium">{item.title}</h3>
-                      <p className="text-sm text-gray-500">{item.category}</p>
-                      <p className="text-[#1ab7ea] font-bold">{item.price} ريال</p>
+                      <h3 className="font-medium text-sm leading-tight">{item.title}</h3>
+                      <p className="text-xs text-gray-500 mt-1">{item.category}</p>
+                      <p className="text-[#1ab7ea] font-bold text-sm mt-1">{item.price} ريال</p>
                     </div>
                     <button 
                       onClick={() => {
@@ -309,7 +309,7 @@ export default function MainHeader() {
                 <ShoppingCart className="h-8 w-8 text-[#1ab7ea]" />
               </div>
               <h2 className="text-2xl font-bold mb-2">تم إضافة الخدمة!</h2>
-              <p className="text-gray-600 mb-4">
+              <p className="text-gray-600 mb-4 text-sm leading-relaxed">
                 تم إضافة &quot;{pendingItem?.title}&quot; إلى سلة التسوق
               </p>
               <p className="text-sm text-gray-500">

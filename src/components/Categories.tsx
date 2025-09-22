@@ -7,64 +7,64 @@ import { ArrowRight } from 'lucide-react'
 const Categories = () => {
   const categories = [
     {
-      id: 'graphics-design',
-      name: 'Graphics & Design',
-      image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=300&h=200&fit=crop',
-      description: 'Logo design, brand identity, and more'
+      id: 'electrical',
+      name: 'الكهرباء',
+      image: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=300&h=200&fit=crop',
+      description: 'إصلاح وصيانة الأعطال الكهربائية'
     },
     {
-      id: 'digital-marketing',
-      name: 'Digital Marketing',
-      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=300&h=200&fit=crop',
-      description: 'SEO, social media, and advertising'
+      id: 'plumbing',
+      name: 'السباكة',
+      image: 'https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?w=300&h=200&fit=crop',
+      description: 'إصلاح التسريبات وصيانة الأنابيب'
     },
     {
-      id: 'writing-translation',
-      name: 'Writing & Translation',
-      image: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=300&h=200&fit=crop',
-      description: 'Content writing, copywriting, translation'
+      id: 'hvac',
+      name: 'التكييف والتبريد',
+      image: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=300&h=200&fit=crop',
+      description: 'تركيب وصيانة أجهزة التكييف'
     },
     {
-      id: 'video-animation',
-      name: 'Video & Animation',
-      image: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=300&h=200&fit=crop',
-      description: 'Video editing, animation, motion graphics'
+      id: 'carpentry',
+      name: 'النجارة',
+      image: 'https://images.unsplash.com/photo-1504148455328-c376907d081c?w=300&h=200&fit=crop',
+      description: 'أعمال الخشب والأثاث المخصص'
     },
     {
-      id: 'music-audio',
-      name: 'Music & Audio',
-      image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=200&fit=crop',
-      description: 'Voice over, music production, audio editing'
+      id: 'security',
+      name: 'كاميرات المراقبة',
+      image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=200&fit=crop',
+      description: 'تركيب وصيانة أنظمة الأمان'
     },
     {
-      id: 'programming-tech',
-      name: 'Programming & Tech',
-      image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=300&h=200&fit=crop',
-      description: 'Web development, mobile apps, software'
+      id: 'construction',
+      name: 'البناء والمقاولات',
+      image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=300&h=200&fit=crop',
+      description: 'أعمال البناء والتشييد'
     },
     {
-      id: 'business',
-      name: 'Business',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop',
-      description: 'Business consulting, market research'
+      id: 'gardening',
+      name: 'تنسيق الحدائق',
+      image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=300&h=200&fit=crop',
+      description: 'تصميم وصيانة المساحات الخضراء'
     },
     {
-      id: 'ai-services',
-      name: 'AI Services',
-      image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=300&h=200&fit=crop',
-      description: 'AI development, machine learning, chatbots'
+      id: 'cleaning',
+      name: 'تنظيف المنازل',
+      image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=300&h=200&fit=crop',
+      description: 'خدمات التنظيف الشاملة للمنازل'
     }
   ]
 
   return (
     <section className="py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
+        <div className="text-center mb-12" dir="rtl">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Popular services
+            الخدمات الأكثر شيوعاً
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Explore our most in-demand categories and find the perfect service for your needs
+            اكتشف أكثر الفئات طلباً واعثر على الخدمة المثالية لاحتياجاتك
           </p>
         </div>
 
@@ -72,7 +72,7 @@ const Categories = () => {
           {categories.map((category) => (
             <Link
               key={category.id}
-              href={`/categories/${category.id}`}
+              href={`/services?category=${encodeURIComponent(category.name)}`}
               className="group bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
             >
               <div className="relative h-48 overflow-hidden">
@@ -83,7 +83,7 @@ const Categories = () => {
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <div className="absolute bottom-4 left-4 text-white">
+                <div className="absolute bottom-4 right-4 text-white text-right" dir="rtl">
                   <h3 className="font-bold text-lg mb-1">{category.name}</h3>
                   <p className="text-sm text-white/90">{category.description}</p>
                 </div>
@@ -100,9 +100,9 @@ const Categories = () => {
         <div className="text-center mt-12">
           <Link
             href="/categories"
-            className="inline-flex items-center space-x-2 bg-primary-500 hover:bg-primary-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
+            className="inline-flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
           >
-            <span>View All Categories</span>
+            <span>عرض جميع الفئات</span>
             <ArrowRight className="h-5 w-5" />
           </Link>
         </div>

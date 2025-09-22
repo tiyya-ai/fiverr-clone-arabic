@@ -188,13 +188,13 @@ export default function Services() {
                   <div className="flex items-center mb-3">
                     <Image
                       src={user?.avatar || '/img/noavatar.jpg'}
-                      alt={user?.name || 'مقدم الخدمة'}
+                      alt={user?.fullName || 'مقدم الخدمة'}
                       width={32}
                       height={32}
                       className="w-8 h-8 rounded-full object-cover"
                     />
                     <div className="mr-3 text-right">
-                      <h3 className="font-semibold text-sm text-gray-800">{user?.name || 'مقدم الخدمة'}</h3>
+                      <h3 className="font-semibold text-sm text-gray-800">{user?.fullName || 'مقدم الخدمة'}</h3>
                       <p className="text-xs text-gray-500">محترف معتمد</p>
                     </div>
                   </div>

@@ -6,6 +6,10 @@ const nextConfig = {
   images: {
         domains: ['localhost', 'uploadthing.com', 'utfs.io', 'wbl3.com', 'fiverr-res.cloudinary.com', 'cdn-icons-png.flaticon.com', 'images.unsplash.com', 'images.pexels.com'],
     },
+  // Skip database operations during build
+  env: {
+    SKIP_DATABASE_OPERATIONS: process.env.NODE_ENV === 'production' ? 'true' : 'false'
+  },
   async headers() {
     return [
       {
