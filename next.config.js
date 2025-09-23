@@ -10,6 +10,9 @@ const nextConfig = {
   env: {
     SKIP_DATABASE_OPERATIONS: process.env.NODE_ENV === 'production' ? 'true' : 'false'
   },
+  // Disable static export for dynamic routes
+  trailingSlash: false,
+  output: 'standalone',
   async headers() {
     return [
       {

@@ -1,0 +1,407 @@
+{
+  "project": {
+    "name": "Workreap",
+    "framework": "Next.js",
+    "theme": "Freelance Marketplace",
+    "colorScheme": {
+      "primary": "#4A00E0",
+      "secondary": "#1F1F3D",
+      "accent": "#00C7B7",
+      "text": "#1A1A1A",
+      "bg": "#FFFFFF",
+      "cardBg": "#F9F9FB",
+      "footerBg": "#000000"
+    },
+    "font": {
+      "primary": "Inter, sans-serif",
+      "heading": "Poppins, sans-serif"
+    }
+  },
+  "pages": [
+    {
+      "path": "/",
+      "components": [
+        {
+          "type": "Header",
+          "props": {
+            "logo": "Workreap",
+            "navItems": ["Main", "Explore", "Find By Categories"],
+            "searchBar": true,
+            "userActions": ["Freelancers", "Login"]
+          }
+        },
+        {
+          "type": "HeroSection",
+          "props": {
+            "title": "Thrive In The World Of Freelance Excellence Marketplace!",
+            "subtitle": "Immerse yourself in a dynamic freelance ecosystem that champions excellence, offering a thriving community.",
+            "ctaButtons": [
+              { "label": "Get Started", "variant": "primary" },
+              { "label": "Learn More", "variant": "outline" }
+            ],
+            "image": {
+              "src": "/images/hero-image.png",
+              "alt": "Freelancers working together",
+              "position": "right"
+            },
+            "badges": [
+              { "label": "Total Services", "value": "500+" },
+              { "label": "Users", "value": "10K+" },
+              { "label": "Trusted by", "value": "200+ Companies" }
+            ],
+            "logos": [
+              "VISA", "PayPal", "TOYOTA", "Google", "adidas", "NETFLIX"
+            ]
+          }
+        },
+        {
+          "type": "CategoryGrid",
+          "props": {
+            "title": "Boost Your Working Flow\nYour One-Stop Online Marketplace for Everything You Need",
+            "description": "Your premier online marketplace. Find quality products and services, connect with trusted sellers, and enjoy a seamless shopping experience today.",
+            "categories": [
+              {
+                "title": "Graphics & Design",
+                "image": "/images/category-graphics.jpg",
+                "count": "1500+"
+              },
+              {
+                "title": "Digital Marketing",
+                "image": "/images/category-digital.jpg",
+                "count": "800+"
+              },
+              {
+                "title": "Writing & Translation",
+                "image": "/images/category-writing.jpg",
+                "count": "1200+"
+              },
+              {
+                "title": "Music & Audio",
+                "image": "/images/category-music.jpg",
+                "count": "200+"
+              }
+            ]
+          }
+        },
+        {
+          "type": "ServiceCards",
+          "props": {
+            "title": "Your One-Stop Online Marketplace for Everything You Need",
+            "description": "Your premier online marketplace. Find quality products and services, connect with trusted sellers, and enjoy a seamless shopping experience today.",
+            "filters": ["All", "Smart AI Services", "Programming & Tech", "Graphics & Design"],
+            "services": [
+              {
+                "id": 1,
+                "image": "/images/service1.jpg",
+                "title": "DALL-E Art Generation",
+                "author": "Toki Tanaka",
+                "rating": 4.8,
+                "reviews": "2.2k User reviews",
+                "location": "Japan",
+                "price": "$400.00",
+                "tags": ["AI", "Design"]
+              },
+              {
+                "id": 2,
+                "image": "/images/service2.jpg",
+                "title": "Custom WordPress Website Development",
+                "author": "Alex Moore",
+                "rating": 4.9,
+                "reviews": "6.2k User reviews",
+                "location": "Germany",
+                "price": "$250.00",
+                "tags": ["Web", "Development"]
+              },
+              {
+                "id": 3,
+                "image": "/images/service3.jpg",
+                "title": "IoT (Internet of Things) Solutions",
+                "author": "Michael Thompson",
+                "rating": 4.7,
+                "reviews": "8.2k User reviews",
+                "location": "United States",
+                "price": "$500.00",
+                "tags": ["Tech", "IoT"]
+              },
+              {
+                "id": 4,
+                "image": "/images/service4.jpg",
+                "title": "Custom Website Design",
+                "author": "Tom Schreck",
+                "rating": 4.9,
+                "reviews": "3.2k User reviews",
+                "location": "Germany",
+                "price": "$600.00",
+                "tags": ["UI/UX", "Design"]
+              },
+              {
+                "id": 5,
+                "image": "/images/service5.jpg",
+                "title": "Logo Design and Branding",
+                "author": "James Nguyen",
+                "rating": 4.8,
+                "reviews": "9.2k User reviews",
+                "location": "United States",
+                "price": "$300.00",
+                "tags": ["Branding", "Design"]
+              },
+              {
+                "id": 6,
+                "image": "/images/service6.jpg",
+                "title": "Web Graphics and UI Design",
+                "author": "James Nguyen",
+                "rating": 4.9,
+                "reviews": "8.2k User reviews",
+                "location": "United States",
+                "price": "$250.00",
+                "tags": ["UI/UX", "Graphic"]
+              }
+            ],
+            "cta": {
+              "label": "Explore More",
+              "link": "/services"
+            }
+          }
+        },
+        {
+          "type": "FAQSection",
+          "props": {
+            "title": "Frequently asked questions",
+            "subtitle": "Find answers to your questions instantly. Need more guidance? Dive into our extensive documentation for all your queries.",
+            "cta": {
+              "label": "Contact Our Team",
+              "variant": "primary"
+            },
+            "questions": [
+              {
+                "question": "How do I get started as a freelancer?",
+                "answer": "Sign up, complete your profile, and start browsing projects. Submit proposals and communicate with clients to get hired."
+              },
+              {
+                "question": "What kind of projects can I find?",
+                "answer": "We offer a wide range of projects including web development, graphic design, writing, digital marketing, and more."
+              },
+              {
+                "question": "How do I ensure payment security?",
+                "answer": "Our platform uses escrow payments and secure transaction systems to protect both freelancers and clients."
+              },
+              {
+                "question": "What fees are involved for freelancers?",
+                "answer": "We charge a small service fee on completed projects, typically 10% of the total amount."
+              },
+              {
+                "question": "How can I build trust with clients?",
+                "answer": "Maintain clear communication, deliver high-quality work on time, and ask for feedback after each project."
+              }
+            ]
+          }
+        },
+        {
+          "type": "PricingSection",
+          "props": {
+            "title": "Tailored Packages for Every Business Stage and Size",
+            "subtitle": "Enter a realm of limitless possibilities, where extraordinary talent drives and beckons you to unfold your boundless potential.",
+            "plans": [
+              {
+                "name": "Standard Plan",
+                "price": "$10.99",
+                "period": "per month",
+                "features": [
+                  "8 Includes",
+                  "Package duration: 1 Month",
+                  "Number of task to post: 5 tasks",
+                  "Featured task: 2 Allowed",
+                  "Task plans allowed: 1",
+                  "Credits to apply on projects: 10 credits",
+                  "Featured task duration: 5 days"
+                ],
+                "cta": "Get Started"
+              },
+              {
+                "name": "Economy Plan",
+                "price": "$55.30",
+                "period": "per month",
+                "highlighted": true,
+                "features": [
+                  "8 Includes",
+                  "Package duration: 3 Months",
+                  "Number of task to post: 10 tasks",
+                  "Featured task: 3 Allowed",
+                  "Task plans allowed: 2",
+                  "Credits to apply on projects: 25 credits",
+                  "Featured task duration: 10 days"
+                ],
+                "cta": "Get Started"
+              },
+              {
+                "name": "Extended Plan",
+                "price": "$99.99",
+                "period": "per month",
+                "features": [
+                  "8 Includes",
+                  "Package duration: 1 Year",
+                  "Number of task to post: 50 tasks",
+                  "Featured task: 20 Allowed",
+                  "Task plans allowed: 4",
+                  "Credits to apply on projects: 89 credits",
+                  "Featured task duration: 30 days"
+                ],
+                "cta": "Get Started"
+              }
+            ]
+          }
+        },
+        {
+          "type": "BlogSection",
+          "props": {
+            "title": "Insights & Perspectives, Exploring the Boundless Horizons",
+            "subtitle": "Explore diverse topics with captivating articles and expert opinions in our thought-provoking blog section. Uncover new perspectives today!",
+            "articles": [
+              {
+                "image": "/images/blog1.jpg",
+                "title": "I Will Create, Fix, Customize, Your WordPress Website",
+                "date": "Nov 26, 2021",
+                "category": "Web Development",
+                "excerpt": "Any excerpt will be here to explain the article content in brief."
+              },
+              {
+                "image": "/images/blog2.jpg",
+                "title": "I Will Do SEO Full On Page And Off Page Optimization For Any Site",
+                "date": "Nov 26, 2021",
+                "category": "SEO",
+                "excerpt": "Any excerpt will be here to explain the article content in brief."
+              },
+              {
+                "image": "/images/blog3.jpg",
+                "title": "I Will Make Professional Excel And Google Sheets for your project",
+                "date": "Jan 01, 2022",
+                "category": "Excel",
+                "excerpt": "Any excerpt will be here to explain the article content in brief."
+              }
+            ],
+            "cta": {
+              "label": "Explore More",
+              "link": "/blog"
+            }
+          }
+        },
+        {
+          "type": "CallToAction",
+          "props": {
+            "title": "Join & Get a Unique Opportunity",
+            "subtitle": "Connect with skilled professionals, streamline collaboration, and unlock success. Join now and redefine your work experience!",
+            "cta": {
+              "label": "Get Started Now",
+              "link": "/signup"
+            },
+            "note": "Try it out free for 14 days and see how fast you can get results!"
+          }
+        },
+        {
+          "type": "Footer",
+          "props": {
+            "logo": "Workreap",
+            "about": "Our platform offers the best features for freelancers and clients, making it easy to connect, collaborate, and get work done.",
+            "links": {
+              "categories": [
+                "AI Development",
+                "App Design",
+                "Digital Marketing",
+                "Auto Design",
+                "Voice Art",
+                "Social Media",
+                "AI & Illustration",
+                "Pattern Design",
+                "3D Model"
+              ],
+              "quickLinks": [
+                "Terms of Service",
+                "Privacy Policy",
+                "Contact Policy"
+              ]
+            },
+            "contact": {
+              "phone": "+82 877 7208349",
+              "email": "hello@yourdomain.com",
+              "address": "123 Main Street, New York, NY 10001",
+              "supportHours": "Mon to Sun 9am - 11pm"
+            },
+            "socials": [
+              "Facebook",
+              "LinkedIn",
+              "Twitter",
+              "Instagram"
+            ],
+            "copyright": "Copyright © All rights reserved, 2024",
+            "appStore": true,
+            "googlePlay": true
+          }
+        }
+      ]
+    }
+  ],
+  "styles": {
+    "global": {
+      "fontFamily": "Inter, sans-serif",
+      "fontSize": "16px",
+      "lineHeight": "1.6",
+      "colors": {
+        "primary": "#4A00E0",
+        "secondary": "#1F1F3D",
+        "text": "#1A1A1A",
+        "bg": "#FFFFFF",
+        "cardBg": "#F9F9FB",
+        "footerBg": "#000000"
+      }
+    },
+    "typography": {
+      "h1": {
+        "fontSize": "3rem",
+        "fontWeight": "700",
+        "color": "#FFFFFF"
+      },
+      "h2": {
+        "fontSize": "2rem",
+        "fontWeight": "600",
+        "color": "#1A1A1A"
+      },
+      "p": {
+        "fontSize": "1rem",
+        "color": "#666666"
+      }
+    }
+  },
+  "assets": {
+    "images": [
+      "hero-image.png",
+      "category-graphics.jpg",
+      "category-digital.jpg",
+      "category-writing.jpg",
+      "category-music.jpg",
+      "service1.jpg",
+      "service2.jpg",
+      "service3.jpg",
+      "service4.jpg",
+      "service5.jpg",
+      "service6.jpg",
+      "blog1.jpg",
+      "blog2.jpg",
+      "blog3.jpg"
+    ],
+    "icons": [
+      "facebook.svg",
+      "linkedin.svg",
+      "twitter.svg",
+      "instagram.svg"
+    ]
+  },
+  "instructions": [
+    "Use Tailwind CSS for styling.",
+    "Implement responsive design using mobile-first approach.",
+    "Ensure smooth animations and hover effects on cards and buttons.",
+    "Use Next.js App Router with `layout.tsx` and `page.tsx` structure.",
+    "Add SEO meta tags and Open Graph data.",
+    "Use React Icons for social media icons.",
+    "Create reusable component library (e.g., Button, Card, Badge)."
+  ]
+}

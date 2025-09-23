@@ -20,6 +20,11 @@ export default function ServiceDetail() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [showVideoModal, setShowVideoModal] = useState(false)
   const [isFavorite, setIsFavorite] = useState(false)
+  const [showReportModal, setShowReportModal] = useState(false)
+  const [reportReason, setReportReason] = useState('')
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false)
+  const [showFavoriteMessage, setShowFavoriteMessage] = useState(false)
+  const [favoriteMessageText, setFavoriteMessageText] = useState('')
 
   useEffect(() => {
     const serviceId = params.id
@@ -69,9 +74,34 @@ export default function ServiceDetail() {
   }
 
   const handleFavorite = () => {
-    setIsFavorite(!isFavorite)
-    const message = !isFavorite ? 'تم إضافة الخدمة للمفضلة' : 'تم إزالة الخدمة من المفضلة'
-    alert(message)
+    const newFavoriteState = !isFavorite
+    setIsFavorite(newFavoriteState)
+    
+    const favorites = JSON.parse(localStorage.getItem('favorites') || '[]')
+    
+    if (newFavoriteState) {
+      // Add to favorites
+      const favoriteItem = {
+        id: service.id,
+        title: service.title,
+        image: service.images[0],
+        price: service.packages?.[0]?.price || 150
+      }
+      favorites.push(favoriteItem)
+      setFavoriteMessageText('تم إضافة الخدمة للمفضلة')
+    } else {
+      // Remove from favorites
+      const updatedFavorites = favorites.filter((fav: any) => fav.id !== service.id)
+      localStorage.setItem('favorites', JSON.stringify(updatedFavorites))
+      setFavoriteMessageText('تم إزالة الخدمة من المفضلة')
+    }
+    
+    if (newFavoriteState) {
+      localStorage.setItem('favorites', JSON.stringify(favorites))
+    }
+    
+    setShowFavoriteMessage(true)
+    setTimeout(() => setShowFavoriteMessage(false), 3000)
   }
 
   const handleShare = () => {
@@ -88,9 +118,15 @@ export default function ServiceDetail() {
   }
 
   const handleReport = () => {
-    const reason = prompt('يرجى ذكر سبب الإبلاغ:')
-    if (reason) {
-      alert('تم إرسال البلاغ بنجاح. سيتم مراجعته من قبل فريقنا.')
+    setShowReportModal(true)
+  }
+
+  const submitReport = () => {
+    if (reportReason.trim()) {
+      setShowReportModal(false)
+      setReportReason('')
+      setShowSuccessMessage(true)
+      setTimeout(() => setShowSuccessMessage(false), 4000)
     }
   }
 
@@ -464,6 +500,84 @@ export default function ServiceDetail() {
                 متصفحك لا يدعم تشغيل الفيديو.
               </video>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Report Modal */}
+      {showReportModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-6 max-w-md w-full mx-4">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-bold text-gray-900" dir="rtl">إبلاغ عن الخدمة</h2>
+              <button 
+                onClick={() => setShowReportModal(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                ✕
+              </button>
+            </div>
+            
+            <div className="space-y-4" dir="rtl">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2 text-right">
+                  سبب الإبلاغ
+                </label>
+                <select 
+                  value={reportReason}
+                  onChange={(e) => setReportReason(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-lg text-right"
+                >
+                  <option value="">اختر السبب</option>
+                  <option value="محتوى مخالف">محتوى مخالف</option>
+                  <option value="معلومات خاطئة">معلومات خاطئة</option>
+                  <option value="انتهاك حقوق الطبع">انتهاك حقوق الطبع</option>
+                  <option value="احتيال أو خداع">احتيال أو خداع</option>
+                  <option value="أخرى">أخرى</option>
+                </select>
+              </div>
+              
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowReportModal(false)}
+                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+                >
+                  إلغاء
+                </button>
+                <button
+                  onClick={submitReport}
+                  disabled={!reportReason}
+                  className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  إرسال البلاغ
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Success Message */}
+      {showSuccessMessage && (
+        <div className="fixed top-4 right-4 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg z-50 animate-fade-in">
+          <div className="flex items-center gap-3" dir="rtl">
+            <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
+              <Check className="h-4 w-4" />
+            </div>
+            <div>
+              <div className="font-semibold">تم إرسال البلاغ بنجاح</div>
+              <div className="text-sm text-green-100">سيتم مراجعته خلال 24 ساعة</div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Favorite Message */}
+      {showFavoriteMessage && (
+        <div className="fixed top-4 right-4 bg-pink-500 text-white px-6 py-4 rounded-lg shadow-lg z-50 animate-fade-in">
+          <div className="flex items-center gap-3" dir="rtl">
+            <Heart className={`h-5 w-5 ${isFavorite ? 'fill-current' : ''}`} />
+            <span className="font-medium">{favoriteMessageText}</span>
           </div>
         </div>
       )}

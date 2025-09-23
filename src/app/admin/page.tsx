@@ -70,13 +70,62 @@ export default function AdminDashboard() {
   ]
 
   useEffect(() => {
-    if (status === 'loading') return // Still loading
+    if (status === 'loading') return
     
-    if (!session || session.user.userType !== 'ADMIN') {
+    if (!session) {
+      router.push('/auth/signin?callbackUrl=/admin')
+      return
+    }
+    
+    if (session.user.userType !== 'ADMIN') {
       router.push('/')
       return
     }
   }, [session, status, router])
+
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    )
+  }
+
+  if (!session) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full mx-4">
+          <div className="text-center mb-6">
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">تسجيل دخول المدير</h1>
+            <p className="text-gray-600">يجب تسجيل الدخول للوصول إلى لوحة التحكم</p>
+          </div>
+          <button
+            onClick={() => router.push('/auth/signin?callbackUrl=/admin')}
+            className="w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 transition-colors font-semibold"
+          >
+            تسجيل الدخول
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  if (session.user.userType !== 'ADMIN') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full mx-4 text-center">
+          <h1 className="text-2xl font-bold text-red-600 mb-4">غير مصرح</h1>
+          <p className="text-gray-600 mb-6">هذه الصفحة مخصصة للمديرين فقط</p>
+          <button 
+            onClick={() => router.push('/')}
+            className="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700"
+          >
+            العودة للرئيسية
+          </button>
+        </div>
+      </div>
+    )
+  }
 
 
 

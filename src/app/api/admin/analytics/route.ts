@@ -233,40 +233,16 @@ export async function GET(request: NextRequest) {
 
     // User engagement metrics
     const engagementMetrics = await Promise.all([
-      // Active users (users who placed orders or sent messages)
+      // Active users (users who placed orders)
       prisma.user.count({
         where: {
-          OR: [
-            {
-              buyerOrders: {
-                some: {
-                  createdAt: {
-                    gte: startDate,
-                    lte: endDate,
-                  },
-                },
+          buyerOrders: {
+            some: {
+              createdAt: {
+                gte: startDate,
+                lte: endDate,
               },
             },
-            {
-              sentMessages: {
-                some: {
-                  createdAt: {
-                    gte: startDate,
-                    lte: endDate,
-                  },
-                },
-              },
-            },
-          ],
-        },
-      }),
-      
-      // Total messages sent
-      prisma.message.count({
-        where: {
-          createdAt: {
-            gte: startDate,
-            lte: endDate,
           },
         },
       }),
@@ -381,8 +357,7 @@ export async function GET(request: NextRequest) {
       categories: categoryOrderStats.sort((a, b) => b.revenue - a.revenue),
       engagement: {
         activeUsers: engagementMetrics[0],
-        totalMessages: engagementMetrics[1],
-        totalReviews: engagementMetrics[2],
+        totalReviews: engagementMetrics[1],
       },
       topServices: topServices.map(service => ({
         id: service.id,

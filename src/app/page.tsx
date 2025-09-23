@@ -5,6 +5,7 @@ import { Search, Star, Shield, Plus, User, MessageCircle, ChevronDown, FileText,
 import MainHeader from '@/components/MainHeader'
 import Footer from '@/components/Footer'
 import CategoryIcon from '@/components/Icons/CategoryIcon'
+import LoginModal from '@/components/LoginModal'
 import { getUserById } from '@/data/mockData'
 import { useServices } from '@/context/ServicesContext'
 import { getCategoryIcon } from '@/config/icons'
@@ -18,21 +19,7 @@ export default function Home() {
   const categoriesCarouselRef = useRef<HTMLDivElement>(null)
   const popularServicesCarouselRef = useRef<HTMLDivElement>(null)
 
-  const handleLogin = (userType: string) => {
-    if (typeof window !== 'undefined') {
-      setShowLoginModal(false)
 
-      if (userType === 'admin') {
-        // Redirect to NextAuth signin for admin
-        window.location.href = '/auth/signin?callbackUrl=/admin'
-      } else {
-        // For regular users, use localStorage (temporary)
-        localStorage.setItem('userType', userType)
-        localStorage.setItem('isLoggedIn', 'true')
-        window.location.href = '/dashboard'
-      }
-    }
-  }
 
 
 
@@ -61,7 +48,7 @@ export default function Home() {
       <section className="relative overflow-hidden">
         {/* Professional Blue Gradient Background */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#1e40af] to-[#3b82f6]"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-[#1B1D44] to-[#3E429A]"></div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent"></div>
         </div>
 
@@ -69,15 +56,15 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center min-h-[500px]">
             {/* Left Content */}
             <div className="text-white" dir="rtl">
-              <div className="inline-flex items-center gap-2 bg-white/20 text-white px-4 py-2 rounded-full text-sm font-semibold mb-6">
-                <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+              <div className="inline-flex items-center gap-2 bg-white/30 text-white px-4 py-2 rounded-full text-sm font-semibold mb-6">
+                <div className="w-2 h-2 bg-[#00C7B7] rounded-full animate-pulse"></div>
                 منصة الخدمات المنزلية الأولى
               </div>
               
-              <h1 className="text-3xl lg:text-5xl font-bold leading-tight mb-6 text-right">
+              <h1 className="text-3xl lg:text-5xl font-bold leading-tight mb-6 text-right text-white">
                 اعثر على أفضل <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffbe5b] to-[#ff7640]">الحرفيين المحترفين</span><br />
-                لمنزلك
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00C7B7] to-[#ffffff]"> الحرفيين </span> لمنزلك
+
               </h1>
 
               <p className="text-lg text-white/90 mb-8 text-right leading-relaxed max-w-lg">
@@ -104,7 +91,7 @@ export default function Home() {
                   {['الكهرباء', 'السباكة', 'التكييف', 'النجارة'].map((tag) => (
                     <a
                       key={tag}
-                      href="/service/1"
+                      href={`/services?category=${encodeURIComponent(tag)}`}
                       className="px-4 py-2 bg-white/15 hover:bg-white/25 rounded-xl text-sm text-white transition-all duration-200 font-medium hover:shadow-lg backdrop-blur-sm border border-white/20"
                     >
                       {tag}
@@ -299,7 +286,7 @@ export default function Home() {
       </section>
 
       {/* Popular Services */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-[#F7F7F8]">
         <div className="max-w-7xl mx-auto px-4">
           {/* Header with title and controls */}
           <div className="flex justify-between items-center mb-12" dir="rtl">
@@ -355,7 +342,12 @@ export default function Home() {
                             className="w-8 h-8 rounded-full object-cover"
                           />
                         <div className="mr-3 text-right">
-                          <h3 className="font-semibold text-sm text-[#0f172a]">{user?.fullName}</h3>
+                          <div className="flex items-center gap-1">
+                            <h3 className="font-semibold text-sm text-[#0f172a]">{user?.fullName}</h3>
+                            {user?.isVerified && (
+                              <Shield className="h-3 w-3 text-blue-500 fill-current" />
+                            )}
+                          </div>
                           <p className="text-xs text-[#64748b]">{user?.level}</p>
                         </div>
                       </div>
@@ -465,18 +457,18 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 bg-gradient-to-br from-[#1dbf73] to-[#19a463] text-white text-center relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-br from-[#1B1D44] to-[#3E429A] text-white text-center relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
           }}></div>
         </div>
         <div className="max-w-4xl mx-auto px-4 relative z-10">
-          <h3 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">ابدأ مشروعك اليوم</h3>
-          <p className="text-xl md:text-2xl mb-10 text-green-100 max-w-2xl mx-auto leading-relaxed">انضم إلى آلاف العملاء الراضين واحصل على خدمتك المثالية</p>
+          <h3 className="text-4xl md:text-5xl font-bold mb-6 leading-tight text-white">ابدأ مشروعك اليوم</h3>
+          <p className="text-xl md:text-2xl mb-10 text-white/90 max-w-2xl mx-auto leading-relaxed">انضم إلى آلاف العملاء الراضين واحصل على خدمتك المثالية</p>
           <button 
             onClick={() => setShowLoginModal(true)} 
-            className="bg-white text-[#1dbf73] hover:bg-[#f8fafc] px-12 py-4 rounded-2xl font-semibold text-lg transform hover:-translate-y-1 transition-all duration-300 shadow-xl hover:shadow-2xl border-2 border-white/20 hover:border-white/40"
+            className="bg-white text-[#1B1D44] hover:bg-gray-100 px-12 py-4 rounded-2xl font-semibold text-lg transform hover:-translate-y-1 transition-all duration-300 shadow-xl hover:shadow-2xl"
           >
             ابدأ الآن مجاناً
           </button>
@@ -484,7 +476,7 @@ export default function Home() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-16 bg-[#f8fafc]">
+      <section className="py-16 bg-[#F7F7F8]">
         <div className="max-w-4xl mx-auto px-4">
           <h3 className="text-3xl font-bold mb-12 text-center text-[#0f172a]">الأسئلة الشائعة</h3>
           <div className="space-y-4">
@@ -541,42 +533,10 @@ export default function Home() {
 
       <Footer />
 
-      {/* Login Modal */}
-      {showLoginModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-[#0f172a]">تسجيل الدخول التجريبي</h2>
-              <button onClick={() => setShowLoginModal(false)} className="text-[#64748b] hover:text-[#dc2626] transition-colors">
-                ✕
-              </button>
-            </div>
-
-            <div className="space-y-4">
-              <button
-                onClick={() => handleLogin('user')}
-                className="w-full bg-[#1e40af] text-white py-3 rounded-xl hover:bg-[#1d4ed8] transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-              >
-                دخول كمستخدم عادي
-              </button>
-
-              <button
-                onClick={() => handleLogin('admin')}
-                className="w-full bg-[#dc2626] text-white py-3 rounded-xl hover:bg-[#b91c1c] transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-              >
-                دخول كمدير
-              </button>
-
-              <button
-                onClick={() => handleLogin('seller')}
-                className="w-full bg-[#059669] text-white py-3 rounded-xl hover:bg-[#047857] transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-              >
-                دخول كبائع
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <LoginModal 
+        isOpen={showLoginModal} 
+        onClose={() => setShowLoginModal(false)}
+      />
     </div>
   )
 }

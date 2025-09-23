@@ -63,10 +63,10 @@ export default function MainNavigation({ className = '' }: MainNavigationProps) 
           <Link
             key={item.id}
             href={item.href}
-            className={`flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition-all duration-200 ${
+            className={`flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition-all duration-200 no-underline hover:no-underline ${
               active
-                ? 'text-[#1ab7ea] bg-[#1ab7ea]/20'
-                : 'text-white hover:text-[#1ab7ea] hover:bg-white/10'
+                ? 'text-white'
+                : 'text-white hover:text-[#1ab7ea]'
             }`}
           >
 

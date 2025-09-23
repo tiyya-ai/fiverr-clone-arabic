@@ -18,13 +18,26 @@ export default function AdminLayout({
   const [expandedMenus, setExpandedMenus] = useState<string[]>(['dashboard', 'users', 'services', 'orders', 'financial'])
 
   useEffect(() => {
-    if (status === 'loading') return // Still loading
+    if (status === 'loading') return
     
     if (!session || session.user.userType !== 'ADMIN') {
       router.push('/')
       return
     }
   }, [session, status, router])
+
+  // Don't render admin layout if not authenticated
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    )
+  }
+
+  if (!session || session.user.userType !== 'ADMIN') {
+    return null
+  }
 
   const toggleMenu = (menuId: string) => {
     setExpandedMenus(prev =>

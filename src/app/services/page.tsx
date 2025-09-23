@@ -7,6 +7,7 @@ import Footer from '@/components/Footer'
 import UnifiedCard from '@/components/UnifiedCard'
 import { useServices } from '@/context/ServicesContext'
 import { getUserById } from '@/data/mockData'
+import { sanitizeInput } from '@/utils/sanitize'
 import Image from 'next/image'
 
 export default function Services() {
@@ -70,34 +71,6 @@ export default function Services() {
     <div className="min-h-screen bg-gray-50">
       <MainHeader />
       
-      {/* Hero Section */}
-      <div className="bg-[#003912] text-white py-16">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center" dir="rtl">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              {selectedCategory || 'خدمات الصيانة المنزلية'}
-            </h1>
-            <p className="text-xl text-green-100 mb-8">
-              اعثر على أفضل المحترفين لجميع احتياجاتك المنزلية
-            </p>
-            <div className="max-w-2xl mx-auto">
-              <div className="flex bg-white rounded-lg overflow-hidden">
-                <input
-                  type="text"
-                  placeholder="ما الخدمة التي تبحث عنها؟"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="flex-1 px-6 py-4 text-gray-900 text-right outline-none"
-                  dir="rtl"
-                />
-                <button className="bg-[#1ab7ea] hover:bg-[#0ea5d9] px-8 py-4 text-white font-semibold transition-colors">
-                  بحث
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Breadcrumb */}
@@ -237,7 +210,7 @@ export default function Services() {
               ]
               const service = sampleServices[index % sampleServices.length]
               return (
-                <div key={service.id} className="flex-shrink-0 w-full bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden group flex flex-col hover:shadow-lg transition-all duration-300 hover:border-[#1ab7ea] cursor-pointer" onClick={() => window.location.href = `/services/${service.id}`}>
+                <div key={service.id} className="flex-shrink-0 w-full bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden group flex flex-col hover:shadow-lg transition-all duration-300 hover:border-[#1ab7ea] cursor-pointer" onClick={() => window.location.href = `/services/${encodeURIComponent(service.id)}`}>
                   <div className="relative">
                     <Image
                       src={`https://images.pexels.com/photos/${580151 + index}/pexels-photo-${580151 + index}.jpeg?auto=compress&cs=tinysrgb&w=400`}

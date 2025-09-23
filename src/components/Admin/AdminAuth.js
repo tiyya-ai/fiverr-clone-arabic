@@ -38,7 +38,7 @@ const getAdminUsers = () => {
     users.push({
       id: 1,
       username: process.env.NEXT_PUBLIC_ADMIN_USERNAME,
-      password: process.env.ADMIN_PASSWORD || 'demo123',
+      password: process.env.ADMIN_PASSWORD || process.env.NEXTAUTH_SECRET?.slice(0, 8) || 'changeme',
       email: 'admin@example.com',
       role: 'super_admin',
       permissions: ['all'],
@@ -50,7 +50,7 @@ const getAdminUsers = () => {
     users.push({
       id: 2,
       username: process.env.NEXT_PUBLIC_MOD_USERNAME,
-      password: process.env.MOD_PASSWORD || 'demo123',
+      password: process.env.MOD_PASSWORD || process.env.NEXTAUTH_SECRET?.slice(8, 16) || 'changeme',
       email: 'moderator@example.com',
       role: 'moderator',
       permissions: ['manage_users', 'manage_services', 'view_reports'],
@@ -62,7 +62,7 @@ const getAdminUsers = () => {
     users.push({
       id: 3,
       username: process.env.NEXT_PUBLIC_SUPPORT_USERNAME,
-      password: process.env.SUPPORT_PASSWORD || 'demo123',
+      password: process.env.SUPPORT_PASSWORD || process.env.NEXTAUTH_SECRET?.slice(16, 24) || 'changeme',
       email: 'support@example.com',
       role: 'support',
       permissions: ['manage_orders', 'view_users', 'respond_tickets'],
@@ -73,7 +73,7 @@ const getAdminUsers = () => {
   return users.length > 0 ? users : [{
     id: 1,
     username: 'admin',
-    password: 'demo123',
+    password: process.env.ADMIN_PASSWORD || 'changeme',
     email: 'admin@example.com',
     role: 'super_admin',
     permissions: ['all'],

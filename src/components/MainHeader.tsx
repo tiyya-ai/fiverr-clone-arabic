@@ -7,6 +7,7 @@ import MainNavigation from './Navigation/MainNavigation'
 import MobileNavigation from './Navigation/MobileNavigation'
 import NotificationSystem from './Notifications/NotificationSystem'
 import LoginModal from './LoginModal'
+import { sanitizeForLog } from '@/utils/sanitize'
 import Image from 'next/image';
 
 export default function MainHeader() {
@@ -56,7 +57,7 @@ export default function MainHeader() {
   }
 
   const addToCart = useCallback((item: any) => {
-    console.log('addToCart called with:', item)
+    console.log('addToCart called with:', sanitizeForLog(item))
     console.log('isLoggedIn:', isLoggedIn)
     
     if (!isLoggedIn) {
@@ -104,23 +105,23 @@ export default function MainHeader() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex justify-between items-center text-sm">
             <div className="flex gap-6">
-              <a href="#" className="hover:text-[#1ab7ea]">فايفر برو</a>
-              <a href="/services" className="hover:text-[#1ab7ea]">استكشف</a>
-              <a href="#" className="hover:text-[#1ab7ea]">العربية</a>
-              <a href="/services/create" className="hover:text-[#1ab7ea]">أصبح بائعاً</a>
+              <a href="#" className="text-black hover:text-[#1ab7ea]">فايفر برو</a>
+              <a href="/services" className="text-black hover:text-[#1ab7ea]">استكشف</a>
+              <a href="#" className="text-black hover:text-[#1ab7ea]">العربية</a>
+              <a href="/services/create" className="text-black hover:text-[#1ab7ea]">أصبح بائعاً</a>
             </div>
             <div className="flex items-center gap-4">
               {!isLoggedIn ? (
                 <>
-                  <button onClick={() => setShowLoginModal(true)} className="hover:text-[#1ab7ea]">
+                  <button onClick={() => setShowLoginModal(true)} className="hover:text-[#00C7B7]">
                     دخول
                   </button>
-                  <button onClick={() => setShowLoginModal(true)} className="hover:bg-[#0ea5d9] text-white px-4 py-1 rounded bg-[#1ab7ea]">
+                  <button onClick={() => setShowLoginModal(true)} className="hover:bg-[#00B5A5] text-white px-4 py-1 rounded bg-[#00C7B7]">
                     حساب جديد
                   </button>
                 </>
               ) : (
-                <button onClick={handleLogout} className="hover:text-[#1ab7ea]">
+                <button onClick={handleLogout} className="hover:text-[#00C7B7]">
                   تسجيل الخروج
                 </button>
               )}
@@ -130,7 +131,7 @@ export default function MainHeader() {
       </div>
 
       {/* Main Header */}
-      <header className="sticky top-0 z-50 shadow-sm bg-gray-900">
+      <header className="sticky top-0 z-50 shadow-sm bg-[#3E429A]/95 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex justify-between items-center h-16">
             {/* Logo - Left */}

@@ -20,6 +20,10 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(false)
 
   const login = async (credentials) => {
+    if (!credentials?.email || !credentials?.password) {
+      return { success: false, error: 'Email and password are required' }
+    }
+    
     try {
       setLoading(true)
       const result = await signIn('credentials', {
@@ -42,6 +46,10 @@ export const AuthProvider = ({ children }) => {
   }
 
   const register = async (userData) => {
+    if (!userData?.email || !userData?.password || !userData?.firstName) {
+      return { success: false, error: 'Required fields are missing' }
+    }
+    
     try {
       setLoading(true)
       const response = await fetch('/api/auth/register', {

@@ -65,10 +65,13 @@ export async function GET(request: NextRequest) {
         where,
         skip,
         take: limit,
-        orderBy: {
-          [sortBy]: sortOrder,
-        },
-        include: {
+        select: {
+          id: true,
+          status: true,
+          totalAmount: true,
+          createdAt: true,
+          updatedAt: true,
+          completedAt: true,
           service: {
             select: {
               id: true,
@@ -101,23 +104,9 @@ export async function GET(request: NextRequest) {
               avatar: true,
             },
           },
-          messages: {
-            select: {
-              id: true,
-              content: true,
-              createdAt: true,
-              fromUser: {
-                select: {
-                  id: true,
-                  fullName: true,
-                  userType: true,
-                },
-              },
-            },
-            orderBy: {
-              createdAt: 'asc',
-            },
-          },
+        },
+        orderBy: {
+          [sortBy]: sortOrder,
         },
       }),
       prisma.order.count({ where }),
@@ -238,21 +227,22 @@ export async function POST(request: NextRequest) {
         refundAmount = order.totalAmount || 0
         
         // Process full refund through Stripe
-        if (order.paymentIntentId) {
-          try {
-            await stripe.refunds.create({
-              payment_intent: order.paymentIntentId,
-              amount: Math.round(refundAmount * 100), // Convert to cents
-              reason: 'requested_by_customer',
-            })
-          } catch (stripeError) {
-            console.error('Stripe refund error:', stripeError)
-            return NextResponse.json(
-              { error: 'حدث خطأ في معالجة الاسترداد' },
-              { status: 500 }
-            )
-          }
-        }
+        // Note: Stripe refund functionality temporarily disabled due to schema issues
+        // if (order.paymentIntentId) {
+        //   try {
+        //     await stripe.refunds.create({
+        //       payment_intent: order.paymentIntentId,
+        //       amount: Math.round(refundAmount * 100), // Convert to cents
+        //       reason: 'requested_by_customer',
+        //     })
+        //   } catch (stripeError) {
+        //     console.error('Stripe refund error:', stripeError)
+        //     return NextResponse.json(
+        //       { error: 'حدث خطأ في معالجة الاسترداد' },
+        //       { status: 500 }
+        //     )
+        //   }
+        // }
         break
 
       case 'FAVOR_SELLER':
@@ -272,21 +262,22 @@ export async function POST(request: NextRequest) {
         }
         
         // Process partial refund through Stripe
-        if (order.paymentIntentId && refundAmount > 0) {
-          try {
-            await stripe.refunds.create({
-              payment_intent: order.paymentIntentId,
-              amount: Math.round(refundAmount * 100), // Convert to cents
-              reason: 'requested_by_customer',
-            })
-          } catch (stripeError) {
-            console.error('Stripe refund error:', stripeError)
-            return NextResponse.json(
-              { error: 'حدث خطأ في معالجة الاسترداد الجزئي' },
-              { status: 500 }
-            )
-          }
-        }
+        // Note: Stripe refund functionality temporarily disabled due to schema issues
+        // if (order.paymentIntentId && refundAmount > 0) {
+        //   try {
+        //     await stripe.refunds.create({
+        //       payment_intent: order.paymentIntentId,
+        //       amount: Math.round(refundAmount * 100), // Convert to cents
+        //       reason: 'requested_by_customer',
+        //     })
+        //   } catch (stripeError) {
+        //     console.error('Stripe refund error:', stripeError)
+        //     return NextResponse.json(
+        //       { error: 'حدث خطأ في معالجة الاسترداد الجزئي' },
+        //       { status: 500 }
+        //     )
+        //   }
+        // }
         break
     }
 
