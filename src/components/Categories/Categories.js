@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import './Categories.css';
 
 const Categories = () => {
@@ -76,7 +77,13 @@ const Categories = () => {
                 className="category-card"
               >
                 <div className="category-image">
-                  <img src={category.smallImage} alt={category.name} />
+                  <Image 
+                    src={category.smallImage} 
+                    alt={category.name}
+                    width={80}
+                    height={80}
+                    className="category-img"
+                  />
                 </div>
                 <div className="category-content">
                   <h3 className="category-name">{category.name}</h3>

@@ -285,7 +285,7 @@ export async function POST(request: NextRequest) {
     const updatedOrder = await prisma.order.update({
       where: { id: orderId },
       data: {
-        status: newStatus,
+        status: newStatus as 'PENDING' | 'ACTIVE' | 'DELIVERED' | 'COMPLETED' | 'CANCELLED' | 'DISPUTED',
         updatedAt: new Date(),
       },
     })

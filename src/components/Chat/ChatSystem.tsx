@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Send, Paperclip, Smile } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 
@@ -25,15 +25,7 @@ export default function ChatSystem({ conversationId, receiverId }: ChatSystemPro
   const [loading, setLoading] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    loadMessages()
-  }, [conversationId])
-
-  useEffect(() => {
-    scrollToBottom()
-  }, [messages])
-
-  const loadMessages = async () => {
+  const loadMessages = useCallback(async () => {
     try {
       const response = await fetch(`/api/messages/${conversationId}`)
       if (response.ok) {
@@ -43,7 +35,15 @@ export default function ChatSystem({ conversationId, receiverId }: ChatSystemPro
     } catch (error) {
       console.error('Failed to load messages:', error)
     }
-  }
+  }, [conversationId])
+
+  useEffect(() => {
+    loadMessages()
+  }, [conversationId, loadMessages])
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
 
   const sendMessage = async () => {
     if (!newMessage.trim() || !session?.user) return
