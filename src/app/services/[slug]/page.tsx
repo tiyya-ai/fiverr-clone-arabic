@@ -9,6 +9,7 @@ import Footer from '@/components/Footer'
 import UnifiedButton from '@/components/UnifiedButton'
 import { useServices } from '@/context/ServicesContext'
 import { getUserById } from '@/data/mockData'
+import { extractServiceIdFromSlug } from '@/utils/slug'
 import Image from 'next/image'
 
 export default function ServiceDetail() {
@@ -18,16 +19,15 @@ export default function ServiceDetail() {
   const [seller, setSeller] = useState<any>(null)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isFavorite, setIsFavorite] = useState(false)
-  const [showVideoModal, setShowVideoModal] = useState(false)
-  const [showReportModal, setShowReportModal] = useState(false)
-  const [reportReason, setReportReason] = useState('')
-  const [reportDetails, setReportDetails] = useState('')
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false)
-  const [showFavoriteMessage, setShowFavoriteMessage] = useState(false)
-  const [favoriteMessageText, setFavoriteMessageText] = useState('')
+  const [modalState, setModalState] = useState({
+    showReportModal: false,
+    showSuccessModal: false,
+    showFavoriteModal: false,
+    reportReason: '',
+    reportDetails: '',
+    favoriteMessageText: '',
+  })
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null)
-  const [showSuccessModal, setShowSuccessModal] = useState(false)
-  const [showFavoriteModal, setShowFavoriteModal] = useState(false)
   const [selectedPackage, setSelectedPackage] = useState(0)
 
   // Reviews data - Arabic reviews
@@ -50,27 +50,68 @@ export default function ServiceDetail() {
     },
     {
       id: 3,
-      user: "عمر علي",
+      user: "محمد علي",
       rating: 4,
-      date: "منذ شهرين",
-      comment: "عمل جيد بشكل عام، احتجت لبعض التعديلات البسيطة لكن البائع كان متعاوناً جداً.",
-      country: "مصر"
+      date: "منذ 3 أسابيع",
+      comment: "خدمة ممتازة وسرعة في التنفيذ. راضي جداً عن النتيجة النهائية.",
+      country: "الكويت"
     }
   ]
 
-  // Remove hardcoded packages - use real data from service
-  const packages = service?.packages || []
+  // Package data
+  const packages = [
+    {
+      name: "الأساسي",
+      price: 50,
+      deliveryTime: "3 أيام",
+      revisions: "2",
+      features: ["تصميم أساسي", "ملف مصدر واحد", "دعم فني لمدة أسبوع"]
+    },
+    {
+      name: "المتقدم", 
+      price: 100,
+      deliveryTime: "5 أيام",
+      revisions: "5",
+      features: ["تصميم متقدم", "3 ملفات مصدر", "دعم فني لمدة شهر", "تعديلات إضافية"]
+    },
+    {
+      name: "المميز",
+      price: 200,
+      deliveryTime: "7 أيام", 
+      revisions: "غير محدود",
+      features: ["تصميم مميز", "ملفات مصدر متعددة", "دعم فني لمدة 3 أشهر", "تعديلات غير محدودة", "استشارة مجانية"]
+    }
+  ]
 
   useEffect(() => {
-    if (params.id && services.length > 0) {
-      const foundService = services.find(s => s.id === params.id)
-      if (foundService) {
-        setService(foundService)
-        const sellerData = getUserById(foundService.userId)
-        setSeller(sellerData)
+    if (params.slug && services.length > 0) {
+      // Extract service ID from slug
+      const serviceId = extractServiceIdFromSlug(params.slug as string)
+      
+      if (serviceId) {
+        const foundService = services.find(s => s.id === serviceId)
+        if (foundService) {
+          setService(foundService)
+          const sellerData = getUserById(foundService.userId)
+          setSeller(sellerData)
+        } else {
+          setService(null)
+          setSeller(null)
+        }
+      } else {
+        // Fallback: try to find service by treating slug as direct ID
+        const foundService = services.find(s => s.id === params.slug)
+        if (foundService) {
+          setService(foundService)
+          const sellerData = getUserById(foundService.userId)
+          setSeller(sellerData)
+        } else {
+          setService(null)
+          setSeller(null)
+        }
       }
     }
-  }, [params.id, services])
+  }, [params.slug, services])
 
   const nextImage = () => {
     if (service?.images) {
@@ -86,15 +127,36 @@ export default function ServiceDetail() {
 
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite)
-    setFavoriteMessageText(isFavorite ? 'Removed from favorites' : 'Added to favorites')
-    setShowFavoriteModal(true)
-    setTimeout(() => setShowFavoriteModal(false), 2000)
+    setModalState((prev) => ({
+      ...prev,
+      favoriteMessageText: isFavorite ? 'Removed from favorites' : 'Added to favorites',
+      showFavoriteModal: true,
+    }))
+    setTimeout(() => setModalState((prev) => ({ ...prev, showFavoriteModal: false })), 2000)
   }
 
   const handleReport = () => {
-    setShowReportModal(false)
-    setShowSuccessModal(true)
-    setTimeout(() => setShowSuccessModal(false), 3000)
+    setModalState((prev) => ({
+      ...prev,
+      showReportModal: false,
+      showSuccessModal: true,
+    }))
+    setTimeout(() => setModalState((prev) => ({ ...prev, showSuccessModal: false })), 3000)
+  }
+
+  if (services.length > 0 && !service) {
+    return (
+      <div className="min-h-screen bg-white">
+        <MainHeader />
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <p className="text-gray-600 text-lg mb-4">Service not found</p>
+            <a href="/services" className="text-blue-600 hover:underline">Browse all services</a>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    )
   }
 
   if (!service || !seller) {
@@ -134,68 +196,63 @@ export default function ServiceDetail() {
           {/* Left Column - Service Details */}
           <div className="lg:col-span-2">
             {/* Service Title */}
-            <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-4 leading-tight">
+            <h1 className="text-2xl font-bold text-gray-900 mb-4">
               {service.title}
             </h1>
 
             {/* Seller Info */}
             <div className="flex items-center mb-6">
-              <div className="w-12 h-12 rounded-full overflow-hidden mr-3">
-                <Image 
-                  src={seller.avatar || "/api/placeholder/48/48"} 
-                  alt={seller.name}
-                  width={48}
-                  height={48}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div>
+              <Image
+                src={seller.avatar || "/api/placeholder/48/48"}
+                alt={seller.name}
+                width={48}
+                height={48}
+                className="rounded-full"
+              />
+              <div className="ml-3">
                 <div className="flex items-center">
                   <span className="font-semibold text-gray-900 mr-2">{seller.name}</span>
-                  <span className="text-sm text-gray-600">Level 2 Seller</span>
-                </div>
-                <div className="flex items-center mt-1">
-                  <div className="flex items-center mr-4">
-                    <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                  <div className="flex items-center">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className={`h-4 w-4 ${i < Math.floor(seller.rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} />
+                    ))}
                     <span className="text-sm font-semibold text-gray-900 ml-1">{seller.rating}</span>
                     <span className="text-sm text-gray-600 ml-1">({seller.reviewCount} reviews)</span>
                   </div>
-                  <span className="text-sm text-gray-600">2 Orders in Queue</span>
                 </div>
               </div>
             </div>
 
             {/* Service Images */}
             <div className="relative mb-8">
-              <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
-                {service.images && service.images.length > 0 ? (
-                  <Image 
-                    src={service.images[currentImageIndex]} 
-                    alt={service.title}
-                    width={800}
-                    height={450}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <span className="text-gray-400">No image available</span>
-                  </div>
-                )}
-              </div>
-              
+              {service.images && service.images.length > 0 ? (
+                <Image
+                  src={service.images[currentImageIndex]}
+                  alt={service.title}
+                  width={800}
+                  height={450}
+                  className="w-full h-96 object-cover rounded-lg"
+                />
+              ) : (
+                <div className="w-full h-96 bg-gray-200 rounded-lg flex items-center justify-center">
+                  <span className="text-gray-500">No image available</span>
+                </div>
+              )}
+
+              {/* Navigation arrows */}
               {service.images && service.images.length > 1 && (
                 <>
-                  <button 
+                  <button
                     onClick={prevImage}
-                    className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg transition-all"
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
                   >
-                    <ChevronLeft className="h-5 w-5 text-gray-700" />
+                    <ChevronLeft className="h-5 w-5" />
                   </button>
-                  <button 
+                  <button
                     onClick={nextImage}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg transition-all"
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
                   >
-                    <ChevronRight className="h-5 w-5 text-gray-700" />
+                    <ChevronRight className="h-5 w-5" />
                   </button>
                 </>
               )}
@@ -203,7 +260,7 @@ export default function ServiceDetail() {
               {/* Image indicators */}
               {service.images && service.images.length > 1 && (
                 <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                  {service.images.map((_, index) => (
+                  {service.images.map((_: string, index: number) => (
                     <button
                       key={index}
                       onClick={() => setCurrentImageIndex(index)}
@@ -230,15 +287,13 @@ export default function ServiceDetail() {
             <div className="mb-8">
               <h2 className="text-xl font-bold text-gray-900 mb-4">حول البائع</h2>
               <div className="flex items-start space-x-4">
-                <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
-                  <Image 
-                    src={seller.avatar || "/api/placeholder/64/64"} 
-                    alt={seller.name}
-                    width={64}
-                    height={64}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+                <Image
+                  src={seller.avatar || "/api/placeholder/64/64"}
+                  alt={seller.name}
+                  width={64}
+                  height={64}
+                  className="rounded-full"
+                />
                 <div className="flex-1">
                   <h3 className="font-semibold text-gray-900 mb-1">{seller.name}</h3>
                   <p className="text-sm text-gray-600 mb-2">{seller.title || "Professional Designer"}</p>
@@ -263,7 +318,7 @@ export default function ServiceDetail() {
             <div className="mb-8">
               <h2 className="text-xl font-bold text-gray-900 mb-4">الأسئلة الشائعة</h2>
               <div className="space-y-4">
-                {service?.faq?.map((faq, index) => (
+                {service?.faq?.map((faq: any, index: number) => (
                   <div key={index} className="border border-gray-200 rounded-lg">
                     <button
                       onClick={() => setExpandedFaq(expandedFaq === index ? null : index)}
@@ -277,7 +332,7 @@ export default function ServiceDetail() {
                       )}
                     </button>
                     {expandedFaq === index && (
-                      <div className="px-4 pb-3 text-gray-700 text-sm leading-relaxed">
+                      <div className="px-4 pb-3 text-gray-700">
                         {faq.answer}
                       </div>
                     )}
@@ -288,7 +343,7 @@ export default function ServiceDetail() {
 
             {/* Reviews */}
             <div className="mb-8">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">
+              <h2 className="text-xl font-bold text-gray-900 mb-6">
                 التقييمات ({reviews.length})
               </h2>
               <div className="space-y-6">
@@ -304,12 +359,12 @@ export default function ServiceDetail() {
                             <h4 className="font-semibold text-gray-900">{review.user}</h4>
                             <p className="text-sm text-gray-600">{review.country}</p>
                           </div>
-                          <div className="flex items-center">
-                            <div className="flex items-center mr-2">
+                          <div className="flex items-center space-x-2">
+                            <div className="flex">
                               {[...Array(5)].map((_, i) => (
-                                <Star 
-                                  key={i} 
-                                  className={`h-4 w-4 ${i < review.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} 
+                                <Star
+                                  key={i}
+                                  className={`h-4 w-4 ${i < review.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
                                 />
                               ))}
                             </div>
@@ -329,40 +384,34 @@ export default function ServiceDetail() {
           <div className="lg:col-span-1">
             <div className="sticky top-8">
               {/* Package Selection */}
-              <div className="bg-white border border-gray-200 rounded-lg shadow-sm mb-6">
-                <div className="border-b border-gray-200">
-                  <div className="flex">
-                    {packages.map((pkg, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setSelectedPackage(index)}
-                        className={`flex-1 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
-                          selectedPackage === index
-                            ? 'border-green-500 text-green-600 bg-green-50'
-                            : 'border-transparent text-gray-600 hover:text-gray-900'
-                        }`}
-                      >
-                        {pkg.name}
-                      </button>
-                    ))}
-                  </div>
+              <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6">
+                <div className="flex border-b border-gray-200 mb-4">
+                  {packages.map((pkg: any, index: number) => (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedPackage(index)}
+                      className={`flex-1 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+                        selectedPackage === index
+                          ? 'border-green-500 text-green-600'
+                          : 'border-transparent text-gray-600 hover:text-gray-900'
+                      }`}
+                    >
+                      {pkg.name}
+                    </button>
+                  ))}
                 </div>
 
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      {packages[selectedPackage].name}
-                    </h3>
-                    <div className="text-right">
-                      <div className="text-2xl font-bold text-gray-900">
-                        ${packages[selectedPackage].price}
-                      </div>
-                    </div>
+                <div className="mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    {packages[selectedPackage]?.name || 'Package'}
+                  </h3>
+                  <div className="text-2xl font-bold text-gray-900 mb-4">
+                    ${packages[selectedPackage]?.price || 0}
                   </div>
-
-                  <p className="text-gray-600 text-sm mb-4">
-                    وفر حتى 20% مع وقت تسليم أطول
-                  </p>
+                  
+                  <div className="text-sm text-gray-600 mb-4">
+                    وفر حتى 20% مع وقت التسليم الأطول
+                  </div>
 
                   <div className="space-y-3 mb-6">
                     <div className="flex items-center justify-between text-sm">
@@ -371,7 +420,7 @@ export default function ServiceDetail() {
                         <span className="text-gray-600">وقت التسليم</span>
                       </div>
                       <span className="font-medium text-gray-900">
-                        {packages[selectedPackage].deliveryTime}
+                        {packages[selectedPackage]?.deliveryTime || 'N/A'}
                       </span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
@@ -380,13 +429,13 @@ export default function ServiceDetail() {
                         <span className="text-gray-600">التعديلات</span>
                       </div>
                       <span className="font-medium text-gray-900">
-                        {packages[selectedPackage].revisions}
+                        {packages[selectedPackage]?.revisions || 'N/A'}
                       </span>
                     </div>
                   </div>
 
                   <div className="space-y-2 mb-6">
-                    {packages[selectedPackage].features.map((feature, index) => (
+                    {(packages[selectedPackage]?.features || []).map((feature: string, index: number) => (
                       <div key={index} className="flex items-center text-sm">
                         <Check className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
                         <span className="text-gray-700">{feature}</span>
@@ -394,43 +443,67 @@ export default function ServiceDetail() {
                     ))}
                   </div>
 
-                  <div className="space-y-3">
-                    <button className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-4 rounded-lg transition-colors">
-                      متابعة (${packages[selectedPackage].price})
-                    </button>
-                    <button className="w-full border border-green-500 text-green-500 hover:bg-green-50 font-semibold py-3 px-4 rounded-lg transition-colors">
-                      تواصل معي
-                    </button>
-                  </div>
+                  <UnifiedButton
+                    onClick={() => {
+                      if (typeof window !== 'undefined' && (window as any).addToCart) {
+                        const cartItem = {
+                          id: service.id,
+                          title: service.title,
+                          price: packages[selectedPackage]?.price || 0,
+                          category: service.category,
+                          package: packages[selectedPackage]?.title || 'Basic',
+                          seller: seller?.fullName || 'Unknown',
+                          image: service.images?.[0] || ''
+                        };
+                        (window as any).addToCart(cartItem);
+                      } else {
+                        console.error('addToCart function not available');
+                      }
+                    }}
+                    className="w-full mb-3"
+                  >
+                    متابعة (${packages[selectedPackage]?.price || 0})
+                  </UnifiedButton>
+                  
+                  <UnifiedButton
+                    variant="outline"
+                    onClick={() => window.location.href = `/messages?user=${service.userId}`}
+                    className="w-full"
+                  >
+                    تواصل معي
+                  </UnifiedButton>
                 </div>
               </div>
 
               {/* Seller Actions */}
-              <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-4">
-                <div className="flex items-center justify-between">
-                  <button 
+              <div className="bg-white border border-gray-200 rounded-lg p-4">
+                <div className="flex space-x-2">
+                  <button
                     onClick={toggleFavorite}
                     className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors ${
-                      isFavorite 
-                        ? 'bg-red-50 text-red-600 hover:bg-red-100' 
+                      isFavorite
+                        ? 'bg-red-50 text-red-600 hover:bg-red-100'
                         : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
                     }`}
                   >
                     <Heart className={`h-4 w-4 ${isFavorite ? 'fill-current' : ''}`} />
-                    <span className="text-sm font-medium">حفظ</span>
+                    <span className="text-sm">{isFavorite ? 'محفوظ' : 'حفظ'}</span>
                   </button>
                   
-                  <button className="flex items-center space-x-2 px-3 py-2 bg-gray-50 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+                  <button
+                    onClick={() => navigator.share ? navigator.share({title: service.title, url: window.location.href}) : navigator.clipboard.writeText(window.location.href)}
+                    className="flex items-center space-x-2 px-3 py-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-100 transition-colors"
+                  >
                     <Share2 className="h-4 w-4" />
-                    <span className="text-sm font-medium">مشاركة</span>
+                    <span className="text-sm">مشاركة</span>
                   </button>
                   
-                  <button 
-                    onClick={() => setShowReportModal(true)}
-                    className="flex items-center space-x-2 px-3 py-2 bg-gray-50 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                  <button
+                    onClick={() => setModalState((prev) => ({ ...prev, showReportModal: true }))}
+                    className="flex items-center space-x-2 px-3 py-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-100 transition-colors"
                   >
                     <Flag className="h-4 w-4" />
-                    <span className="text-sm font-medium">إبلاغ</span>
+                    <span className="text-sm">إبلاغ</span>
                   </button>
                 </div>
               </div>
@@ -439,16 +512,14 @@ export default function ServiceDetail() {
         </div>
       </div>
 
-      <Footer />
-
       {/* Report Modal */}
-      {showReportModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-md w-full p-6">
-            <div className="flex justify-between items-center mb-4">
+      {modalState.showReportModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+            <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-gray-900">إبلاغ عن هذه الخدمة</h3>
-              <button 
-                onClick={() => setShowReportModal(false)}
+              <button
+                onClick={() => setModalState((prev) => ({ ...prev, showReportModal: false }))}
                 className="text-gray-400 hover:text-gray-600"
               >
                 ×
@@ -460,10 +531,10 @@ export default function ServiceDetail() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   سبب الإبلاغ
                 </label>
-                <select 
-                  value={reportReason}
-                  onChange={(e) => setReportReason(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                <select
+                  value={modalState.reportReason}
+                  onChange={(e) => setModalState((prev) => ({ ...prev, reportReason: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 >
                   <option value="">اختر السبب</option>
                   <option value="inappropriate">محتوى غير مناسب</option>
@@ -477,63 +548,57 @@ export default function ServiceDetail() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   تفاصيل إضافية
                 </label>
-                <textarea 
-                  value={reportDetails}
-                  onChange={(e) => setReportDetails(e.target.value)}
+                <textarea
+                  value={modalState.reportDetails}
+                  onChange={(e) => setModalState((prev) => ({ ...prev, reportDetails: e.target.value }))}
                   rows={3}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  placeholder="يرجى تقديم المزيد من التفاصيل..."
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  placeholder="اكتب تفاصيل إضافية هنا..."
                 />
               </div>
-              
-              <div className="flex space-x-3 pt-4">
-                <button 
-                  onClick={() => setShowReportModal(false)}
-                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-                >
-                  إلغاء
-                </button>
-                <button 
-                  onClick={handleReport}
-                  className="flex-1 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
-                >
-                  إرسال البلاغ
-                </button>
-              </div>
+            </div>
+            
+            <div className="flex space-x-3 mt-6">
+              <button
+                onClick={() => setModalState((prev) => ({ ...prev, showReportModal: false }))}
+                className="flex-1 px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                إلغاء
+              </button>
+              <button
+                onClick={handleReport}
+                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                إرسال البلاغ
+              </button>
             </div>
           </div>
         </div>
       )}
 
       {/* Success Modal */}
-      {showSuccessModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-sm w-full p-6 text-center">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Check className="h-8 w-8 text-green-500" />
-            </div>
+      {modalState.showSuccessModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-sm mx-4 text-center">
+            <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-gray-900 mb-2">تم إرسال البلاغ</h3>
-            <p className="text-gray-600 text-sm">
-              شكراً لك على البلاغ. سنقوم بمراجعته واتخاذ الإجراء المناسب.
-            </p>
+            <p className="text-gray-600">شكراً لك، سنراجع بلاغك في أقرب وقت ممكن.</p>
           </div>
         </div>
       )}
 
       {/* Favorite Modal */}
-      {showFavoriteModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-sm w-full p-6 text-center">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Heart className="h-8 w-8 text-red-500 fill-current" />
-            </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">{favoriteMessageText}</h3>
-            <p className="text-gray-600 text-sm">
-              يمكنك عرض الخدمات المحفوظة في قائمة المفضلة.
-            </p>
+      {modalState.showFavoriteModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-sm mx-4 text-center">
+            <Heart className="h-12 w-12 text-red-500 mx-auto mb-4 fill-current" />
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">{modalState.favoriteMessageText}</h3>
+            <p className="text-gray-600">يمكنك عرض خدماتك المحفوظة في قائمة المفضلة.</p>
           </div>
         </div>
       )}
+
+      <Footer />
     </div>
   )
 }

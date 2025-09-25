@@ -197,12 +197,12 @@ export default function ProfessionalWebsitePage() {
 
               <p className="text-gray-700 mt-4">
                 With years of experience in web design and a commitment to excellence, I am dedicated to delivering a 
-                website that not only meets but exceeds your expectations. Let's work together to create a professional 
+                website that not only meets but exceeds your expectations. Let&apos;s work together to create a professional 
                 website that showcases your unique offerings and captivates your target audience.
               </p>
 
               <p className="text-gray-700 mt-4">
-                Let's create a professional website that showcases your unique offerings and captivates your audience. 
+                Let&apos;s create a professional website that showcases your unique offerings and captivates your audience. 
                 I am here to help you discuss your project requirements and get started on creating your online presence.
               </p>
             </div>

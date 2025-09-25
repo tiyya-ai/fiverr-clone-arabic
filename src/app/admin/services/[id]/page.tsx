@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { ArrowRight, Star, User, Clock, Package, DollarSign, CheckCircle, XCircle, Edit, Trash2, Eye } from 'lucide-react'
 import { useServices } from '@/context/ServicesContext'
 import { getUserById } from '@/data/mockData'
+import { generateServiceSlug } from '@/utils/slug'
 import Image from 'next/image';
 
 export default function AdminServiceDetailPage() {
@@ -89,7 +90,7 @@ export default function AdminServiceDetailPage() {
         
         <div className="flex items-center gap-2">
           <button
-            onClick={() => window.open(`/services/${service.id}`, '_blank')}
+            onClick={() => window.open(`/services/${generateServiceSlug(service.title, service.id)}`, '_blank')}
             className="flex items-center gap-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200"
           >
             <Eye className="h-4 w-4" />

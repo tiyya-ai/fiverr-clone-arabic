@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react'
 import { useServices } from '@/context/ServicesContext'
 import { mockUsers } from '@/data/mockData'
 import { LineChart, BarChart, PieChart, DonutChart } from '@/components/Admin/Charts'
+import { generateServiceSlug } from '@/utils/slug'
 
 export default function AdminDashboard() {
   const router = useRouter()
@@ -593,7 +594,7 @@ export default function AdminDashboard() {
                         <td className="px-6 py-4">
                           <div className="flex gap-2">
                             <button
-                              onClick={() => router.push(`/services/${service.id}`)}
+                              onClick={() => router.push(`/services/${generateServiceSlug(service.title, service.id)}`)}
                               className="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50"
                               title="عرض الخدمة"
                             >
@@ -1555,7 +1556,7 @@ export default function AdminDashboard() {
                         <td className="px-6 py-4">
                           <div className="flex gap-2">
                             <button
-                              onClick={() => router.push(`/services/${service.id}`)}
+                              onClick={() => router.push(`/services/${generateServiceSlug(service.title, service.id)}`)}
                               className="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50"
                               title="عرض الخدمة"
                             >
@@ -1714,7 +1715,7 @@ export default function AdminDashboard() {
                         <td className="px-6 py-4">
                           <div className="flex gap-2">
                             <button
-                              onClick={() => router.push(`/services/${service.id}`)}
+                              onClick={() => router.push(`/services/${generateServiceSlug(service.title, service.id)}`)}
                               className="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50"
                               title="عرض الخدمة"
                             >

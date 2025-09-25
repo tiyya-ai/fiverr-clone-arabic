@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { ArrowLeft, Edit, Trash2, Package, Eye, TrendingUp, Users } from 'lucide-react'
+import { generateServiceSlug } from '@/utils/slug'
 import Image from 'next/image';
 
 interface Category {
@@ -321,7 +322,7 @@ export default function AdminCategoryDetailsPage() {
                       </td>
                       <td className="px-4 py-4">
                         <button
-                          onClick={() => router.push(`/services/${service.id}`)}
+                          onClick={() => router.push(`/services/${generateServiceSlug(service.title, service.id)}`)}
                           className="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50"
                           title="عرض الخدمة"
                         >

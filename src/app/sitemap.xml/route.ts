@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { generateServiceSlug } from '@/utils/slug'
 
 export async function GET(request: NextRequest) {
   try {
@@ -73,7 +74,7 @@ ${categories
 ${services
   .map(
     (service) => `  <url>
-    <loc>${baseUrl}/services/${service.id}</loc>
+    <loc>${baseUrl}/services/${generateServiceSlug(service.title, service.id)}</loc>
     <lastmod>${service.updatedAt.toISOString()}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>

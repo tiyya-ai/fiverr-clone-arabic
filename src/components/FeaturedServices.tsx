@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Star, Heart, Clock } from 'lucide-react'
+import { generateServiceSlug } from '@/utils/slug'
 
 const FeaturedServices = () => {
   const services = [
@@ -136,7 +137,7 @@ const FeaturedServices = () => {
                 </div>
 
                 {/* Service Title */}
-                <Link href={`/services/${service.id}`}>
+                <Link href={`/services/${generateServiceSlug(service.title, service.id)}`}>
                   <h3 className="font-semibold text-gray-900 mb-3 line-clamp-2 hover:text-primary-600 transition-colors">
                     {service.title}
                   </h3>
@@ -163,7 +164,7 @@ const FeaturedServices = () => {
                     From ${service.price}
                   </span>
                   <Link
-                    href={`/services/${service.id}`}
+                    href={`/services/${generateServiceSlug(service.title, service.id)}`}
                     className="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded text-sm font-medium transition-colors"
                   >
                     View Details

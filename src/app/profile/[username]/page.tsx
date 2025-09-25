@@ -7,6 +7,7 @@ import Footer from '@/components/Footer'
 import VerificationBadge, { VerificationBadges, VerificationScore } from '@/components/VerificationBadge'
 import { Star, MapPin, Calendar, MessageCircle, Heart, Share2, Award, Clock, Shield, Eye } from 'lucide-react'
 import { getUserById, getServicesByUserId, getReviewsByServiceId } from '@/data/mockData'
+import { generateServiceSlug } from '@/utils/slug'
 import Image from 'next/image';
 
 export default function PublicProfilePage() {
@@ -193,7 +194,7 @@ export default function PublicProfilePage() {
                       {service.packages[0]?.price} ر.س
                     </span>
                     <a
-                      href={`/services/${service.id}`}
+                      href={`/services/${generateServiceSlug(service.title, service.id)}`}
                       className="text-[#1ab7ea] hover:text-[#0ea5d9] text-sm font-medium"
                     >
                       عرض التفاصيل

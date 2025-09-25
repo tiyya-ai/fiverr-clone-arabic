@@ -8,6 +8,7 @@ import UnifiedCard from '@/components/UnifiedCard'
 import { useServices } from '@/context/ServicesContext'
 import { getUserById } from '@/data/mockData'
 import { sanitizeInput } from '@/utils/sanitize'
+import { generateServiceSlug } from '@/utils/slug'
 import Image from 'next/image'
 
 export default function Services() {
@@ -147,7 +148,7 @@ export default function Services() {
           {currentServices.length > 0 ? currentServices.map((service) => {
             const user = getUserById(service.userId)
             return (
-              <div key={service.id} className="flex-shrink-0 w-full bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden group flex flex-col hover:shadow-lg transition-all duration-300 hover:border-[#1ab7ea] cursor-pointer" onClick={() => window.location.href = `/services/${service.id}`}>
+              <div key={service.id} className="flex-shrink-0 w-full bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden group flex flex-col hover:shadow-lg transition-all duration-300 hover:border-[#1ab7ea] cursor-pointer" onClick={() => window.location.href = `/services/${generateServiceSlug(service.title, service.id)}`}>
                 <div className="relative">
                   <Image
                     src={service.image || `https://images.pexels.com/photos/580151/pexels-photo-580151.jpeg?auto=compress&cs=tinysrgb&w=400`}
@@ -210,7 +211,7 @@ export default function Services() {
               ]
               const service = sampleServices[index % sampleServices.length]
               return (
-                <div key={service.id} className="flex-shrink-0 w-full bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden group flex flex-col hover:shadow-lg transition-all duration-300 hover:border-[#1ab7ea] cursor-pointer" onClick={() => window.location.href = `/services/${encodeURIComponent(service.id)}`}>
+                <div key={service.id} className="flex-shrink-0 w-full bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden group flex flex-col hover:shadow-lg transition-all duration-300 hover:border-[#1ab7ea] cursor-pointer" onClick={() => window.location.href = `/services/${generateServiceSlug(service.title, service.id)}`}>
                   <div className="relative">
                     <Image
                       src={`https://images.pexels.com/photos/${580151 + index}/pexels-photo-${580151 + index}.jpeg?auto=compress&cs=tinysrgb&w=400`}

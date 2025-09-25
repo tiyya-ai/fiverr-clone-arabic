@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Heart, Star, Trash2 } from 'lucide-react'
 import MainHeader from '@/components/MainHeader'
 import Footer from '@/components/Footer'
+import { generateServiceSlug } from '@/utils/slug'
 import Image from 'next/image'
 
 export default function FavoritesPage() {
@@ -65,7 +66,7 @@ export default function FavoritesPage() {
                 
                 <div className="p-4">
                   <a 
-                    href={`/services/${service.id}`}
+                    href={`/services/${generateServiceSlug(service.title, service.id)}`}
                     className="text-gray-900 hover:text-blue-600 transition-colors text-right font-semibold leading-snug block mb-3"
                     dir="rtl"
                   >

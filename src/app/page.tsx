@@ -9,6 +9,7 @@ import LoginModal from '@/components/LoginModal'
 import { getUserById } from '@/data/mockData'
 import { useServices } from '@/context/ServicesContext'
 import { getCategoryIcon } from '@/config/icons'
+import { generateServiceSlug } from '@/utils/slug'
 import Image from 'next/image';
 
 export default function Home() {
@@ -351,7 +352,7 @@ export default function Home() {
                           <p className="text-xs text-[#64748b]">{user?.level}</p>
                         </div>
                       </div>
-                      <a href={`/services/${service.id}`} className="text-[#0f172a] hover:text-[#1e40af] transition-colors duration-200 text-right font-semibold leading-snug flex-grow">
+                      <a href={`/services/${generateServiceSlug(service.title, service.id)}`} className="text-[#0f172a] hover:text-[#1e40af] transition-colors duration-200 text-right font-semibold leading-snug flex-grow">
                         {service.title}
                       </a>
                       <div className="flex items-center mt-3">

@@ -12,7 +12,6 @@ const nextConfig = {
   },
   // Disable static export for dynamic routes
   trailingSlash: false,
-  output: 'standalone',
   async headers() {
     return [
       {
