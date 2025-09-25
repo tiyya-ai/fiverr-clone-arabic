@@ -131,22 +131,6 @@ export async function GET(request: NextRequest) {
               avatar: true,
             },
           },
-          messages: {
-            select: {
-              id: true,
-              content: true,
-              createdAt: true,
-              fromUser: {
-                select: {
-                  fullName: true,
-                },
-              },
-            },
-            orderBy: {
-              createdAt: 'desc',
-            },
-            take: 3,
-          },
 
         },
       }),
@@ -168,7 +152,6 @@ export async function GET(request: NextRequest) {
         package: order.package,
         buyerId: order.buyerId,
         seller: order.seller,
-        recentMessages: order.messages,
       })),
       pagination: {
         currentPage: page,
