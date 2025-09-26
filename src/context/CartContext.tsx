@@ -32,20 +32,15 @@ export const useCart = () => {
 }
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-    {
-      id: 1,
-      title: 'تصميم موقع إلكتروني احترافي',
-      seller: 'أحمد محمد',
-      package: 'الباقة المتقدمة',
-      price: 1500,
-      quantity: 1,
-      image: '/api/placeholder/60/60'
-    }
-  ])
+  const [cartItems, setCartItems] = useState<CartItem[]>([])
 
   const addToCart = (item: CartItem) => {
-    setCartItems(prev => [...prev, item])
+    const existingItem = cartItems.find(cartItem => cartItem.id === item.id)
+    if (existingItem) {
+      updateQuantity(item.id, existingItem.quantity + 1)
+    } else {
+      setCartItems(prev => [...prev, item])
+    }
   }
 
   const removeFromCart = (id: number) => {

@@ -295,8 +295,13 @@ export default function ServiceDetail() {
                       height={40}
                       className="rounded-full"
                     />
-                    <div className="mr-3">
-                      <h4 className="text-sm font-medium">{seller.fullName}</h4>
+                    <div className="mr-3 flex-1">
+                      <div className="flex items-center gap-1">
+                        <h4 className="text-sm font-medium">{seller.fullName}</h4>
+                        {seller.isVerified && (
+                          <CheckCircle className="h-4 w-4 text-green-500 fill-current" />
+                        )}
+                      </div>
                       <p className="text-xs text-gray-600">{seller.level}</p>
                     </div>
                   </div>
@@ -352,6 +357,9 @@ export default function ServiceDetail() {
                         className="w-6 h-6 rounded-full"
                       />
                       <span className="text-sm text-gray-600 mr-2">{relatedSeller?.fullName}</span>
+                      {relatedSeller?.isVerified && (
+                        <CheckCircle className="h-4 w-4 text-green-500 fill-current" />
+                      )}
                     </div>
                     <h3 className="font-medium text-gray-900 mb-2 line-clamp-2 text-right" dir="rtl">
                       {relatedService.title}
