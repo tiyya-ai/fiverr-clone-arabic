@@ -1,4 +1,3 @@
-// Prisma schema for live database
 generator client {
   provider = "prisma-client-js"
 }
@@ -9,53 +8,51 @@ datasource db {
 }
 
 model User {
-  id                  String   @id @default(cuid())
-  email               String   @unique
-  password            String
-  fullName            String
-  username            String   @unique
-  avatar              String?
-  phone               String?
-  location            String
-  bio                 String?
-  skills              String   @default("[]")
-  languages           String   @default("[]")
-  rating              Float    @default(0)
-  totalReviews        Int      @default(0)
-  totalSales          Int      @default(0)
-  responseTime        String   @default("1 hour")
-  memberSince         String
-  isVerified          Boolean  @default(false)
-  isOnline            Boolean  @default(false)
-  lastSeen            DateTime?
-  userType            String   @default("BUYER")
-  verificationBadges  String   @default("[]")
-  verificationScore   Int?
-  emailVerified       Boolean  @default(false)
-  phoneVerified       Boolean  @default(false)
-  level               String   @default("مبتدئ")
-  completedTasks      Int      @default(0)
-  stripeCustomerId    String?
-  stripeAccountId     String?
-  stripeOnboardingComplete Boolean @default(false)
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  id                       String            @id @default(cuid())
+  email                    String            @unique
+  password                 String
+  fullName                 String
+  username                 String            @unique
+  avatar                   String?
+  phone                    String?
+  location                 String
+  bio                      String?
+  skills                   String            @default("[]")
+  languages                String            @default("[]")
+  rating                   Float             @default(0)
+  totalReviews             Int               @default(0)
+  totalSales               Int               @default(0)
+  responseTime             String            @default("1 hour")
+  memberSince              String
+  isVerified               Boolean           @default(false)
+  isOnline                 Boolean           @default(false)
+  lastSeen                 DateTime?
+  userType                 String            @default("BUYER")
+  verificationBadges       String            @default("[]")
+  verificationScore        Int?
+  emailVerified            Boolean           @default(false)
+  phoneVerified            Boolean           @default(false)
+  level                    String            @default("مبتدئ")
+  completedTasks           Int               @default(0)
+  stripeCustomerId         String?
+  stripeAccountId          String?
+  stripeOnboardingComplete Boolean           @default(false)
+  createdAt                DateTime          @default(now())
+  updatedAt                DateTime          @updatedAt
+  certifications           Certification[]
+  receivedMessages         Message[]         @relation("ReceivedMessages")
+  sentMessages             Message[]         @relation("SentMessages")
+  sellerOrders             Order[]           @relation("SellerOrders")
+  buyerOrders              Order[]           @relation("BuyerOrders")
+  portfolioItems           PortfolioItem[]
+  reviews                  Review[]
+  services                 Service[]
+  workHistory              WorkHistoryItem[]
 
-  // Relations
-  services            Service[]
-  buyerOrders         Order[]   @relation("BuyerOrders")
-  sellerOrders        Order[]   @relation("SellerOrders")
-  reviews             Review[]
-  sentMessages        Message[] @relation("SentMessages")
-  receivedMessages    Message[] @relation("ReceivedMessages")
-  portfolioItems      PortfolioItem[]
-  certifications      Certification[]
-  workHistory         WorkHistoryItem[]
-  
   @@map("users")
 }
 
-  model Category {
+model Category {
   id            String    @id @default(cuid())
   name          String    @unique
   nameEn        String
@@ -69,89 +66,81 @@ model User {
   order         Int       @default(0)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-
-  // Relations
   services      Service[]
-  
+
   @@map("categories")
 }
 
 model Service {
-  id           String    @id @default(cuid())
-  title        String
-  titleEn      String
-  description  String
+  id            String           @id @default(cuid())
+  title         String
+  titleEn       String
+  description   String
   descriptionEn String
-  categoryId   String
-  userId       String
-  images       String   @default("[]")
-  tags         String   @default("[]")
-  rating       Float     @default(0)
-  totalReviews Int       @default(0)
-  totalSales   Int       @default(0)
-  isActive     Boolean   @default(true)
-  isFeatured   Boolean   @default(false)
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  categoryId    String
+  userId        String
+  images        String           @default("[]")
+  tags          String           @default("[]")
+  rating        Float            @default(0)
+  totalReviews  Int              @default(0)
+  totalSales    Int              @default(0)
+  isActive      Boolean          @default(true)
+  isFeatured    Boolean          @default(false)
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  orders        Order[]
+  reviews       Review[]
+  faqs          ServiceFAQ[]
+  packages      ServicePackage[]
+  user          User             @relation(fields: [userId], references: [id])
+  category      Category         @relation(fields: [categoryId], references: [id])
 
-  // Relations
-  category     Category  @relation(fields: [categoryId], references: [id])
-  user         User      @relation(fields: [userId], references: [id])
-  packages     ServicePackage[]
-  orders       Order[]
-  reviews      Review[]
-  faqs         ServiceFAQ[]
-  
   @@map("services")
 }
 
 model ServicePackage {
-  id            String      @id @default(cuid())
+  id            String   @id @default(cuid())
   serviceId     String
   name          String
   nameEn        String
   description   String
   descriptionEn String
   price         Float
-  deliveryTime  Int         // in days
+  deliveryTime  Int
   revisions     Int
   features      String   @default("[]")
   type          String   @default("basic")
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-
-  // Relations
-  service       Service     @relation(fields: [serviceId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
   orders        Order[]
-  
+  service       Service  @relation(fields: [serviceId], references: [id])
+
   @@map("service_packages")
 }
 
 model Order {
-  id              String      @id @default(cuid())
+  id              String         @id @default(cuid())
   serviceId       String
   packageId       String
   buyerId         String
   sellerId        String
-  status          String      @default("PENDING")
+  status          String         @default("PENDING")
   totalAmount     Float
   paymentIntentId String?
   requirements    String?
   notes           String?
-  urgentDelivery  Boolean  @default(false)
+  urgentDelivery  Boolean        @default(false)
   deliveryDate    DateTime
   completedAt     DateTime?
   paidAt          DateTime?
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  messages        Message[]
+  seller          User           @relation("SellerOrders", fields: [sellerId], references: [id])
+  buyer           User           @relation("BuyerOrders", fields: [buyerId], references: [id])
+  package         ServicePackage @relation(fields: [packageId], references: [id])
+  service         Service        @relation(fields: [serviceId], references: [id])
 
-  // Relations
-  service      Service        @relation(fields: [serviceId], references: [id])
-  package      ServicePackage @relation(fields: [packageId], references: [id])
-  buyer        User           @relation("BuyerOrders", fields: [buyerId], references: [id])
-  seller       User           @relation("SellerOrders", fields: [sellerId], references: [id])
-  messages     Message[]
-  
   @@map("orders")
 }
 
@@ -164,32 +153,23 @@ model Review {
   comment   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  // Relations
-  service   Service  @relation(fields: [serviceId], references: [id])
   user      User     @relation(fields: [userId], references: [id])
-  
+  service   Service  @relation(fields: [serviceId], references: [id])
+
   @@map("reviews")
 }
 
-// Note: SQLite doesn't support enums, using String fields instead
-// UserType: BUYER, SELLER, ADMIN
-// PackageType: basic, standard, premium  
-// OrderStatus: PENDING, ACTIVE, DELIVERED, COMPLETED, CANCELLED, DISPUTED
-
 model Message {
-  id        String   @id @default(cuid())
-  content   String
-  isRead    Boolean  @default(false)
-  orderId   String?
-  createdAt DateTime @default(now())
-
-  // Relations
+  id         String   @id @default(cuid())
+  content    String
+  isRead     Boolean  @default(false)
+  orderId    String?
+  createdAt  DateTime @default(now())
   fromUserId String
-  fromUser   User   @relation("SentMessages", fields: [fromUserId], references: [id], onDelete: Cascade)
   toUserId   String
-  toUser     User   @relation("ReceivedMessages", fields: [toUserId], references: [id], onDelete: Cascade)
-  order      Order? @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  order      Order?   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  toUser     User     @relation("ReceivedMessages", fields: [toUserId], references: [id], onDelete: Cascade)
+  fromUser   User     @relation("SentMessages", fields: [fromUserId], references: [id], onDelete: Cascade)
 
   @@map("messages")
 }
@@ -203,10 +183,8 @@ model PortfolioItem {
   projectUrl   String?
   completedAt  DateTime
   createdAt    DateTime @default(now())
-
-  // Relations
   userId       String
-  user         User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("portfolio_items")
 }
@@ -219,10 +197,8 @@ model Certification {
   expiryDate    DateTime?
   credentialUrl String?
   createdAt     DateTime  @default(now())
-
-  // Relations
   userId        String
-  user          User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("certifications")
 }
@@ -235,21 +211,17 @@ model WorkHistoryItem {
   description  String
   technologies String   @default("[]")
   createdAt    DateTime @default(now())
-
-  // Relations
   userId       String
-  user         User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("work_history")
 }
 
 model ServiceFAQ {
-  id        String @id @default(cuid())
+  id        String  @id @default(cuid())
   question  String
   answer    String
-  order     Int    @default(0)
-
-  // Relations
+  order     Int     @default(0)
   serviceId String
   service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
 
