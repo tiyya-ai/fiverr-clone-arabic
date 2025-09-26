@@ -200,7 +200,6 @@ export async function PATCH(request: NextRequest) {
       },
       select: {
         id: true,
-        paymentIntentId: true,
         totalAmount: true,
         status: true,
         createdAt: true,
@@ -265,10 +264,15 @@ export async function PATCH(request: NextRequest) {
         
         // Process refunds through Stripe
         for (const order of orders) {
-          if (order.paymentIntentId) {
+          const fullOrder = await prisma.order.findUnique({
+            where: { id: order.id },
+            select: { paymentIntentId: true }
+          })
+          
+          if (fullOrder?.paymentIntentId) {
             try {
               await stripe.refunds.create({
-                payment_intent: order.paymentIntentId,
+                payment_intent: fullOrder.paymentIntentId,
                 amount: Math.round((order.totalAmount || 0) * 100), // Convert to cents
                 reason: 'requested_by_customer',
               })
