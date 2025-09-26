@@ -78,32 +78,7 @@ export async function GET(
           },
           take: 10,
         },
-        sentMessages: {
-          include: {
-            toUser: {
-              select: {
-                fullName: true,
-              },
-            },
-          },
-          orderBy: {
-            createdAt: 'desc',
-          },
-          take: 5,
-        },
-        receivedMessages: {
-          include: {
-            fromUser: {
-              select: {
-                fullName: true,
-              },
-            },
-          },
-          orderBy: {
-            createdAt: 'desc',
-          },
-          take: 5,
-        },
+
         reviews: {
           include: {
             service: {
@@ -166,7 +141,7 @@ export async function GET(
           servicesCount: user._count.services,
           buyerOrdersCount: user._count.buyerOrders,
           sellerOrdersCount: user._count.sellerOrders,
-          messagesCount: user.sentMessages.length + user.receivedMessages.length,
+          messagesCount: 0,
           reviewsCount: user._count.reviews,
           totalRevenue,
           totalSpent,
@@ -175,9 +150,7 @@ export async function GET(
         services: user.services,
         recentBuyerOrders: user.buyerOrders,
         recentSellerOrders: user.sellerOrders,
-        recentMessages: [...user.sentMessages, ...user.receivedMessages]
-          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-          .slice(0, 10),
+        recentMessages: [],
         reviews: user.reviews,
       },
     })
