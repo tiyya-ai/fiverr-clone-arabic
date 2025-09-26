@@ -267,7 +267,7 @@ export async function PATCH(request: NextRequest) {
             },
           },
           data: {
-            status: 'REFUNDED',
+            status: 'CANCELLED',
           },
         })
         break
