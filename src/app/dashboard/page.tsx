@@ -16,24 +16,39 @@ import {
   Shield,
   User
 } from 'lucide-react'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import MainHeader from '@/components/MainHeader'
 import Footer from '@/components/Footer'
+import ProtectedRoute from '@/components/ProtectedRoute'
 import { getUserById } from '@/data/mockData'
 import { useServices } from '@/context/ServicesContext'
 import Image from 'next/image';
 
 export default function DashboardPage() {
+  const { data: session, status } = useSession()
+  const router = useRouter()
   const [userType, setUserType] = useState('')
   const { getServicesByUserId } = useServices()
-  const currentUser = getUserById('1')
-  const userServices = getServicesByUserId('1')
+  
+  // Use session user ID instead of hardcoded '1'
+  const userId = session?.user?.id || '1'
+  const currentUser = getUserById(userId)
+  const userServices = getServicesByUserId(userId)
 
   useEffect(() => {
+    if (status === 'loading') return
+    
+    if (!session) {
+      router.push('/api/auth/signin')
+      return
+    }
+    
     if (typeof window !== 'undefined') {
       const type = localStorage.getItem('userType') || 'seller'
       setUserType(type)
     }
-  }, [])
+  }, [session, status, router])
 
   const stats = {
     totalServices: userServices.length,
@@ -73,20 +88,33 @@ export default function DashboardPage() {
     }
   ]
 
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    )
+  }
+
+  if (!session) {
+    return null
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      <MainHeader />
-      
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Welcome Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2" dir="rtl">
-            مرحباً، {currentUser?.fullName}!
-          </h1>
-          <p className="text-gray-600" dir="rtl">
-            إليك نظرة عامة على أداء حسابك اليوم
-          </p>
-        </div>
+    <ProtectedRoute>
+      <div className="min-h-screen bg-gray-50">
+        <MainHeader />
+        
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          {/* Welcome Header */}
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2" dir="rtl">
+              مرحباً، {session?.user?.name || currentUser?.fullName}!
+            </h1>
+            <p className="text-gray-600" dir="rtl">
+              إليك نظرة عامة على أداء حسابك اليوم
+            </p>
+          </div>
 
         {/* Quick Actions - Fiverr Style */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
@@ -330,5 +358,6 @@ export default function DashboardPage() {
       
       <Footer />
     </div>
+    </ProtectedRoute>
   )
 }

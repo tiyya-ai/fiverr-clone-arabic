@@ -148,17 +148,17 @@ export default function Services() {
           {currentServices.length > 0 ? currentServices.map((service) => {
             const user = getUserById(service.userId)
             return (
-              <div key={service.id} className="flex-shrink-0 w-full bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden group flex flex-col hover:shadow-lg transition-all duration-300 hover:border-[#1ab7ea] cursor-pointer" onClick={() => window.location.href = `/services/${generateServiceSlug(service.title, service.id)}`}>
+              <div key={service.id} className="bg-white rounded-2xl border border-[#e2e8f0] shadow-sm overflow-hidden group flex flex-col hover:shadow-lg hover:border-[#cbd5e1] transition-all duration-300 cursor-pointer" onClick={() => window.location.href = `/services/${generateServiceSlug(service.title, service.id)}`}>
                 <div className="relative">
                   <Image
                     src={service.image || `https://images.pexels.com/photos/580151/pexels-photo-580151.jpeg?auto=compress&cs=tinysrgb&w=400`}
                     alt={service.title}
-                    width={300}
-                    height={170}
-                    className="w-full h-[170px] object-cover transition-transform duration-300 group-hover:scale-105"
+                    width={350}
+                    height={180}
+                    className="w-full h-[180px] object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>
-                <div className="p-4 flex flex-col flex-grow">
+                <div className="p-5 flex flex-col flex-grow">
                   <div className="flex items-center mb-3">
                     <Image
                       src={user?.avatar || '/img/noavatar.jpg'}
@@ -167,97 +167,108 @@ export default function Services() {
                       height={32}
                       className="w-8 h-8 rounded-full object-cover"
                     />
-                    <div className="mr-3 text-right">
-                      <h3 className="font-semibold text-sm text-gray-800">{user?.fullName || 'مقدم الخدمة'}</h3>
-                      <p className="text-xs text-gray-500">محترف معتمد</p>
+                    <div className="mr-3 flex-1">
+                      <div className="flex items-center gap-1">
+                        <h3 className="font-bold text-sm text-[#0f172a]">{user?.fullName || 'مقدم الخدمة'}</h3>
+                        {user?.isVerified && (
+                          <Shield className="h-3 w-3 text-green-500 fill-current" />
+                        )}
+                      </div>
                     </div>
                   </div>
-                  <div className="text-gray-800 hover:text-green-500 transition-colors duration-200 text-right font-semibold leading-snug flex-grow">
+                  <a href={`/services/${generateServiceSlug(service.title, service.id)}`} className="text-[#0f172a] hover:text-[#1e40af] transition-colors duration-200 text-right font-medium text-base leading-snug flex-grow mb-3 block">
                     {service.title}
-                  </div>
-                  <div className="flex items-center mt-3">
-                    <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                    <span className="text-sm text-gray-600 mr-1 font-bold">
-                      {service.rating}
-                    </span>
-                    <span className="text-xs text-gray-400">({service.totalReviews})</span>
-                  </div>
-                  <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
-                    <button className="text-gray-400 hover:text-red-500">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
-                      </svg>
-                    </button>
-                    <div className="text-left">
-                      <span className="text-xs text-gray-500 block">ابتداءً من</span>
-                      <div className="font-bold text-gray-800 text-lg">{service.packages?.[0]?.price || 50} ريال</div>
+                  </a>
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center">
+                      <MapPin className="h-3 w-3 text-[#64748b] ml-1" />
+                      <span className="text-sm text-[#64748b]">السعودية</span>
                     </div>
+                    <div className="flex items-center">
+                      <Star className="h-4 w-4 text-yellow-400 fill-current ml-1" />
+                      <span className="text-sm text-[#475569] font-bold">
+                        {service.rating}
+                      </span>
+                      <span className="text-xs text-[#64748b] mr-1">({service.totalReviews})</span>
+                    </div>
+                  </div>
+                  <div className="text-right mb-3">
+                    <span className="text-sm text-[#64748b]">{service.category || "تصميم وبرمجة"}</span>
+                  </div>
+                  <div className="flex items-center justify-between pt-3 border-t border-[#e2e8f0]" dir="rtl">
+                    <span className="text-xs text-[#64748b]">ابتداءً من</span>
+                    <div className="font-bold text-[#0f172a] text-lg">{service.packages?.[0]?.price || 50} ر.س</div>
                   </div>
                 </div>
               </div>
             )
           }) : (
             // Fallback sample services when no data is loaded
-            Array.from({ length: 8 }, (_, index) => {
+            (() => {
               const sampleServices = [
-                { id: `sample-${index}`, title: 'خدمة صيانة الكهرباء المنزلية', rating: '4.9', totalReviews: 123, price: 150 },
-                { id: `sample-${index}`, title: 'إصلاح وصيانة السباكة', rating: '4.8', totalReviews: 89, price: 120 },
-                { id: `sample-${index}`, title: 'تركيب وصيانة التكييف', rating: '4.7', totalReviews: 156, price: 200 },
-                { id: `sample-${index}`, title: 'أعمال النجارة والأثاث', rating: '4.9', totalReviews: 234, price: 180 },
-                { id: `sample-${index}`, title: 'تركيب كاميرات المراقبة', rating: '4.6', totalReviews: 67, price: 300 },
-                { id: `sample-${index}`, title: 'أعمال البناء والمقاولات', rating: '4.8', totalReviews: 145, price: 500 },
-                { id: `sample-${index}`, title: 'تنسيق وصيانة الحدائق', rating: '4.7', totalReviews: 98, price: 250 },
-                { id: `sample-${index}`, title: 'صيانة المصاعد والسلالم', rating: '4.5', totalReviews: 45, price: 400 }
+                { id: 'sample-1', title: 'خدمة صيانة الكهرباء المنزلية', rating: '4.9', totalReviews: 123, price: 150, category: 'الكهرباء', seller: 'أحمد محمد الحرفي', avatar: '/img/noavatar.jpg', image: 'https://images.pexels.com/photos/580151/pexels-photo-580151.jpeg?auto=compress&cs=tinysrgb&w=400' },
+                { id: 'sample-2', title: 'إصلاح وصيانة السباكة', rating: '4.8', totalReviews: 89, price: 120, category: 'السباكة', seller: 'محمد أحمد الحرفي', avatar: '/img/noavatar.jpg', image: 'https://images.pexels.com/photos/580152/pexels-photo-580152.jpeg?auto=compress&cs=tinysrgb&w=400' },
+                { id: 'sample-3', title: 'تركيب وصيانة التكييف', rating: '4.7', totalReviews: 156, price: 200, category: 'التكييف والتبريد', seller: 'علي محمد الحرفي', avatar: '/img/noavatar.jpg', image: 'https://images.pexels.com/photos/580153/pexels-photo-580153.jpeg?auto=compress&cs=tinysrgb&w=400' },
+                { id: 'sample-4', title: 'أعمال النجارة والأثاث', rating: '4.9', totalReviews: 234, price: 180, category: 'النجارة', seller: 'سعد أحمد الحرفي', avatar: '/img/noavatar.jpg', image: 'https://images.pexels.com/photos/580154/pexels-photo-580154.jpeg?auto=compress&cs=tinysrgb&w=400' },
+                { id: 'sample-5', title: 'تركيب كاميرات المراقبة', rating: '4.6', totalReviews: 67, price: 300, category: 'تركيب كاميرات المراقبة', seller: 'خالد محمد الحرفي', avatar: '/img/noavatar.jpg', image: 'https://images.pexels.com/photos/580155/pexels-photo-580155.jpeg?auto=compress&cs=tinysrgb&w=400' },
+                { id: 'sample-6', title: 'أعمال البناء والمقاولات', rating: '4.8', totalReviews: 145, price: 500, category: 'البناء والمقاولات', seller: 'عبدالله أحمد الحرفي', avatar: '/img/noavatar.jpg', image: 'https://images.pexels.com/photos/580156/pexels-photo-580156.jpeg?auto=compress&cs=tinysrgb&w=400' },
+                { id: 'sample-7', title: 'تنسيق وصيانة الحدائق', rating: '4.7', totalReviews: 98, price: 250, category: 'تنسيق الحدائق', seller: 'فهد محمد الحرفي', avatar: '/img/noavatar.jpg', image: 'https://images.pexels.com/photos/580157/pexels-photo-580157.jpeg?auto=compress&cs=tinysrgb&w=400' },
+                { id: 'sample-8', title: 'صيانة المصاعد والسلالم', rating: '4.5', totalReviews: 45, price: 400, category: 'صيانة المصاعد', seller: 'ناصر أحمد الحرفي', avatar: '/img/noavatar.jpg', image: 'https://images.pexels.com/photos/580158/pexels-photo-580158.jpeg?auto=compress&cs=tinysrgb&w=400' }
               ]
-              const service = sampleServices[index % sampleServices.length]
-              return (
-                <div key={service.id} className="flex-shrink-0 w-full bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden group flex flex-col hover:shadow-lg transition-all duration-300 hover:border-[#1ab7ea] cursor-pointer" onClick={() => window.location.href = `/services/${generateServiceSlug(service.title, service.id)}`}>
+              return sampleServices.map((service) => (
+                <div key={service.id} className="bg-white rounded-2xl border border-[#e2e8f0] shadow-sm overflow-hidden group flex flex-col hover:shadow-lg hover:border-[#cbd5e1] transition-all duration-300 cursor-pointer" onClick={() => window.location.href = `/services/${generateServiceSlug(service.title, service.id)}`}>
                   <div className="relative">
                     <Image
-                      src={`https://images.pexels.com/photos/${580151 + index}/pexels-photo-${580151 + index}.jpeg?auto=compress&cs=tinysrgb&w=400`}
+                      src={service.image}
                       alt={service.title}
-                      width={300}
-                      height={170}
-                      className="w-full h-[170px] object-cover transition-transform duration-300 group-hover:scale-105"
+                      width={350}
+                      height={180}
+                      className="w-full h-[180px] object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   </div>
-                  <div className="p-4 flex flex-col flex-grow">
+                  <div className="p-5 flex flex-col flex-grow">
                     <div className="flex items-center mb-3">
                       <Image
-                        src="/img/noavatar.jpg"
-                        alt="أحمد محمد الحرفي"
+                        src={service.avatar}
+                        alt={service.seller}
                         width={32}
                         height={32}
                         className="w-8 h-8 rounded-full object-cover"
                       />
-                      <div className="mr-3 text-right">
-                        <h3 className="font-semibold text-sm text-gray-800">أحمد محمد الحرفي</h3>
-                        <p className="text-xs text-gray-500">محترف معتمد</p>
+                      <div className="mr-3 flex-1">
+                        <div className="flex items-center gap-1">
+                          <h3 className="font-bold text-sm text-[#0f172a]">{service.seller}</h3>
+                          <Shield className="h-3 w-3 text-green-500 fill-current" />
+                        </div>
                       </div>
                     </div>
-                    <div className="text-gray-800 hover:text-green-500 transition-colors duration-200 text-right font-semibold leading-snug flex-grow">
+                    <a href={`/services/${generateServiceSlug(service.title, service.id)}`} className="text-[#0f172a] hover:text-[#1e40af] transition-colors duration-200 text-right font-medium text-base leading-snug flex-grow mb-3 block">
                       {service.title}
-                    </div>
-                    <div className="flex items-center mt-3">
-                      <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                      <span className="text-sm text-gray-600 mr-1 font-bold">{service.rating}</span>
-                      <span className="text-xs text-gray-400">({service.totalReviews})</span>
-                    </div>
-                    <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
-                      <button className="text-gray-400 hover:text-red-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
-                        </svg>
-                      </button>
-                      <div className="text-left">
-                        <span className="text-xs text-gray-500 block">ابتداءً من</span>
-                        <div className="font-bold text-gray-800 text-lg">{service.price} ريال</div>
+                    </a>
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center">
+                        <MapPin className="h-3 w-3 text-[#64748b] ml-1" />
+                        <span className="text-sm text-[#64748b]">السعودية</span>
                       </div>
+                      <div className="flex items-center">
+                        <Star className="h-4 w-4 text-yellow-400 fill-current ml-1" />
+                        <span className="text-sm text-[#475569] font-bold">
+                          {service.rating}
+                        </span>
+                        <span className="text-xs text-[#64748b] mr-1">({service.totalReviews})</span>
+                      </div>
+                    </div>
+                    <div className="text-right mb-3">
+                      <span className="text-sm text-[#64748b]">{service.category}</span>
+                    </div>
+                    <div className="flex items-center justify-between pt-3 border-t border-[#e2e8f0]" dir="rtl">
+                      <span className="text-xs text-[#64748b]">ابتداءً من</span>
+                      <div className="font-bold text-[#0f172a] text-lg">{service.price} ر.س</div>
                     </div>
                   </div>
                 </div>
-              )
-            })
+              ))
+            })()
           )}
         </div>
           

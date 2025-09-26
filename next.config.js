@@ -1,8 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ['@prisma/client', 'bcryptjs']
-  },
+  serverExternalPackages: ['@prisma/client', 'bcryptjs'],
   images: {
         domains: ['localhost', 'uploadthing.com', 'utfs.io', 'wbl3.com', 'fiverr-res.cloudinary.com', 'cdn-icons-png.flaticon.com', 'images.unsplash.com', 'images.pexels.com'],
     },

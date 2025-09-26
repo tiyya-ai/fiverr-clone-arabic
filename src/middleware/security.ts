@@ -5,7 +5,7 @@ import { sanitizeInput } from '@/utils/sanitize'
 const rateLimitStore = new Map()
 
 export function rateLimit(req: NextRequest, limit = 100, windowMs = 15 * 60 * 1000) {
-  const ip = req.ip || req.headers.get('x-forwarded-for') || 'unknown'
+  const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown'
   const key = `${ip}:${req.nextUrl.pathname}`
   
   const now = Date.now()

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Heart, Star, Trash2 } from 'lucide-react'
+import { Heart, Star, Trash2, MapPin } from 'lucide-react'
 import MainHeader from '@/components/MainHeader'
 import Footer from '@/components/Footer'
 import { generateServiceSlug } from '@/utils/slug'
@@ -73,15 +73,26 @@ export default function FavoritesPage() {
                     {service.title}
                   </a>
                   
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center">
+                      <MapPin className="h-3 w-3 text-gray-500 ml-1" />
+                      <span className="text-sm text-gray-500">السعودية</span>
+                    </div>
                     <div className="flex items-center gap-1">
                       <Star className="h-4 w-4 text-yellow-400 fill-current" />
                       <span className="text-sm font-bold">4.8</span>
                       <span className="text-xs text-gray-500">(124)</span>
                     </div>
-                    <div className="text-right">
+                  </div>
+                  
+                  <div className="text-right mb-3">
+                    <span className="text-sm text-gray-500">{service.category || "تصميم وبرمجة"}</span>
+                  </div>
+                  
+                  <div className="flex items-center justify-end">
+                    <div className="text-right" dir="rtl">
                       <span className="text-xs text-gray-500 block">ابتداءً من</span>
-                      <div className="font-bold text-gray-900">{service.price || 150} ريال</div>
+                      <div className="font-bold text-gray-900">{service.price || 150} ريال سعودي</div>
                     </div>
                   </div>
                 </div>

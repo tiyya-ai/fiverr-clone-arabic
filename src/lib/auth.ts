@@ -25,35 +25,44 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          return null
+          throw new Error('البريد الإلكتروني وكلمة المرور مطلوبان')
         }
 
-        const user = await prisma.user.findUnique({
-          where: {
-            email: credentials.email
+        try {
+          const user = await prisma.user.findUnique({
+            where: {
+              email: credentials.email
+            }
+          })
+
+          if (!user) {
+            throw new Error('البريد الإلكتروني غير مسجل')
           }
-        })
 
-        if (!user || !user.password) {
-          return null
-        }
+          if (!user.password) {
+            throw new Error('هذا الحساب مسجل عبر وسائل التواصل الاجتماعي')
+          }
 
-        const isPasswordValid = await bcrypt.compare(
-          credentials.password,
-          user.password
-        )
+          const isPasswordValid = await bcrypt.compare(
+            credentials.password,
+            user.password
+          )
 
-        if (!isPasswordValid) {
-          return null
-        }
+          if (!isPasswordValid) {
+            throw new Error('كلمة المرور غير صحيحة')
+          }
 
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.fullName,
-          image: user.avatar,
-          username: user.username,
-          userType: user.userType,
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.fullName,
+            image: user.avatar,
+            username: user.username,
+            userType: user.userType,
+          }
+        } catch (error) {
+          console.error('Authorization error:', error)
+          throw error
         }
       }
     })

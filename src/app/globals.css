@@ -65,7 +65,11 @@ p {
 }
 
 a {
-  @apply text-[var(--primary)] hover:underline focus:outline-none;
+  @apply text-[var(--primary)] focus:outline-none;
+  text-decoration: none;
+}
+
+a:hover {
   text-decoration: none;
 }
 

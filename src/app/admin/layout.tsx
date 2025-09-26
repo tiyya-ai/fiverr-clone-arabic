@@ -5,6 +5,7 @@ import { useRouter, usePathname } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { Users, Package, DollarSign, TrendingUp, AlertTriangle, CheckCircle, Bell, BarChart3, PieChart, Star, Clock, Menu, Home, FileText, CreditCard, LogOut, ChevronDown, ChevronRight, UserCheck, ShoppingCart, Settings } from 'lucide-react'
 import NotificationSystem from '@/components/Admin/NotificationSystem'
+import AdminLogin from '@/components/Admin/AdminLogin'
 
 export default function AdminLayout({
   children,
@@ -17,26 +18,18 @@ export default function AdminLayout({
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [expandedMenus, setExpandedMenus] = useState<string[]>(['dashboard', 'users', 'services', 'orders', 'financial'])
 
-  useEffect(() => {
-    if (status === 'loading') return
-    
-    if (!session || session.user.userType !== 'ADMIN') {
-      router.push('/')
-      return
-    }
-  }, [session, status, router])
-
-  // Don't render admin layout if not authenticated
+  // Show loading spinner while checking authentication
   if (status === 'loading') {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
       </div>
     )
   }
 
+  // Show admin login page if not authenticated or not admin
   if (!session || session.user.userType !== 'ADMIN') {
-    return null
+    return <AdminLogin />
   }
 
   const toggleMenu = (menuId: string) => {

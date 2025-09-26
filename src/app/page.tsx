@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { Search, Star, Shield, Plus, User, MessageCircle, ChevronDown, FileText, Users, CreditCard, Headphones } from 'lucide-react'
+import { Search, Star, Shield, Plus, User, MessageCircle, ChevronDown, FileText, Users, CreditCard, Headphones, MapPin } from 'lucide-react'
 import MainHeader from '@/components/MainHeader'
 import Footer from '@/components/Footer'
 import CategoryIcon from '@/components/Icons/CategoryIcon'
@@ -16,7 +16,7 @@ export default function Home() {
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null)
 
-  const { services } = useServices()
+  const { services } = useServices() || { services: [] }
   const categoriesCarouselRef = useRef<HTMLDivElement>(null)
   const popularServicesCarouselRef = useRef<HTMLDivElement>(null)
 
@@ -289,95 +289,85 @@ export default function Home() {
       {/* Popular Services */}
       <section className="py-20 bg-[#F7F7F8]">
         <div className="max-w-7xl mx-auto px-4">
-          {/* Header with title and controls */}
-          <div className="flex justify-between items-center mb-12" dir="rtl">
+          {/* Header */}
+          <div className="text-center mb-12" dir="rtl">
             <h2 className="text-3xl font-bold text-[#0f172a]">الخدمات الأكثر شيوعاً</h2>
-            
-            {/* Carousel Controls */}
-            <div className="flex gap-2">
-              <button 
-                onClick={() => scrollCarousel(popularServicesCarouselRef, 'right')}
-                className="bg-white hover:bg-[#1e40af] text-[#475569] hover:text-white rounded-full p-3 shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-110 border border-[#e2e8f0] hover:border-[#1e40af]"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-              
-              <button 
-                onClick={() => scrollCarousel(popularServicesCarouselRef, 'left')}
-                className="bg-white hover:bg-[#1e40af] text-[#475569] hover:text-white rounded-full p-3 shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-110 border border-[#e2e8f0] hover:border-[#1e40af]"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-            </div>
+            <p className="text-lg text-[#475569] mt-2">اكتشف أكثر الخدمات طلباً من محترفين معتمدين</p>
           </div>
           
-          <div className="relative">
-            <div 
-              ref={popularServicesCarouselRef}
-              id="popular-services-carousel"
-              className="flex gap-8 overflow-x-auto pb-4" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' } as React.CSSProperties}>
-              {services.map((service) => {
-                const user = getUserById(service.userId);
-                return (
-                  <div key={service.id} className="flex-shrink-0 w-[300px] bg-white rounded-2xl border border-[#e2e8f0] shadow-sm overflow-hidden group flex flex-col hover:shadow-lg hover:border-[#cbd5e1] transition-all duration-300">
-                    <div className="relative">
-                      <Image
-                        src={service.images[0]}
-                        alt={service.title}
-                        width={300}
-                        height={170}
-                        className="w-full h-[170px] object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-                    </div>
-                    <div className="p-4 flex flex-col flex-grow">
-                      <div className="flex items-center mb-3">
-                        <Image
-                            src={user?.avatar || '/img/noavatar.jpg'}
-                            alt={user?.fullName as string || ''}
-                            width={32}
-                            height={32}
-                            className="w-8 h-8 rounded-full object-cover"
-                          />
-                        <div className="mr-3 text-right">
-                          <div className="flex items-center gap-1">
-                            <h3 className="font-semibold text-sm text-[#0f172a]">{user?.fullName}</h3>
-                            {user?.isVerified && (
-                              <Shield className="h-3 w-3 text-blue-500 fill-current" />
-                            )}
-                          </div>
-                          <p className="text-xs text-[#64748b]">{user?.level}</p>
-                        </div>
-                      </div>
-                      <a href={`/services/${generateServiceSlug(service.title, service.id)}`} className="text-[#0f172a] hover:text-[#1e40af] transition-colors duration-200 text-right font-semibold leading-snug flex-grow">
-                        {service.title}
-                      </a>
-                      <div className="flex items-center mt-3">
-                        <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                        <span className="text-sm text-[#475569] mr-1 font-bold">
-                          {service.rating}
-                        </span>
-                        <span className="text-xs text-[#64748b]">({service.totalReviews})</span>
-                      </div>
-                      <div className="flex items-center justify-between mt-3 pt-3 border-t border-[#e2e8f0]">
-                        <button className="text-[#94a3b8] hover:text-[#dc2626] transition-colors duration-200">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
-                          </svg>
-                        </button>
-                        <div className="text-left">
-                          <span className="text-xs text-[#64748b] block">ابتداءً من</span>
-                          <div className="font-bold text-[#0f172a] text-lg">${service.packages[0]?.price}</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
+          {/* Services Grid - 3 cards inline per row, 2 rows total */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            {services?.slice(0, 6).map((service) => {
+              const user = getUserById(service.userId);
+              return (
+                <div key={service.id} className="bg-white rounded-2xl border border-[#e2e8f0] shadow-sm overflow-hidden group flex flex-col hover:shadow-lg hover:border-[#cbd5e1] transition-all duration-300">
+                  <a href={`/services/${generateServiceSlug(service.title, service.id)}`} className="relative block">
+                    <Image
+                       src={service.images[0]}
+                       alt={service.title}
+                       width={350}
+                       height={180}
+                       className="w-full h-[180px] object-cover transition-transform duration-300 group-hover:scale-105"
+                     />
+                  </a>
+                  <div className="p-5 flex flex-col flex-grow">
+                     <div className="flex items-center mb-3">
+                       <Image
+                           src={user?.avatar || '/api/placeholder/32/32'}
+                           alt={user?.fullName as string || ''}
+                           width={32}
+                           height={32}
+                           className="w-8 h-8 rounded-full object-cover"
+                         />
+                       <div className="mr-3 flex-1">
+                         <div className="flex items-center gap-1">
+                           <h3 className="font-bold text-sm text-[#0f172a]">{user?.fullName}</h3>
+                           {user?.isVerified && (
+                             <Shield className="h-3 w-3 text-green-500 fill-current" />
+                           )}
+                         </div>
+                       </div>
+                     </div>
+                     <a href={`/services/${generateServiceSlug(service.title, service.id)}`} className="text-[#0f172a] hover:text-[#1e40af] transition-colors duration-200 text-right font-medium text-base leading-snug flex-grow mb-3 block">
+                       {service.title}
+                     </a>
+                     <div className="flex items-center justify-between mb-2">
+                       <div className="flex items-center">
+                         <MapPin className="h-3 w-3 text-[#64748b] ml-1" />
+                         <span className="text-sm text-[#64748b]">السعودية</span>
+                       </div>
+                       <div className="flex items-center">
+                         <Star className="h-4 w-4 text-yellow-400 fill-current ml-1" />
+                         <span className="text-sm text-[#475569] font-bold">
+                           {service.rating}
+                         </span>
+                         <span className="text-xs text-[#64748b] mr-1">({service.totalReviews})</span>
+                       </div>
+                     </div>
+                     <div className="text-right mb-3">
+                       <span className="text-sm text-[#64748b]">{service.category}</span>
+                     </div>
+                     <div className="flex items-center justify-between pt-3 border-t border-[#e2e8f0]" dir="rtl">
+                       <span className="text-xs text-[#64748b]">ابتداءً من</span>
+                       <div className="font-bold text-[#0f172a] text-lg">{service.packages[0]?.price} ر.س</div>
+                     </div>
+                   </div>
+                </div>
+              )
+            })}
+          </div>
+
+          {/* View All Services Button */}
+          <div className="text-center">
+            <a 
+              href="/services"
+              className="inline-flex items-center gap-3 bg-gradient-to-r from-[#1e40af] to-[#1d4ed8] hover:from-[#1d4ed8] hover:to-[#1e3a8a] text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+            >
+              <span>عرض جميع الخدمات</span>
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
           </div>
         </div>
       </section>

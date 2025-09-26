@@ -21,54 +21,8 @@ export default function AdminDashboard() {
   const { services: realServices } = useServices()
   const realUsers = mockUsers
 
-  // Create mock orders data since it doesn't exist in mockData
-  const realOrders = [
-    {
-      id: '1',
-      serviceId: '1',
-      buyerId: '2',
-      sellerId: '1',
-      amount: 150,
-      status: 'active',
-      createdAt: '2024-02-20'
-    },
-    {
-      id: '2',
-      serviceId: '2',
-      buyerId: '3',
-      sellerId: '1',
-      amount: 500,
-      status: 'completed',
-      createdAt: '2024-02-18'
-    },
-    {
-      id: '3',
-      serviceId: '3',
-      buyerId: '4',
-      sellerId: '2',
-      amount: 75,
-      status: 'cancelled',
-      createdAt: '2024-02-15'
-    },
-    {
-      id: '4',
-      serviceId: '1',
-      buyerId: '5',
-      sellerId: '1',
-      amount: 200,
-      status: 'in_progress',
-      createdAt: '2024-02-22'
-    },
-    {
-      id: '5',
-      serviceId: '4',
-      buyerId: '2',
-      sellerId: '3',
-      amount: 300,
-      status: 'completed',
-      createdAt: '2024-02-19'
-    }
-  ]
+  // Use real orders from context (empty for now)
+  const realOrders: any[] = []
 
   useEffect(() => {
     if (status === 'loading') return
@@ -373,14 +327,16 @@ export default function AdminDashboard() {
         )
 
       case 'categories':
-        const categoriesData = [
-          { id: 1, name: 'تطوير المواقع', services: 1245, icon: '💻', status: 'نشط', created: '2024-01-15' },
-          { id: 2, name: 'التصميم الجرافيكي', services: 987, icon: '🎨', status: 'نشط', created: '2024-01-16' },
-          { id: 3, name: 'التسويق الرقمي', services: 756, icon: '📱', status: 'نشط', created: '2024-01-17' },
-          { id: 4, name: 'الكتابة والترجمة', services: 543, icon: '✍️', status: 'نشط', created: '2024-01-18' },
-          { id: 5, name: 'تحرير الفيديو', services: 432, icon: '🎬', status: 'نشط', created: '2024-01-19' },
-          { id: 6, name: 'التصوير', services: 321, icon: '📸', status: 'نشط', created: '2024-01-20' }
-        ]
+        // Get real categories from services data
+        const uniqueCategories = [...new Set(realServices?.map(s => s.category) || [])]
+        const categoriesData = uniqueCategories.map((category, index) => ({
+          id: index + 1,
+          name: category,
+          services: realServices?.filter(s => s.category === category).length || 0,
+          icon: '🛠️',
+          status: 'نشط',
+          created: '2024-01-15'
+        }))
 
         const filteredCategories = filterData(categoriesData, searchTerm, ['name'])
         const paginatedCategories = paginateData(filteredCategories, currentPage, itemsPerPage)
@@ -652,63 +608,8 @@ export default function AdminDashboard() {
         )
 
       case 'disputes':
-        const disputesData = [
-          {
-            id: 1,
-            order: 'تصميم شعار',
-            buyer: 'علي أحمد',
-            seller: 'محمد حسن',
-            reason: 'عدم مطابقة المواصفات',
-            priority: 'عالية',
-            amount: 150,
-            date: '2024-02-20',
-            status: 'مفتوح'
-          },
-          {
-            id: 2,
-            order: 'تطوير موقع',
-            buyer: 'نور فاطمة',
-            seller: 'أحمد علي',
-            reason: 'تأخير في التسليم',
-            priority: 'متوسطة',
-            amount: 500,
-            date: '2024-02-18',
-            status: 'قيد المراجعة'
-          },
-          {
-            id: 3,
-            order: 'كتابة محتوى',
-            buyer: 'سارة محمد',
-            seller: 'فاطمة علي',
-            reason: 'جودة غير مرضية',
-            priority: 'منخفضة',
-            amount: 75,
-            date: '2024-02-15',
-            status: 'محلول'
-          },
-          {
-            id: 4,
-            order: 'تصميم موقع',
-            buyer: 'أحمد سالم',
-            seller: 'محمد عبدالله',
-            reason: 'عدم الالتزام بالمواعيد',
-            priority: 'عالية',
-            amount: 800,
-            date: '2024-02-22',
-            status: 'مفتوح'
-          },
-          {
-            id: 5,
-            order: 'ترجمة نصوص',
-            buyer: 'ليلى حسن',
-            seller: 'عمر محمود',
-            reason: 'أخطاء في الترجمة',
-            priority: 'متوسطة',
-            amount: 120,
-            date: '2024-02-19',
-            status: 'قيد المراجعة'
-          }
-        ]
+        // No real disputes data available
+        const disputesData: any[] = []
 
         const filteredDisputes = filterData(disputesData, searchTerm, ['order', 'buyer', 'seller', 'reason'])
         const paginatedDisputes = paginateData(filteredDisputes, currentPage, itemsPerPage)
@@ -868,73 +769,8 @@ export default function AdminDashboard() {
         )
 
       case 'cart':
-        const cartData = [
-          {
-            id: 1,
-            userId: '2',
-            userName: 'علي أحمد',
-            serviceId: '1',
-            serviceName: 'تصميم شعار احترافي',
-            seller: 'محمد حسن',
-            price: 150,
-            quantity: 1,
-            addedDate: '2024-02-20',
-            status: 'نشط',
-            category: 'تصميم'
-          },
-          {
-            id: 2,
-            userId: '3',
-            userName: 'نور فاطمة',
-            serviceId: '2',
-            serviceName: 'تطوير موقع إلكتروني',
-            seller: 'أحمد علي',
-            price: 500,
-            quantity: 1,
-            addedDate: '2024-02-18',
-            status: 'نشط',
-            category: 'برمجة'
-          },
-          {
-            id: 3,
-            userId: '4',
-            userName: 'سارة محمد',
-            serviceId: '3',
-            serviceName: 'كتابة محتوى تسويقي',
-            seller: 'فاطمة علي',
-            price: 75,
-            quantity: 2,
-            addedDate: '2024-02-15',
-            status: 'منتهي الصلاحية',
-            category: 'كتابة'
-          },
-          {
-            id: 4,
-            userId: '5',
-            userName: 'أحمد سالم',
-            serviceId: '4',
-            serviceName: 'تصوير منتجات',
-            seller: 'محمد عبدالله',
-            price: 200,
-            quantity: 1,
-            addedDate: '2024-02-22',
-            status: 'نشط',
-            category: 'تصوير'
-          },
-          {
-            id: 5,
-            userId: '2',
-            userName: 'علي أحمد',
-            serviceId: '5',
-            serviceName: 'ترجمة نصوص',
-            seller: 'عمر محمود',
-            price: 120,
-            quantity: 3,
-            addedDate: '2024-02-19',
-            status: 'نشط',
-            category: 'ترجمة'
-          }
-        ]
+        // No real cart data available
+        const cartData: any[] = []
 
         const filteredCart = filterData(cartData, searchTerm, ['userName', 'serviceName', 'seller', 'category'])
         const paginatedCart = paginateData(filteredCart, currentPage, itemsPerPage)
@@ -1134,37 +970,10 @@ export default function AdminDashboard() {
         return (
           <div>
             <h3 className="text-2xl font-bold text-gray-900 mb-6">المبالغ المسترجعة</h3>
-            <div className="bg-white rounded-lg shadow overflow-hidden">
-              <table className="min-w-full">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">الطلب</th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">المشتري</th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">المبلغ</th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">السبب</th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">الحالة</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {[
-                    { id: 1, buyer: 'علي أحمد', amount: 150, reason: 'عدم الرضا', status: 'معالج' },
-                    { id: 2, buyer: 'نور فاطمة', amount: 75, reason: 'تأخير', status: 'قيد المعالجة' }
-                  ].map((refund) => (
-                    <tr key={refund.id}>
-                      <td className="px-6 py-4 text-sm font-medium">#{refund.id}</td>
-                      <td className="px-6 py-4 text-sm">{refund.buyer}</td>
-                      <td className="px-6 py-4 text-sm font-bold text-red-600">${refund.amount}</td>
-                      <td className="px-6 py-4 text-sm">{refund.reason}</td>
-                      <td className="px-6 py-4">
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${refund.status === 'معالج' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
-                          }`}>
-                          {refund.status}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="text-center py-12 bg-white rounded-lg shadow">
+              <DollarSign className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 mb-2">لا توجد مبالغ مسترجعة</h3>
+              <p className="text-gray-500">لا توجد طلبات استرداد حالياً</p>
             </div>
           </div>
         )
@@ -1172,7 +981,7 @@ export default function AdminDashboard() {
       case 'financial':
         const monthlyRevenueData = {
           labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'],
-          data: [25000, 32000, 28000, 35000, 31000, 42000]
+          data: [0, 0, 0, 0, 0, stats.totalRevenue]
         }
         
         return (
@@ -1181,15 +990,15 @@ export default function AdminDashboard() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
               <div className="bg-green-50 border border-green-200 rounded-lg p-6">
                 <h4 className="font-semibold text-green-800 mb-2">إجمالي الإيرادات</h4>
-                <p className="text-3xl font-bold text-green-600">$331,000</p>
+                <p className="text-3xl font-bold text-green-600">${stats.totalRevenue.toLocaleString()}</p>
               </div>
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
                 <h4 className="font-semibold text-blue-800 mb-2">عمولة المنصة</h4>
-                <p className="text-3xl font-bold text-blue-600">$66,200</p>
+                <p className="text-3xl font-bold text-blue-600">${Math.round(stats.totalRevenue * 0.2).toLocaleString()}</p>
               </div>
               <div className="bg-purple-50 border border-purple-200 rounded-lg p-6">
                 <h4 className="font-semibold text-purple-800 mb-2">مدفوعات البائعين</h4>
-                <p className="text-3xl font-bold text-purple-600">$264,800</p>
+                <p className="text-3xl font-bold text-purple-600">${Math.round(stats.totalRevenue * 0.8).toLocaleString()}</p>
               </div>
             </div>
             <LineChart data={monthlyRevenueData} title="الإيرادات الشهرية" />
@@ -1200,48 +1009,10 @@ export default function AdminDashboard() {
         return (
           <div>
             <h3 className="text-2xl font-bold text-gray-900 mb-6">إدارة المدفوعات</h3>
-            <div className="bg-white rounded-lg shadow overflow-hidden">
-              <table className="min-w-full">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">البائع</th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">المبلغ</th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">طريقة الدفع</th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">الحالة</th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">الإجراءات</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {[
-                    { seller: 'أحمد محمد', amount: 1250, method: 'PayPal', status: 'معلق' },
-                    { seller: 'فاطمة علي', amount: 890, method: 'بنك', status: 'مكتمل' }
-                  ].map((payout, i) => (
-                    <tr key={i}>
-                      <td className="px-6 py-4 text-sm font-medium">{payout.seller}</td>
-                      <td className="px-6 py-4 text-sm font-bold text-green-600">${payout.amount}</td>
-                      <td className="px-6 py-4 text-sm">{payout.method}</td>
-                      <td className="px-6 py-4">
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${payout.status === 'مكتمل' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
-                          }`}>
-                          {payout.status}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4">
-                        <button
-                          onClick={() => {
-                            if (confirm(`هل تريد معالجة دفعة ${payout.amount}$ للبائع ${payout.seller}؟`)) {
-                              alert(`تم معالجة دفعة ${payout.amount}$ للبائع ${payout.seller}`)
-                            }
-                          }}
-                          className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
-                        >
-                          معالجة
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="text-center py-12 bg-white rounded-lg shadow">
+              <DollarSign className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 mb-2">لا توجد مدفوعات معلقة</h3>
+              <p className="text-gray-500">لا توجد مدفوعات في انتظار المعالجة</p>
             </div>
           </div>
         )
@@ -1279,15 +1050,15 @@ export default function AdminDashboard() {
                 <div className="space-y-3">
                   <div className="flex justify-between">
                     <span>عمولات هذا الشهر:</span>
-                    <span className="font-bold text-green-600">$12,450</span>
+                    <span className="font-bold text-green-600">${Math.round(stats.totalRevenue * 0.2).toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>متوسط العمولة:</span>
-                    <span className="font-bold">18.5%</span>
+                    <span className="font-bold">20%</span>
                   </div>
                   <div className="flex justify-between">
                     <span>أعلى عمولة:</span>
-                    <span className="font-bold">$2,100</span>
+                    <span className="font-bold">${Math.max(...(realServices?.map(s => s.packages[0]?.price * 0.2) || [0])).toLocaleString()}</span>
                   </div>
                 </div>
               </div>

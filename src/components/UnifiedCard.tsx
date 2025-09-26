@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Star, Heart } from 'lucide-react'
+import { Star, Heart, MapPin } from 'lucide-react'
 import Image from 'next/image';
 
 interface UnifiedCardProps {
@@ -23,42 +23,58 @@ const UnifiedCard = ({
     switch (type) {
       case 'service':
         return (
-          <div className="service-card">
+          <div className="service-card flex flex-col h-full">
             <div className="card-image relative overflow-hidden">
               <Image 
                 src={data.cover || data.images?.[0] || data.img} 
                 alt={data.title} 
                 width={300}
-                height={200}
-                className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                height={170}
+                className="w-full h-44 object-cover"
               />
-              <button className="absolute top-3 right-3 p-2 bg-white/80 rounded-full hover:bg-white transition-colors">
-                <Heart className="h-4 w-4 text-gray-600 hover:text-red-500" />
+              <button className="absolute top-2 right-2 p-2 bg-white/80 rounded-full hover:bg-white transition-colors">
+                <Heart className="h-5 w-5 text-gray-600 hover:text-red-500" />
               </button>
             </div>
-            <div className="card-content p-4">
-              <div className="seller-info mb-3 text-right" dir="rtl">
-                <span className="text-sm font-bold text-gray-800">
+            <div className="card-content p-4 flex flex-col flex-grow">
+              <div className="seller-info flex items-center gap-2 mb-2 text-right" dir="rtl">
+                <Image 
+                  src={data.sellerPp || "/img/noavatar.jpg"} 
+                  alt={data.sellerName || ""} 
+                  width={24}
+                  height={24}
+                  className="w-6 h-6 rounded-full object-cover"
+                />
+                <span className="text-sm font-semibold text-gray-700">
                   {data.sellerName || data.fullName || "أحمد محمد الحرفي"}
                 </span>
               </div>
-              <h4 className="card-title text-right font-semibold text-gray-800 line-clamp-2 mb-3" dir="rtl">
+              <h4 className="card-title text-right font-medium text-gray-800 line-clamp-2 mb-3 flex-grow" dir="rtl">
                 {data.title || data.desc}
               </h4>
-              <div className="rating flex items-center gap-1 mb-3" dir="rtl">
-                <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                <span className="text-sm font-bold text-gray-700">
-                  {data.rating || "4.9"}
-                </span>
-                <span className="text-xs text-gray-500">
-                  ({data.reviews || data.totalReviews || "123"})
-                </span>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center">
+                  <MapPin className="h-3 w-3 text-gray-500 ml-1" />
+                  <span className="text-sm text-gray-500">السعودية</span>
+                </div>
+                <div className="rating flex items-center gap-1" dir="rtl">
+                  <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                  <span className="text-sm font-bold text-gray-800">
+                    {data.rating || "4.9"}
+                  </span>
+                  <span className="text-xs text-gray-500">
+                    ({data.reviews || data.totalReviews || "123"})
+                  </span>
+                </div>
               </div>
-              <div className="price flex items-center justify-between" dir="rtl">
-                <span className="text-sm text-gray-500">ابتداءً من</span>
-                <strong className="text-lg font-bold text-gray-800">
-                  {data.price || data.packages?.[0]?.price} ريال
+              <div className="text-right mb-3">
+                <span className="text-sm text-gray-500">{data.category || "تصميم وبرمجة"}</span>
+              </div>
+              <div className="price flex items-center justify-between border-t pt-3" dir="rtl">
+                <strong className="text-xl font-bold text-gray-900">
+                  {data.price || data.packages?.[0]?.price} ريال سعودي
                 </strong>
+                <span className="text-sm text-gray-500">ابتداءً من</span>
               </div>
             </div>
           </div>

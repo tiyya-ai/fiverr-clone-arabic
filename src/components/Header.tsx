@@ -1,159 +1,90 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
-import { Search, Menu, X, Globe, User, Heart, MessageCircle } from 'lucide-react'
+import { Search, Menu, X, Bell, User, ShoppingCart } from 'lucide-react'
+import Image from 'next/image'
 
-const AuthNavigation = () => {
-  return (
-    <nav className="hidden md:flex items-center space-x-6">
-      <Link href="/gigs" className="text-gray-600 hover:text-green-500 font-medium">
-        Browse Services
-      </Link>
-      <Link href="/gigs/create" className="text-gray-600 hover:text-green-500 font-medium">
-        Become a Seller
-      </Link>
-      <Link href="/api/auth/signin" className="text-gray-600 hover:text-green-500 font-medium">
-        Sign In
-      </Link>
-      <Link href="/auth/signup" className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded font-medium">
-        Join Now
-      </Link>
-    </nav>
-  )
-}
-
-const MobileAuthNavigation = () => {
-  return (
-    <>
-      <Link href="/api/auth/signin" className="block text-gray-600 hover:text-green-500 font-medium">
-        Sign In
-      </Link>
-      <Link href="/auth/signup" className="block w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded font-medium">
-        Join Now
-      </Link>
-    </>
-  )
-}
-
-const Header = () => {
+export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState('')
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (searchQuery.trim()) {
-      // Handle search logic
-      console.log('Searching for:', searchQuery)
-    }
-  }
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
-      {/* Top Bar */}
-      <div className="bg-gray-900 text-white py-2">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center text-sm">
-            <div className="flex space-x-6">
-              <span className="hover:text-primary-400 cursor-pointer">Fiverr Pro</span>
-              <span className="hover:text-primary-400 cursor-pointer">Explore</span>
-              <span className="hover:text-primary-400 cursor-pointer">English</span>
-              <span className="hover:text-primary-400 cursor-pointer">Become a Seller</span>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Link href="/api/auth/signin" className="hover:text-green-400">Sign in</Link>
-              <Link href="/auth/signup" className="bg-green-600 hover:bg-green-700 px-4 py-1 rounded text-white font-medium">
-                Join
-              </Link>
+    <header className="bg-white shadow-sm border-b">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <div className="flex items-center">
+            <Image 
+              src="https://wbl3.com/wp-content/uploads/2022/09/1042165_6877-Converted-1-768x308-1.webp" 
+              alt="WBL3" 
+              width={120} 
+              height={48} 
+              className="h-10"
+            />
+          </div>
+
+          {/* Search Bar */}
+          <div className="hidden md:flex flex-1 max-w-2xl mx-8">
+            <div className="relative w-full">
+              <input
+                type="text"
+                placeholder="ابحث عن الخدمات..."
+                className="w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+              <Search className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
             </div>
           </div>
-        </div>
-      </div>
 
-      {/* Main Header */}
-      <div className="bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <Link href="/" className="flex items-center">
-              <span className="text-2xl font-bold text-gray-900">
-                fiverr<span className="text-primary-500">.</span>
-              </span>
-            </Link>
+          {/* Navigation */}
+          <nav className="hidden md:flex items-center space-x-6">
+            <a href="/services" className="text-gray-700 hover:text-blue-600">الخدمات</a>
+            <a href="/freelancers" className="text-gray-700 hover:text-blue-600">المستقلين</a>
+            <a href="/projects" className="text-gray-700 hover:text-blue-600">المشاريع</a>
+          </nav>
 
-            {/* Search Bar - Desktop */}
-            <div className="hidden md:flex flex-1 max-w-2xl mx-8">
-              <form onSubmit={handleSearch} className="w-full">
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="What service are you looking for today?"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-4 pr-12 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  />
-                  <button
-                    type="submit"
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-primary-500 hover:bg-primary-600 text-white p-2 rounded"
-                  >
-                    <Search className="h-4 w-4" />
-                  </button>
-                </div>
-              </form>
-            </div>
-
-            {/* Navigation - Desktop */}
-            <AuthNavigation />
-
-            {/* Mobile menu button */}
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 rounded-md text-gray-600 hover:text-primary-500"
-            >
-              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          {/* User Actions */}
+          <div className="flex items-center space-x-4">
+            <button className="p-2 text-gray-600 hover:text-blue-600">
+              <Bell className="h-5 w-5" />
+            </button>
+            <button className="p-2 text-gray-600 hover:text-blue-600">
+              <ShoppingCart className="h-5 w-5" />
+            </button>
+            <button className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+              <User className="h-4 w-4" />
+              <span>دخول</span>
             </button>
           </div>
-        </div>
-      </div>
 
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-200">
-          <div className="px-4 py-4 space-y-4">
-            {/* Mobile Search */}
-            <form onSubmit={handleSearch}>
+          {/* Mobile Menu Button */}
+          <button 
+            className="md:hidden p-2"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div className="md:hidden py-4 border-t">
+            <div className="space-y-4">
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="What service are you looking for?"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-4 pr-12 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  placeholder="ابحث عن الخدمات..."
+                  className="w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg"
                 />
-                <button
-                  type="submit"
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-primary-500 text-white p-2 rounded"
-                >
-                  <Search className="h-4 w-4" />
-                </button>
+                <Search className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
               </div>
-            </form>
-            
-            {/* Mobile Navigation */}
-            <div className="space-y-3">
-              <Link href="/gigs" className="block text-gray-600 hover:text-green-500 font-medium">
-                Browse Services
-              </Link>
-              <Link href="/gigs/create" className="block text-gray-600 hover:text-green-500 font-medium">
-                Become a Seller
-              </Link>
-              <MobileAuthNavigation />
+              <nav className="space-y-2">
+                <a href="/services" className="block py-2 text-gray-700">الخدمات</a>
+                <a href="/freelancers" className="block py-2 text-gray-700">المستقلين</a>
+                <a href="/projects" className="block py-2 text-gray-700">المشاريع</a>
+              </nav>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </header>
   )
 }
-
-export default Header

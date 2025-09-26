@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import MainHeader from '@/components/MainHeader'
 import Footer from '@/components/Footer'
+import ProtectedRoute from '@/components/ProtectedRoute'
 import { Plus, X, Upload } from 'lucide-react'
 
 export default function CreateServicePage() {
@@ -53,8 +54,9 @@ export default function CreateServicePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <MainHeader />
+    <ProtectedRoute>
+      <div className="min-h-screen bg-gray-50">
+        <MainHeader />
       
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <div className="mb-6 sm:mb-8">
@@ -221,7 +223,8 @@ export default function CreateServicePage() {
         </form>
       </div>
 
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </ProtectedRoute>
   )
 }

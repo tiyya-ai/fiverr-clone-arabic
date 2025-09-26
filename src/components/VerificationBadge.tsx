@@ -4,6 +4,7 @@ interface VerificationBadgeProps {
   type: string
   size?: 'sm' | 'md' | 'lg'
   showLabel?: boolean
+  isOnline?: boolean
 }
 
 const badgeConfig = {
@@ -40,8 +41,8 @@ const badgeConfig = {
   verified: {
     icon: Shield,
     label: 'محقق',
-    color: 'bg-emerald-100 text-emerald-800 border-emerald-200',
-    iconColor: 'text-emerald-600'
+    color: 'bg-green-100 text-green-800 border-green-200',
+    iconColor: 'text-green-600'
   }
 }
 
@@ -63,7 +64,7 @@ const sizeConfig = {
   }
 }
 
-export default function VerificationBadge({ type, size = 'sm', showLabel = true }: VerificationBadgeProps) {
+export default function VerificationBadge({ type, size = 'sm', showLabel = true, isOnline = false }: VerificationBadgeProps) {
   const config = badgeConfig[type as keyof typeof badgeConfig]
   const sizeStyles = sizeConfig[size]
   
@@ -72,9 +73,14 @@ export default function VerificationBadge({ type, size = 'sm', showLabel = true 
   const IconComponent = config.icon
 
   return (
-    <div className={`inline-flex items-center ${sizeStyles.gap} ${sizeStyles.container} ${config.color} border rounded-full font-medium`}>
-      <IconComponent className={`${sizeStyles.icon} ${config.iconColor}`} />
-      {showLabel && <span>{config.label}</span>}
+    <div className="relative inline-flex items-center">
+      <div className={`inline-flex items-center ${sizeStyles.gap} ${sizeStyles.container} ${config.color} border rounded-full font-medium`}>
+        <IconComponent className={`${sizeStyles.icon} ${config.iconColor}`} />
+        {showLabel && <span>{config.label}</span>}
+      </div>
+      {isOnline && (
+        <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 border-2 border-white rounded-full animate-pulse"></div>
+      )}
     </div>
   )
 }

@@ -1,12 +1,55 @@
 'use client'
 
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 import { useSession, signIn, signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 
-const AuthContext = createContext({})
+interface User {
+  id?: string
+  email?: string | null
+  name?: string | null
+  image?: string | null
+  username?: string
+  userType?: string
+}
 
-export const useAuth = () => {
+interface LoginCredentials {
+  email: string
+  password: string
+}
+
+interface RegisterData {
+  email: string
+  password: string
+  firstName: string
+  lastName: string
+  phone?: string
+  userType?: string
+  country?: string
+}
+
+interface AuthResult {
+  success: boolean
+  error?: string
+}
+
+interface AuthContextType {
+  user: User | null
+  isAuthenticated: boolean
+  loading: boolean
+  login: (credentials: LoginCredentials) => Promise<AuthResult>
+  register: (userData: RegisterData) => Promise<AuthResult>
+  logout: () => Promise<void>
+  loginWithProvider: (provider: string) => Promise<void>
+}
+
+interface AuthProviderProps {
+  children: ReactNode
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined)
+
+export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext)
   if (!context) {
     throw new Error('useAuth must be used within an AuthProvider')
@@ -14,12 +57,12 @@ export const useAuth = () => {
   return context
 }
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const { data: session, status } = useSession()
   const router = useRouter()
   const [loading, setLoading] = useState(false)
 
-  const login = async (credentials) => {
+  const login = async (credentials: LoginCredentials): Promise<AuthResult> => {
     if (!credentials?.email || !credentials?.password) {
       return { success: false, error: 'Email and password are required' }
     }
@@ -45,7 +88,7 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  const register = async (userData) => {
+  const register = async (userData: RegisterData): Promise<AuthResult> => {
     if (!userData?.email || !userData?.password || !userData?.firstName) {
       return { success: false, error: 'Required fields are missing' }
     }
@@ -88,7 +131,7 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  const logout = async () => {
+  const logout = async (): Promise<void> => {
     try {
       await signOut({ redirect: false })
       router.push('/')
@@ -97,7 +140,7 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  const loginWithProvider = async (provider) => {
+  const loginWithProvider = async (provider: string): Promise<void> => {
     try {
       await signIn(provider, { callbackUrl: '/' })
     } catch (error) {
@@ -105,7 +148,7 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  const value = {
+  const value: AuthContextType = {
     user: session?.user || null,
     isAuthenticated: !!session?.user,
     loading: loading || status === 'loading',

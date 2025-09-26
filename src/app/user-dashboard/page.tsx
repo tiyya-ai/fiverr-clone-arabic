@@ -1,22 +1,43 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import { User, Package, DollarSign, Star, Plus, MessageCircle, ShoppingCart, TrendingUp, Calendar, Award } from 'lucide-react'
 import MainHeader from '@/components/MainHeader'
 import Footer from '@/components/Footer'
 import UnifiedButton from '@/components/UnifiedButton'
 
 export default function UserDashboard() {
+  const { data: session, status } = useSession()
+  const router = useRouter()
   const [userType, setUserType] = useState('')
   const [userName, setUserName] = useState('')
 
   useEffect(() => {
+    if (status === 'loading') return
+    
+    if (!session) {
+      router.push('/api/auth/signin')
+      return
+    }
+    
     if (typeof window !== 'undefined') {
       const type = localStorage.getItem('userType') || 'user'
       setUserType(type)
-      setUserName(type === 'admin' ? 'المدير' : type === 'seller' ? 'مقدم الخدمة' : 'العميل')
+      setUserName(session?.user?.name || (type === 'admin' ? 'المدير' : type === 'seller' ? 'مقدم الخدمة' : 'العميل'))
     }
-  }, [])
+  }, [session, status, router])
+
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    )
+  }
+
+  if (!session) return null
 
   const stats = [
     { 

@@ -1,6 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import MainHeader from '@/components/MainHeader'
 import Footer from '@/components/Footer'
 import { User, Star, MapPin, Calendar, Edit } from 'lucide-react'
@@ -8,17 +10,34 @@ import { getUserById, User as UserType } from '@/data/mockData'
 import Image from 'next/image';
 
 export default function ProfilePage() {
+  const { data: session, status } = useSession()
+  const router = useRouter()
   const [user, setUser] = useState<UserType | null>(null)
 
   useEffect(() => {
-    const userId = localStorage.getItem('currentUserId') || '1'
+    if (status === 'loading') return
+    
+    if (!session) {
+      router.push('/api/auth/signin')
+      return
+    }
+    
+    const userId = session?.user?.id || '1'
     const userData = getUserById(userId)
     if (userData) {
       setUser(userData)
     }
-  }, [])
+  }, [session, status, router])
 
-  if (!user) return null
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    )
+  }
+
+  if (!session || !user) return null
 
   return (
     <div className="min-h-screen bg-gray-50">

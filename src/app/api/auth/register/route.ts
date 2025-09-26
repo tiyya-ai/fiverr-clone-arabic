@@ -1,76 +1,53 @@
 import { NextRequest, NextResponse } from 'next/server'
-import bcrypt from 'bcryptjs'
 import { z } from 'zod'
+import bcrypt from 'bcryptjs'
 import { prisma } from '@/lib/prisma'
 
 const registerSchema = z.object({
   email: z.string().email('البريد الإلكتروني غير صحيح'),
-  password: z.string().min(8, 'كلمة المرور يجب أن تكون 8 أحرف على الأقل')
-    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, 'كلمة المرور يجب أن تحتوي على حرف كبير وصغير ورقم'),
-  fullName: z.string().min(2, 'الاسم الكامل مطلوب').max(100, 'الاسم طويل جداً'),
-  username: z.string().min(3, 'اسم المستخدم يجب أن يكون 3 أحرف على الأقل')
-    .max(30, 'اسم المستخدم طويل جداً')
-    .regex(/^[a-zA-Z0-9_]+$/, 'اسم المستخدم يجب أن يحتوي على أحرف وأرقام فقط'),
-  userType: z.enum(['BUYER', 'SELLER', 'BOTH']),
+  password: z.string().min(6, 'كلمة المرور يجب أن تكون 6 أحرف على الأقل'),
+  fullName: z.string().min(2, 'الاسم الكامل يجب أن يكون حرفين على الأقل'),
   phone: z.string().optional(),
-
-  acceptTerms: z.boolean().refine(val => val === true, {
-    message: 'يجب الموافقة على الشروط والأحكام'
-  })
+  location: z.string().default('السعودية'),
+  userType: z.enum(['BUYER', 'SELLER']).default('BUYER'),
 })
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    
-    // Validate input
     const validatedData = registerSchema.parse(body)
-    
+
     // Check if user already exists
-    const existingUser = await prisma.user.findFirst({
-      where: {
-        OR: [
-          { email: validatedData.email },
-          { username: validatedData.username }
-        ]
-      }
+    const existingUser = await prisma.user.findUnique({
+      where: { email: validatedData.email }
     })
-    
+
     if (existingUser) {
-      if (existingUser.email === validatedData.email) {
-        return NextResponse.json(
-          { error: 'البريد الإلكتروني مستخدم بالفعل' },
-          { status: 400 }
-        )
-      }
-      if (existingUser.username === validatedData.username) {
-        return NextResponse.json(
-          { error: 'اسم المستخدم مستخدم بالفعل' },
-          { status: 400 }
-        )
-      }
+      return NextResponse.json(
+        { error: 'البريد الإلكتروني مستخدم بالفعل' },
+        { status: 400 }
+      )
     }
-    
-    // Hash password with strong salt
+
+    // Hash password
     const hashedPassword = await bcrypt.hash(validatedData.password, 12)
-    
-    // Create user with comprehensive data
+
+    // Generate username from email
+    const username = validatedData.email.split('@')[0]
+
+    // Create user
     const user = await prisma.user.create({
       data: {
         email: validatedData.email,
         password: hashedPassword,
         fullName: validatedData.fullName,
-        username: validatedData.username,
-        userType: validatedData.userType,
+        username: username,
         phone: validatedData.phone,
-        location: 'السعودية',
+        location: validatedData.location,
+        userType: validatedData.userType,
+        emailVerified: false,
+        isOnline: false,
         memberSince: new Date().getFullYear().toString(),
-        skills: JSON.stringify([]),
-        languages: JSON.stringify(['العربية']),
-        isOnline: true,
-        lastSeen: new Date(),
-        level: 'مبتدئ',
-        emailVerified: false // Will be set when email is verified
       },
       select: {
         id: true,
@@ -78,28 +55,27 @@ export async function POST(request: NextRequest) {
         fullName: true,
         username: true,
         userType: true,
-        avatar: true,
-        createdAt: true
+        createdAt: true,
       }
     })
-    
+
     return NextResponse.json({
+      success: true,
       message: 'تم إنشاء الحساب بنجاح',
-      user
-    }, { status: 201 })
-    
+      user,
+    })
+
   } catch (error) {
-    console.error('Registration error:', error)
-    
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: error.errors[0].message },
+        { error: 'بيانات غير صحيحة', details: error.errors },
         { status: 400 }
       )
     }
-    
+
+    console.error('Registration error:', error)
     return NextResponse.json(
-      { error: 'حدث خطأ في إنشاء الحساب' },
+      { error: 'حدث خطأ في إنشاء الحساب. يرجى المحاولة مرة أخرى.' },
       { status: 500 }
     )
   }

@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Plus, Edit, Eye, Trash2, MoreVertical, Star, TrendingUp, DollarSign } from 'lucide-react'
 import MainHeader from '@/components/MainHeader'
 import Footer from '@/components/Footer'
+import ProtectedRoute from '@/components/ProtectedRoute'
 import { getUserById } from '@/data/mockData'
 import { useServices } from '@/context/ServicesContext'
 import Image from 'next/image';
@@ -38,8 +39,9 @@ export default function MyServicesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <MainHeader />
+    <ProtectedRoute>
+      <div className="min-h-screen bg-gray-50">
+        <MainHeader />
       
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header */}
@@ -49,7 +51,7 @@ export default function MyServicesPage() {
             <p className="text-gray-600 mt-2" dir="rtl">إدارة وتتبع جميع خدماتك</p>
           </div>
           <Link
-            href="/gigs/create"
+            href="/services/create"
             className="flex items-center gap-2 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors"
           >
             <Plus className="h-5 w-5" />
@@ -178,7 +180,7 @@ export default function MyServicesPage() {
                               <div className="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border z-10">
                                 <div className="py-2">
                                   <Link
-                                    href={`/gigs/${service.id}`}
+                                    href={`/services/${service.id}`}
                                     className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                     onClick={() => setActiveDropdown(null)}
                                   >
@@ -186,7 +188,7 @@ export default function MyServicesPage() {
                                     معاينة
                                   </Link>
                                   <Link
-                                    href={`/gigs/${service.id}/edit`}
+                                    href={`/services/${service.id}/edit`}
                                     className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                     onClick={() => setActiveDropdown(null)}
                                   >
@@ -232,7 +234,7 @@ export default function MyServicesPage() {
               <h3 className="text-lg font-semibold text-gray-900 mb-2">لا توجد خدمات بعد</h3>
               <p className="text-gray-600 mb-6">ابدأ بإضافة خدمتك الأولى لتبدأ في كسب المال</p>
               <Link
-                href="/gigs/create"
+                href="/services/create"
                 className="inline-flex items-center gap-2 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors"
               >
                 <Plus className="h-5 w-5" />
@@ -279,7 +281,8 @@ export default function MyServicesPage() {
         />
       )}
       
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </ProtectedRoute>
   )
 }
