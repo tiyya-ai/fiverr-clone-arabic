@@ -84,8 +84,6 @@ export async function GET(request: NextRequest) {
               services: true,
               buyerOrders: true,
               sellerOrders: true,
-              sentMessages: true,
-              receivedMessages: true,
             },
           },
           services: {
