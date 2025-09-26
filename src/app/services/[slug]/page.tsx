@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import { Star, CheckCircle, Clock, User, ChevronLeft, ChevronRight } from 'lucide-react'
+import VerificationBadge from '@/components/VerificationBadge'
 import MainHeader from '../../../components/MainHeader'
 import Footer from '../../../components/Footer'
 import UnifiedButton from '../../../components/UnifiedButton'
@@ -356,10 +357,12 @@ export default function ServiceDetail() {
                         height={24}
                         className="w-6 h-6 rounded-full"
                       />
-                      <span className="text-sm text-gray-600 mr-2">{relatedSeller?.fullName}</span>
-                      {relatedSeller?.isVerified && (
-                        <CheckCircle className="h-4 w-4 text-green-500 fill-current" />
-                      )}
+                      <div className="flex items-center gap-1">
+                        <span className="text-sm text-gray-600">{relatedSeller?.fullName}</span>
+                        {relatedSeller?.isVerified && (
+                          <VerificationBadge type="verified" size="sm" showLabel={false} />
+                        )}
+                      </div>
                     </div>
                     <h3 className="font-medium text-gray-900 mb-2 line-clamp-2 text-right" dir="rtl">
                       {relatedService.title}

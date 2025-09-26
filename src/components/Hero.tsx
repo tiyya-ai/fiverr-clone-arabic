@@ -10,8 +10,7 @@ const Hero = () => {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
     if (searchQuery.trim()) {
-      // Handle search logic
-      console.log('Searching for:', searchQuery)
+      window.location.href = `/services?search=${encodeURIComponent(searchQuery.trim())}`
     }
   }
 
@@ -72,6 +71,7 @@ const Hero = () => {
               {popularSearches.map((search, index) => (
                 <button
                   key={index}
+                  onClick={() => window.location.href = `/services?search=${encodeURIComponent(search)}`}
                   className="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors"
                 >
                   {search}

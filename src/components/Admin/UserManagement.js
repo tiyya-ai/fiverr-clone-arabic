@@ -18,7 +18,8 @@ import {
   FiUpload
 } from 'react-icons/fi';
 import './UserManagement.css';
-import Image from 'next/image';
+import Image from 'next/image'
+import VerificationBadge from '../VerificationBadge';
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -546,7 +547,7 @@ const UserManagement = () => {
             <div className="user-card-header">
               <Image src={user.avatar} alt={`${user.firstName} ${user.lastName}`} width={80} height={80} />
               <div className="user-badges">
-                {user.verified && <span className="badge verified">✓</span>}
+                {user.verified && <VerificationBadge type="verified" size="sm" showLabel={false} />}
                 {user.twoFactorEnabled && <span className="badge secure">2FA</span>}
               </div>
             </div>

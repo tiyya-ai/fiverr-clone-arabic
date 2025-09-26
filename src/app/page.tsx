@@ -10,6 +10,7 @@ import { getUserById } from '@/data/mockData'
 import { useServices } from '@/context/ServicesContext'
 import { getCategoryIcon } from '@/config/icons'
 import { generateServiceSlug } from '@/utils/slug'
+import VerificationBadge from '@/components/VerificationBadge'
 import Image from 'next/image';
 
 export default function Home() {
@@ -320,10 +321,10 @@ export default function Home() {
                            className="w-8 h-8 rounded-full object-cover"
                          />
                        <div className="mr-3 flex-1">
-                         <div className="flex items-center gap-1">
+                       <div className="flex items-center gap-1">
                            <h3 className="font-bold text-sm text-[#0f172a]">{user?.fullName}</h3>
                            {user?.isVerified && (
-                             <Shield className="h-3 w-3 text-green-500 fill-current" />
+                             <VerificationBadge type="verified" size="sm" showLabel={false} />
                            )}
                          </div>
                        </div>
