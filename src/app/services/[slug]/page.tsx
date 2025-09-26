@@ -3,13 +3,13 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import { Star, CheckCircle, Clock, User, ChevronLeft, ChevronRight } from 'lucide-react'
-import MainHeader from '@/components/MainHeader'
-import Footer from '@/components/Footer'
-import UnifiedButton from '@/components/UnifiedButton'
-import { useServices } from '@/context/ServicesContext'
-import { getUserById } from '@/data/mockData'
-import { useCart } from '@/context/CartContext'
-import { generateServiceSlug } from '@/utils/slug'
+import MainHeader from '../../../components/MainHeader'
+import Footer from '../../../components/Footer'
+import UnifiedButton from '../../../components/UnifiedButton'
+import { useServices } from '../../../context/ServicesContext'
+import { getUserById } from '../../../data/mockData'
+import { useCart } from '../../../context/CartContext'
+import { generateServiceSlug } from '../../../utils/slug'
 import Image from 'next/image'
 
 export default function ServiceDetail() {
@@ -328,7 +328,7 @@ export default function ServiceDetail() {
       <div className="max-w-7xl mx-auto px-4 py-16">
         <h2 className="text-2xl font-bold text-gray-900 mb-8" dir="rtl">خدمات ذات صلة</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {services.filter(s => s.category === service.category && s.id !== service.id).slice(0, 4).map((relatedService) => {
+          {services.filter((s: any) => s.category === service.category && s.id !== service.id).slice(0, 4).map((relatedService) => {
             const relatedSeller = getUserById(relatedService.userId)
             return (
               <div key={relatedService.id} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden group hover:shadow-lg transition-all duration-300">
@@ -374,7 +374,7 @@ export default function ServiceDetail() {
           })}
         </div>
         
-        {services.filter(s => s.category === service.category && s.id !== service.id).length > 4 && (
+        {services.filter((s: any) => s.category === service.category && s.id !== service.id).length > 4 && (
           <div className="text-center mt-8">
             <a
               href={`/services?category=${encodeURIComponent(service.category)}`}

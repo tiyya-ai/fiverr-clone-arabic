@@ -260,28 +260,6 @@ export async function PATCH(request: NextRequest) {
         break
 
       case 'refund':
-        const validatedData = orderUpdateSchema.parse(updateData)
-        
-        // Process refunds through Stripe
-        for (const order of orders) {
-          const fullOrder = await prisma.order.findUnique({
-            where: { id: order.id },
-            select: { paymentIntentId: true }
-          })
-          
-          if (fullOrder?.paymentIntentId) {
-            try {
-              await stripe.refunds.create({
-                payment_intent: fullOrder.paymentIntentId,
-                amount: Math.round((order.totalAmount || 0) * 100), // Convert to cents
-                reason: 'requested_by_customer',
-              })
-            } catch (stripeError) {
-              console.error('Stripe refund error:', stripeError)
-            }
-          }
-        }
-
         result = await prisma.order.updateMany({
           where: {
             id: {
@@ -289,12 +267,9 @@ export async function PATCH(request: NextRequest) {
             },
           },
           data: {
-            status: 'CANCELLED',
+            status: 'REFUNDED',
           },
         })
-
-        // TODO: Implement refund email notifications
-        // Need to use appropriate email function with proper order data including relations
         break
 
       default:
