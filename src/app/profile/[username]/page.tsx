@@ -95,7 +95,7 @@ export default function PublicProfilePage() {
                 {user.verificationBadges && user.verificationBadges.length > 0 && (
                   <div className="mb-4">
                     <div className="flex items-center gap-3">
-                      <VerificationBadges badges={user.verificationBadges} maxShow={5} size="sm" />
+                      <VerificationBadges badges={user.verificationBadges} maxVisible={5} size="sm" />
                       {user.verificationScore && (
                         <VerificationScore score={user.verificationScore} size="sm" />
                       )}

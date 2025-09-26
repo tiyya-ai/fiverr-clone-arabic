@@ -185,7 +185,7 @@ export default function ProfileManagementPage() {
                   <h3 className="font-semibold text-gray-900 mb-3" dir="rtl">حالة التحقق</h3>
                   <div className="space-y-2">
                     <VerificationScore score={user.verificationScore} size="md" />
-                    <VerificationBadges badges={user.verificationBadges} maxShow={5} size="sm" />
+                    <VerificationBadges badges={user.verificationBadges} maxVisible={5} size="sm" />
                   </div>
                   <a
                     href="/verification"

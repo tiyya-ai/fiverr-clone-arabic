@@ -130,7 +130,7 @@ export async function GET(
         email: user.email,
         avatar: user.avatar,
         userType: user.userType,
-        emailVerified: user.emailVerified,
+        isVerified: user.isVerified,
         bio: user.bio,
         skills: user.skills,
         languages: user.languages,
