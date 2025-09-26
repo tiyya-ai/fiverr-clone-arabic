@@ -224,7 +224,7 @@ export async function PATCH(
         fullName: true,
         email: true,
         userType: true,
-        emailVerified: true,
+        isVerified: true,
         updatedAt: true,
       },
     })
