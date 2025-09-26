@@ -353,15 +353,6 @@ export async function DELETE(request: NextRequest) {
         },
       })
 
-      // Delete FAQs
-      await tx.serviceFAQ.deleteMany({
-        where: {
-          serviceId: {
-            in: serviceIds,
-          },
-        },
-      })
-
       // Delete services
       await tx.service.deleteMany({
         where: {

@@ -64,7 +64,7 @@ const sizeConfig = {
   }
 }
 
-export default function VerificationBadge({ type, size = 'sm', showLabel = true, isOnline = false }: VerificationBadgeProps) {
+export default function VerificationBadge({ type, size = 'sm', showLabel = false, isOnline = false }: VerificationBadgeProps) {
   const config = badgeConfig[type as keyof typeof badgeConfig]
   const sizeStyles = sizeConfig[size]
   
@@ -72,11 +72,14 @@ export default function VerificationBadge({ type, size = 'sm', showLabel = true,
 
   const IconComponent = config.icon
 
+  // Perfect green circle with check icon
+  const circleSize = size === 'sm' ? 'w-4 h-4' : size === 'md' ? 'w-5 h-5' : 'w-6 h-6'
+  const iconSize = size === 'sm' ? 'w-2.5 h-2.5' : size === 'md' ? 'w-3 h-3' : 'w-3.5 h-3.5'
+
   return (
     <div className="relative inline-flex items-center">
-      <div className={`inline-flex items-center ${sizeStyles.gap} ${sizeStyles.container} ${config.color} border rounded-full font-medium`}>
-        <IconComponent className={`${sizeStyles.icon} ${config.iconColor}`} />
-        {showLabel && <span>{config.label}</span>}
+      <div className={`${circleSize} bg-green-500 rounded-full flex items-center justify-center flex-shrink-0`}>
+        <CheckCircle className={`${iconSize} text-white`} fill="currentColor" />
       </div>
       {isOnline && (
         <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 border-2 border-white rounded-full animate-pulse"></div>
