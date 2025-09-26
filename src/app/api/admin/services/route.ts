@@ -344,6 +344,15 @@ export async function DELETE(request: NextRequest) {
         },
       })
 
+      // Delete reviews
+      await tx.review.deleteMany({
+        where: {
+          serviceId: {
+            in: serviceIds,
+          },
+        },
+      })
+
       // Delete FAQs
       await tx.serviceFAQ.deleteMany({
         where: {
