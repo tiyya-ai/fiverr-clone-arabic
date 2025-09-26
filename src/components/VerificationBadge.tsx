@@ -39,7 +39,7 @@ const badgeConfig = {
     iconColor: 'text-indigo-600'
   },
   verified: {
-    icon: Shield,
+    icon: CheckCircle,
     label: 'محقق',
     color: 'bg-green-100 text-green-800 border-green-200',
     iconColor: 'text-green-600'
