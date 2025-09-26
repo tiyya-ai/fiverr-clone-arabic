@@ -107,14 +107,14 @@ export async function GET(request: NextRequest) {
         email: user.email,
         avatar: user.avatar,
         userType: user.userType,
-        emailVerified: user.emailVerified,
+        isVerified: user.isVerified,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
         stats: {
           servicesCount: user.services.length,
           buyerOrdersCount: user._count.buyerOrders,
           sellerOrdersCount: user._count.sellerOrders,
-          messagesCount: user._count.sentMessages + user._count.receivedMessages,
+          messagesCount: 0, // Messages count not available in current schema
         },
         services: user.services,
       })),
