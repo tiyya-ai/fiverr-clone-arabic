@@ -198,7 +198,13 @@ export async function PATCH(request: NextRequest) {
           in: orderIds,
         },
       },
-      include: {
+      select: {
+        id: true,
+        paymentIntentId: true,
+        totalAmount: true,
+        status: true,
+        createdAt: true,
+        updatedAt: true,
         service: {
           select: {
             title: true,
