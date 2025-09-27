@@ -7,9 +7,9 @@
     "NEXT_PUBLIC_APP_URL": "https://5admat.vercel.app",
     "NEXT_PUBLIC_API_URL": "https://5admat.vercel.app/api",
     "NEXT_PUBLIC_APP_NAME": "خدمات - 5admat",
-    "STRIPE_SECRET_KEY": "sk_test_placeholder_key_for_build",
-    "STRIPE_PUBLISHABLE_KEY": "pk_test_placeholder_key_for_build",
-    "STRIPE_WEBHOOK_SECRET": "whsec_placeholder_webhook_secret"
+    "STRIPE_SECRET_KEY": "sk_test_placeholder",
+    "STRIPE_PUBLISHABLE_KEY": "pk_test_placeholder",
+    "STRIPE_WEBHOOK_SECRET": "whsec_placeholder"
   },
   "buildCommand": "prisma generate && next build"
 }
