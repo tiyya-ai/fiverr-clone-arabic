@@ -9,7 +9,7 @@ const userUpdateSchema = z.object({
   name: z.string().min(2).optional(),
   email: z.string().email().optional(),
   userType: z.enum(['BUYER', 'SELLER', 'ADMIN']).optional(),
-  emailVerified: z.boolean().optional(),
+  isVerified: z.boolean().optional(),
 })
 
 const userCreateSchema = z.object({
@@ -19,7 +19,7 @@ const userCreateSchema = z.object({
   password: z.string().min(6),
   location: z.string().min(2),
   userType: z.enum(['BUYER', 'SELLER', 'ADMIN']),
-  emailVerified: z.boolean().default(false),
+  isVerified: z.boolean().default(false),
   memberSince: z.string().default(new Date().toISOString().split('T')[0]),
 })
 

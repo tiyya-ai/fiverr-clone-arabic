@@ -9,7 +9,7 @@ const userUpdateSchema = z.object({
   name: z.string().min(2).optional(),
   email: z.string().email().optional(),
   userType: z.enum(['BUYER', 'SELLER', 'ADMIN']).optional(),
-  emailVerified: z.boolean().optional(),
+  isVerified: z.boolean().optional(),
   password: z.string().min(6).optional(),
 })
 

@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
         phone: validatedData.phone,
         location: validatedData.location,
         userType: validatedData.userType,
-        emailVerified: false,
+        isVerified: false,
         isOnline: false,
         memberSince: new Date().getFullYear().toString(),
       },

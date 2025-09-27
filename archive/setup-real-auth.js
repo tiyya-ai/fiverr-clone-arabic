@@ -26,7 +26,7 @@ async function setupRealAuth() {
         isOnline: true,
         lastSeen: new Date(),
         level: 'مبتدئ',
-        emailVerified: true
+        isVerified: true
       }
     })
     
@@ -49,7 +49,6 @@ async function setupRealAuth() {
         isOnline: true,
         lastSeen: new Date(),
         level: 'خبير',
-        emailVerified: true,
         isVerified: true
       }
     })
@@ -73,7 +72,7 @@ async function setupRealAuth() {
         isOnline: true,
         lastSeen: new Date(),
         level: 'متوسط',
-        emailVerified: true,
+        isVerified: true,
         rating: 4.8,
         totalReviews: 25,
         totalSales: 150

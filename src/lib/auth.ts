@@ -105,7 +105,7 @@ export const authOptions: NextAuthOptions = {
                 username: user.email!.split('@')[0],
                 location: 'السعودية',
                 avatar: user.image,
-                emailVerified: true,
+                isVerified: true,
                 userType: 'BUYER',
                 isOnline: true,
                 lastSeen: new Date(),

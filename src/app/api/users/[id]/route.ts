@@ -62,7 +62,7 @@ export async function GET(
         isOnline: true,
         lastSeen: true,
         memberSince: true,
-        emailVerified: true,
+        isVerified: true,
         portfolioItems: {
           orderBy: { createdAt: 'desc' },
           select: {
