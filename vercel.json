@@ -1,7 +1,7 @@
 {
   "version": 2,
   "env": {
-    "DATABASE_URL": "postgresql://postgres:your-password-here@db.your-project-ref.supabase.co:5432/postgres",
+    "DATABASE_URL": "postgresql://neondb_owner:npg_j1LW6ksAJcTo@ep-solitary-bird-adyhgr4n-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require",
     "NEXTAUTH_URL": "https://5admat.vercel.app",
     "NEXTAUTH_SECRET": "wbl3-secure-secret-key-2024-must-be-32-chars-minimum",
     "NEXT_PUBLIC_APP_URL": "https://5admat.vercel.app",
